@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Лечо. Ахуевшая заруба в Техасе.</title>
 
 <!-- Fonts: iOS-style system fonts with fallback -->
@@ -16,6 +16,27 @@
   --card-w:68px; --card-h:96px; --btn-radius:12px; /* Slightly smaller cards for fit */
   --shadow-strong: 0 8px 32px rgba(0,0,0,0.1); /* Softer iOS shadows */
   --muted: rgba(0,0,0,0.6); /* Darker text for light bg */
+  --text-color: #000;
+  --card-bg: #fff;
+  --card-text: #000;
+}
+body.theme-dark {
+  --bg-top: #1c1c1e; --bg-bottom: #2c2c2e;
+  --glass: rgba(44,44,46,0.8);
+  --muted: rgba(255,255,255,0.6);
+  --text-color: #fff;
+  --card-bg: #3a3a3c;
+  --card-text: #fff;
+}
+body.theme-poker {
+  --bg-top: #0a3d62; --bg-bottom: #1e5f3f;
+  --glass: rgba(30,95,63,0.8);
+  --muted: rgba(255,255,255,0.7);
+  --text-color: #fff;
+  --card-bg: #2d5a3a;
+  --card-text: #fff;
+  --accent: #ffd700;
+  --accent-2: #00ff00;
 }
 *{box-sizing:border-box}
 html,body{height:100%; overflow:hidden;} /* Prevent scroll entirely */
@@ -24,7 +45,7 @@ body{
   background:
     radial-gradient(800px 360px at 85% 10%, rgba(0,122,255,0.05), transparent),
     linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
-  color:#000; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:0;
+  color:var(--text-color); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:0;
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
 }
 
@@ -55,7 +76,7 @@ body{
 /* nav - compact wrap */
 .nav-buttons{display:flex; gap:6px; flex-wrap:wrap}
 .big-btn{background:var(--accent); color:#fff; padding:6px 10px; border-radius:var(--btn-radius); font-weight:600; min-width:80px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); cursor:pointer; border:none; font-size:13px; transition: all 0.2s; -webkit-tap-highlight-color: transparent; touch-action: manipulation;}
-.balance{background:var(--glass); padding:6px 10px; border-radius:12px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:6px; border:1px solid rgba(0,0,0,0.05); transition: all 0.2s ease; font-size:13px;}
+.balance{background:var(--glass); padding:6px 10px; border-radius:12px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:6px; border:1px solid rgba(0,0,0,0.05); transition: all 0.2s ease; font-size:12px;}
 
 /* shelves - tighter for fit */
 .shelves{display:grid; grid-template-columns:1fr; gap:12px; padding:0 12px; overflow-y:auto;}
@@ -85,18 +106,18 @@ body{
 .players-row{display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start; justify-content:center;}
 .player-chip{display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px; background:var(--glass); border-radius:12px; min-width:90px; border:1px solid rgba(0,0,0,0.05); transition:transform .15s,box-shadow .15s;}
 .player-chip:hover{transform:translateY(-2px);}
-.player-name{font-size:12px; font-weight:600; color:#000;}
+.player-name{font-size:12px; font-weight:600; color:var(--text-color);}
 .player-status{font-size:10px; color:var(--accent-2); font-style:italic;}
 .player-count{font-size:11px; color:var(--muted);}
 
 /* avatar sizes - smaller */
-.avatar{border-radius:12px; overflow:hidden; border:1px solid rgba(0,0,0,0.05); display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.05); color:#000;}
+.avatar{border-radius:12px; overflow:hidden; border:1px solid rgba(0,0,0,0.05); display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.05); color:var(--text-color);}
 .avatar.small{width:40px; height:40px; font-size:18px;}
 .avatar.medium{width:52px; height:52px; font-size:24px;}
 .avatar.large{width:72px; height:72px; font-size:30px;}
 
 /* Card visuals - adjusted size */
-.card{width:var(--card-w); height:var(--card-h); background:#fff; color:#000; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.1); display:flex; flex-direction:column; justify-content:space-between; padding:8px; font-weight:600; user-select:none; transition:transform .18s;}
+.card{width:var(--card-w); height:var(--card-h); background:var(--card-bg); color:var(--card-text); border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.1); display:flex; flex-direction:column; justify-content:space-between; padding:8px; font-weight:600; user-select:none; transition:transform .18s;}
 .card.back{background:linear-gradient(180deg,#e5e5e5,#d1d1d1); color:#666; justify-content:center; align-items:center; font-size:18px; position:relative;}
 .card .suit{font-size:12px;}
 .card .rank{font-size:16px; text-align:center;}
@@ -169,7 +190,7 @@ body{
 /* exchange - centered tight */
 .exchange-panel { display: flex; flex-direction: column; gap: 12px; max-width: 360px; margin: 0 auto; padding:0 12px; }
 .exchange-form { background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); }
-.exchange-input { padding: 6px; border-radius: 6px; background: transparent; border: 1px solid rgba(0,0,0,0.1); color: #000; width: 100%; margin-bottom: 6px; }
+.exchange-input { padding: 6px; border-radius: 6px; background: transparent; border: 1px solid rgba(0,0,0,0.1); color: var(--text-color); width: 100%; margin-bottom: 6px; }
 .exchange-result { font-weight: 600; color: var(--accent-2); text-align: center; padding: 6px; background: rgba(0,0,0,0.02); border-radius: 6px; }
 .exchange-error { color: #ff3b30; font-size: 11px; text-align: center; margin-top: 3px; }
 
@@ -199,7 +220,7 @@ body{
   display: none; z-index: 1000; justify-content: center; align-items: flex-end; padding:20px;
 }
 #modalContent {
-  background: #fff; color: #000; padding: 20px; border-radius: 20px 20px 0 0; 
+  background: var(--card-bg); color: var(--card-text); padding: 20px; border-radius: 20px 20px 0 0; 
   max-width: 100%; text-align: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.1); width:100%;
 }
 #modalClose { background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 12px; cursor: pointer; margin-top: 10px; font-weight:600; border:none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
@@ -305,16 +326,18 @@ body{
       <p class="small-muted">Рискуйте валютой в мини-играх казино.</p>
       <div class="casino-grid">
         <div class="casino-item">
-          <h4>Русская рулетка (3💎)</h4>
+          <h4>Русская рулетка</h4>
           <p>Выберите уровень: Легко (+5💎, 5 пустых/1 заряженный) или Сложно (+15💎, 1 пустой/5 заряженных).</p>
+          <input id="rouletteBetInput" type="number" min="5" class="exchange-input" placeholder="Ставка 💎 (мин. 5)" style="margin-bottom:8px;">
           <select id="rouletteDifficulty"><option value="easy">Легко (+5💎)</option><option value="hard">Сложно (+15💎)</option></select>
           <div class="big-btn" id="startRoulette">Играть</div>
           <div id="rouletteResult"></div>
           <div id="countdown"></div>
         </div>
         <div class="casino-item">
-          <h4>Разноцветная рулетка (2💎)</h4>
+          <h4>Разноцветная рулетка</h4>
           <p>Выберите цвет: 🔴 (45%, +4💎), ⚫️ (45%, +4💎), 🟢 (10%, +100💎).</p>
+          <input id="colorBetInput" type="number" min="5" class="exchange-input" placeholder="Ставка 💎 (мин. 5)" style="margin-bottom:8px;">
           <div class="color-choice">
             <button class="color-btn" data-color="🔴" id="colorRed">🔴</button>
             <button class="color-btn" data-color="⚫️" id="colorBlack">⚫️</button>
@@ -325,15 +348,16 @@ body{
           <div id="colorResult"></div>
         </div>
         <div class="casino-item">
-          <h4>Золотая лихорадка (5🪙)</h4>
+          <h4>Золотая лихорадка (20🪙)</h4>
           <p>Нажмите "Повезет" для активации (7% шанс на джекпот 🪙777).</p>
           <div class="big-btn" id="luckyBtn">Повезет</div>
           <div class="big-btn" id="confirmGoldRush" style="display:none;">Подтвердить игру</div>
           <div id="goldRushResult"></div>
         </div>
         <div class="casino-item">
-          <h4>Слот-машинка (10💎)</h4>
+          <h4>Слот-машинка</h4>
           <p>Высокий риск, щедрые выплаты. Тяните рычаг!</p>
+          <input id="slotBetInput" type="number" min="10" class="exchange-input" placeholder="Ставка 💎 (мин. 10)" style="margin-bottom:8px;">
           <div class="big-btn" id="btnSlots">🎰 Играть в слоты</div>
         </div>
         <div class="casino-item">
@@ -382,17 +406,17 @@ body{
         <div id="profileAvatar" class="avatar large">👤</div>
         <div style="flex:1">
           <div style="display:flex;gap:6px;align-items:center">
-            <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:6px;border-radius:8px;background:var(--glass);border:1px solid rgba(0,0,0,0.05);color:#000;width:220px">
+            <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:6px;border-radius:8px;background:var(--glass);border:1px solid rgba(0,0,0,0.05);color:var(--text-color);width:220px">
             <div class="big-btn" id="saveNick">Сохранить</div>
             <div class="big-btn" id="backFromProfile">Назад</div>
             <div id="goldRushBadge" style="display:none;background:linear-gradient(to right, gold, yellow);color:black;padding:3px 6px;border-radius:6px;font-size:11px;font-weight:600;">🏆 Покоритель лихорадки</div>
           </div>
           <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
-            <input id="avatarInput" type="file" accept="image/*" style="color:#000">
+            <input id="avatarInput" type="file" accept="image/*" style="color:var(--text-color)">
           </div>
           <div style="margin-top:8px">
             <div class="small-muted">Выбрать эмодзи-аватар:</div>
-            <select id="avatarSelect" style="padding:6px;border-radius:8px;background:var(--glass);border:1px solid rgba(0,0,0,0.05);color:#000;width:100%;margin-bottom:6px;"></select>
+            <select id="avatarSelect" style="padding:6px;border-radius:8px;background:var(--glass);border:1px solid rgba(0,0,0,0.05);color:var(--text-color);width:100%;margin-bottom:6px;"></select>
             <div class="big-btn" id="applyAvatar" style="width:100%;margin-bottom:6px">Применить аватар</div>
           </div>
           <div style="margin-top:8px">
@@ -455,10 +479,10 @@ body{
         <h4 class="small-muted">Обмен валюты</h4>
         <p class="small-muted">💎 → 🪙: 3💎 = 1🪙 (кратно 3). 🪙 → 💎: 1🪙 = 2💎 (любое количество). Автоподсчет и подтверждение сделки.</p>
         <h4 class="small-muted">Азартные игры</h4>
-        <p class="small-muted">1. Русская рулетка (3💎): Выбор сложности (легко: +5💎; сложно: +15💎). Обратный отсчет и выстрел (💥/💨).</p>
-        <p class="small-muted">2. Разноцветная рулетка (2💎): Выбор 🔴/⚫️/🟢. Шансы: 45%/45%/10%. Выигрыши: +4💎/+4💎/+100💎. Анимация смены шариков 3-6 сек.</p>
-        <p class="small-muted">3. Золотая лихорадка (5🪙): Кнопки «Повезет» и «Подтвердить». 7% шанс на 🪙777.</p>
-        <p class="small-muted">4. Слот-машинка (10💎): 3 барабана, символы: фрукты, 🔔, 💀. Выплаты: 3🔔 +100💎, 3 фрукта +30💎, 2🔔 +15💎, 💀 проигрыш, иначе возврат.</p>
+        <p class="small-muted">1. Русская рулетка (мин. 5💎): Выбор сложности (легко: +5💎; сложно: +15💎). Обратный отсчет и выстрел (💥/💨).</p>
+        <p class="small-muted">2. Разноцветная рулетка (мин. 5💎): Выбор 🔴/⚫️/🟢. Шансы: 45%/45%/10%. Выигрыши: +4💎/+4💎/+100💎. Анимация смены шариков 3-6 сек.</p>
+        <p class="small-muted">3. Золотая лихорадка (20🪙): Кнопки «Повезет» и «Подтвердить». 7% шанс на 🪙777.</p>
+        <p class="small-muted">4. Слот-машинка (мин. 10💎): 3 барабана, символы: фрукты, 🔔, 💀. Выплаты: 3🔔 +100💎, 3 фрукта +30💎, 2🔔 +15💎, 💀 проигрыш, иначе возврат.</p>
         <p class="small-muted">5. Ставка на лошадку (от 2🪙): Выбор лошади 1-5, коэффициенты x1.5-x8. Забег 25-45 сек с анимацией.</p>
         <p class="small-muted">Предметы из магазина (хинт, подгляд, пропуск и т.д.) используются из инвентаря во время игры через панель в игре.</p>
       </div>
@@ -516,7 +540,7 @@ body{
       </div>
       <div style="display:flex;gap:6px" class="controls">
         <div class="big-btn" id="drawBtn">Беру</div>
-        <div class="big-btn" id="returnBtn">Вернуть отправителю — 🪙5</div>
+        <div class="big-btn" id="returnBtn">Вернуть отправителю — 🪙15</div>
         <div class="big-btn" id="lechoBtn">Лечо</div>
       </div>
     </div>
@@ -570,7 +594,7 @@ body{
  * ======================================================== */
 
 /* ================= CONFIG / STATE ================= */
-const RETURN_COST = 5;
+const RETURN_COST = 15;
 let state = { coins: 0, diamonds: 0, level: 1, wins: 0, nick: '', avatar: '', status: 'none', inventory: {}, avatars: [], goldRushWon: false };
 let betDoublerActive = false;
 let insuranceActive = false;
@@ -633,8 +657,8 @@ function onStateChange() {
   saveData(userId, state);
 }
 
-/* Fallback UI */
-if (!userId) {
+/* Fallback UI - hide if in Telegram */
+if (!userId && !tg) {
   const banner = $('fallbackBanner');
   banner.textContent = 'ID Telegram не получен — прогресс сохраняется локально на этом устройстве. Рекомендуется открыть через Telegram WebApp.';
   banner.style.display = 'block';
@@ -660,22 +684,23 @@ const FUN = ['Хуй','Пиздец','Жопа','Сиськи','Блядина',
 
 /* Shop consts */
 const SHOP_ITEMS = [
-  { id:'theme_dark', title:'Тема «Ночной Техас»', desc:'Тёмная тема интерфейса — немного стильно.', price:8, type:'theme' },
-  { id:'avatar_pack', title:'Пак аватаров', desc:'5 уникальных эмодзи-аватаров для ботов/вас.', price:5, type:'avatar' },
-  { id:'voucher_pack', title:'Пак возвратов (×3)', desc:'Три бесплатных возврата атаки (конвертируется в витрине).', price:12, type:'voucher', qty:3 },
-  { id:'hint', title:'Разовый хинт', desc:'Показывает возможно собираемую комбинацию у вас (однократно).', price:4, type:'hint' },
-  { id:'extra_draw', title:'Доп. вытяжка', desc:'Позволяет выкинуть карту без взятия новой (один раз, для снижения руки).', price:6, type:'extra_draw' },
-  { id:'peek_deck', title:'Подгляд в колоду', desc:'Показывает верхнюю карту колоды (один раз).', price:8, type:'peek' },
-  { id:'skip_turn', title:'Пропуск хода', desc:'Пропустить свой ход атаки (один раз).', price:12, type:'skip' },
-  { id:'reveal_combo', title:'Разоблачение комбо', desc:'Узнайте тип комбо у случайного соперника (один раз).', price:12, type:'reveal' },
-  { id:'extra_life', title:'Доп. жизнь', desc:'Избегните поражения один раз, если проиграете.', price:15, type:'extra_life' },
-  { id:'telepathy', title:'Телепатия', desc:'видит случайную карту из руки противника', price:25, type:'telepathy' },
-  { id:'trump_swap', title:'Подмена Козыря', desc:'один раз за игру сменить козырь', price:30, type:'trump_swap' },
-  { id:'game_roulette', title:'Русская Рулетка в Игре', desc:'заставляет противника пропустить ход (50% шанс)', price:20, type:'game_roulette' },
-  { id:'anti_lecho', title:'Анти-Лечо', desc:'блокирует возможность объявления Лечо одним игроком', price:40, type:'anti_lecho' },
-  { id:'bet_doubler', title:'Удвоитель Ставки', desc:'следующая победа в казино ×2', price:8, type:'bet_doubler' },
-  { id:'insurance', title:'Страховка', desc:'возвращает 50% при проигрыше в казино', price:6, type:'insurance' },
-  { id:'free_sample', title:'Бесплатный Образец', desc:'тестовое использование любого предмета', price:3, type:'free_sample' }
+  { id:'theme_dark', title:'Тема «Ночной Техас»', desc:'Покерная зелёная тема интерфейса — стильно и атмосферно.', price:25, type:'theme' },
+  { id:'theme_premium_gold', title:'Премиум «Золотой покер»', desc:'Золотая тема с премиум-эффектами.', price:50, type:'theme' },
+  { id:'avatar_pack', title:'Пак аватаров', desc:'5 уникальных эмодзи-аватаров для ботов/вас.', price:15, type:'avatar' },
+  { id:'voucher_pack', title:'Пак возвратов (×3)', desc:'Три бесплатных возврата атаки (конвертируется в витрине).', price:35, type:'voucher', qty:3 },
+  { id:'hint', title:'Разовый хинт', desc:'Показывает возможно собираемую комбинацию у вас (однократно).', price:12, type:'hint' },
+  { id:'extra_draw', title:'Доп. вытяжка', desc:'Позволяет выкинуть карту без взятия новой (один раз, для снижения руки).', price:18, type:'extra_draw' },
+  { id:'peek_deck', title:'Подгляд в колоду', desc:'Показывает верхнюю карту колоды (один раз).', price:25, type:'peek' },
+  { id:'skip_turn', title:'Пропуск хода', desc:'Пропустить свой ход атаки (один раз).', price:35, type:'skip' },
+  { id:'reveal_combo', title:'Разоблачение комбо', desc:'Узнайте тип комбо у случайного соперника (один раз).', price:35, type:'reveal' },
+  { id:'extra_life', title:'Доп. жизнь', desc:'Избегните поражения один раз, если проиграете.', price:45, type:'extra_life' },
+  { id:'telepathy', title:'Телепатия', desc:'видит случайную карту из руки противника', price:75, type:'telepathy' },
+  { id:'trump_swap', title:'Подмена Козыря', desc:'один раз за игру сменить козырь', price:90, type:'trump_swap' },
+  { id:'game_roulette', title:'Русская Рулетка в Игре', desc:'заставляет противника пропустить ход (50% шанс)', price:60, type:'game_roulette' },
+  { id:'anti_lecho', title:'Анти-Лечо', desc:'блокирует возможность объявления Лечо одним игроком', price:120, type:'anti_lecho' },
+  { id:'bet_doubler', title:'Удвоитель Ставки', desc:'следующая победа в казино ×2', price:25, type:'bet_doubler' },
+  { id:'insurance', title:'Страховка', desc:'возвращает 50% при проигрыше в казино', price:18, type:'insurance' },
+  { id:'free_sample', title:'Бесплатный Образец', desc:'тестовое использование любого предмета', price:10, type:'free_sample' }
 ];
 const AVATAR_PACKS = {
   'avatar_pack': ['🤠', '🧔', '👹', '🤖', '👻']
@@ -924,10 +949,10 @@ function startRace(duration, bet, selected) {
   // Closed, no need
 }
 
-// Russian Roulette
+// Russian Roulette - free bet
 function applyCasinoModifiers(isWin, winAmount, betAmount) {
   if (isWin && winAmount > betAmount && betDoublerActive) {
-    diamonds += winAmount;
+    diamonds += winAmount * 2;
     betDoublerActive = false;
     showModal('Удвоитель сработал!');
   } else if (!isWin && insuranceActive) {
@@ -940,8 +965,9 @@ function applyCasinoModifiers(isWin, winAmount, betAmount) {
 }
 
 $('startRoulette').onclick = () => {
-  if (diamonds < 3) { showModal('Недостаточно 💎'); return; }
-  diamonds -= 3;
+  const bet = Number($('rouletteBetInput').value) || 5;
+  if (diamonds < bet) { showModal('Недостаточно 💎'); return; }
+  diamonds -= bet;
   saveBalance();
   const diff = $('rouletteDifficulty').value;
   const emptySlots = diff === 'easy' ? 5 : 1;
@@ -959,22 +985,24 @@ $('startRoulette').onclick = () => {
       setTimeout(() => {
         cdEl.textContent = isWin ? '💨' : '💥';
         if (isWin) {
-          diamonds += winAmount;
-          $('rouletteResult').innerHTML = `<p>Выигрыш! +${winAmount}💎</p>`;
-          applyCasinoModifiers(true, winAmount, 3);
+          const payout = winAmount * (bet / 5);
+          diamonds += payout;
+          $('rouletteResult').innerHTML = `<p>Выигрыш! +${payout}💎</p>`;
+          applyCasinoModifiers(true, payout, bet);
         } else {
           $('rouletteResult').innerHTML = '<p>Проигрыш!</p>';
-          applyCasinoModifiers(false, 0, 3);
+          applyCasinoModifiers(false, 0, bet);
         }
       }, 1000);
     }
   }, 1000);
 };
 
-// Color Roulette
+// Color Roulette - free bet
 $('confirmColorChoice').onclick = () => {
-  if (!selectedColor || diamonds < 2) { showModal('Выберите цвет или недостаточно 💎'); return; }
-  diamonds -= 2;
+  const bet = Number($('colorBetInput').value) || 5;
+  if (!selectedColor || diamonds < bet) { showModal('Выберите цвет или недостаточно 💎'); return; }
+  diamonds -= bet;
   saveBalance();
   const colors = ['🔴', '⚫️', '🟢'];
   const probs = [0.45, 0.45, 0.10];
@@ -1001,21 +1029,22 @@ $('confirmColorChoice').onclick = () => {
     if (chosenColor === selectedColor) {
       winAmount = chosenColor === '🟢' ? 100 : 4;
       isWin = true;
-      $('colorResult').innerHTML = `<p>Выигрыш! +${winAmount}💎</p>`;
+      const payout = winAmount * (bet / 5);
+      $('colorResult').innerHTML = `<p>Выигрыш! +${payout}💎</p>`;
+      diamonds += payout;
     } else {
       $('colorResult').innerHTML = '<p>Проигрыш!</p>';
       isWin = false;
     }
-    diamonds += winAmount;
-    applyCasinoModifiers(isWin, winAmount, 2);
+    applyCasinoModifiers(isWin, winAmount, bet);
     resetCasino();
   }, spinTime);
 };
 
-// Gold Rush
+// Gold Rush - fixed
 function goldRushBet() {
-  if (balance < 5) { showModal('Недостаточно 🪙'); return; }
-  balance -= 5;
+  if (balance < 20) { showModal('Недостаточно 🪙'); return; }
+  balance -= 20;
   saveBalance();
   $('luckyBtn').style.display = 'none';
   $('confirmGoldRush').style.display = 'block';
@@ -1062,9 +1091,9 @@ function goldRushBet() {
       $('goldRushResult').innerHTML = '<div style="font-size:30px;text-align:center;">😔 Не повезло!</div><div class="big-btn" id="tryAgainGold" style="margin-top:10px;">Попробовать снова</div>';
       $('tryAgainGold').onclick = () => { resetCasino(); };
       if (insuranceActive) {
-        balance += 2;
+        balance += 10;
         insuranceActive = false;
-        showModal('Страховка вернула 2🪙');
+        showModal('Страховка вернула 10🪙');
         saveBalance();
       }
     }
@@ -1072,11 +1101,12 @@ function goldRushBet() {
   };
 }
 
-/* Slot Machine */
+/* Slot Machine - free bet */
 const symbols = ['🍒', '🍋', '🍊', '🔔', '💀'];
 $('leverBtn').onclick = () => {
-  if (diamonds < 10) { showModal('Недостаточно 💎'); return; }
-  diamonds -= 10;
+  const bet = Number($('slotBetInput').value) || 10;
+  if (diamonds < bet) { showModal('Недостаточно 💎'); return; }
+  diamonds -= bet;
   saveBalance();
   const reel1 = $('reel1');
   const reel2 = $('reel2');
@@ -1122,14 +1152,15 @@ $('leverBtn').onclick = () => {
             resultEl.innerHTML = `${fruits[0]}×3 +30💎`;
             isWin = true;
           } else {
-            winAmount = 10;
+            winAmount = 1;
             resultEl.innerHTML = 'Возврат ставки';
             isWin = false; // return not win for doubler
           }
         }
       }
-      diamonds += winAmount;
-      applyCasinoModifiers(isWin && winAmount > 10, winAmount, 10);
+      const payout = winAmount * (bet / 10);
+      diamonds += payout;
+      applyCasinoModifiers(isWin && payout > bet, payout, bet);
     }
   }
   spinReel(reel1, times[0], sym => { results.push(sym); checkResults(); });
@@ -1601,7 +1632,7 @@ function buyItem(id){
   log(`Куплено: ${item.title} за ${item.price} 🪙`);
   // apply immediate effects
   if(item.type === 'theme'){ 
-    document.body.style.background = 'linear-gradient(180deg,#071b16,#03140f)'; 
+    document.body.className = `theme-${id.split('_')[1] || 'dark'}`;
     log('Тема применена.'); 
   }
   if(item.type === 'avatar'){ 
@@ -1800,7 +1831,7 @@ function renderPersonalization() {
       if (!item) return;
       // simple apply for now (extend as needed)
       if (item.type === 'theme') {
-        document.body.style.background = 'linear-gradient(180deg,#071b16,#03140f)';
+        document.body.className = `theme-${id.split('_')[1] || 'dark'}`;
         log(`${item.title} применено.`);
       } else if (item.type === 'avatar') {
         log('Аватары уже доступны в селекте профиля.');
