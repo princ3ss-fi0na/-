@@ -2,287 +2,262 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>Лечо. Ахуевшая заруба в Техасе.</title>
 
-<!-- Fonts: iOS-style system fonts with fallback -->
-<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Fonts: строгие и минимальные, с вайбом Wild West минимализма -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg-top:#f2f2f7; --bg-bottom:#ffffff; /* Light iOS-like background */
-  --accent:#007aff; --accent-2:#34c759; /* iOS blue and green accents */
-  --glass: rgba(255,255,255,0.8); /* iOS blur glass */
-  --card-w:68px; --card-h:96px; --btn-radius:12px; /* Slightly smaller cards for fit */
-  --shadow-strong: 0 8px 32px rgba(0,0,0,0.1); /* Softer iOS shadows */
-  --muted: rgba(0,0,0,0.6); /* Darker text for light bg */
-  --text-color: #000;
-  --card-bg: #fff;
-  --card-text: #000;
-}
-body.theme-dark {
-  --bg-top: #1c1c1e; --bg-bottom: #2c2c2e;
-  --glass: rgba(44,44,46,0.8);
-  --muted: rgba(255,255,255,0.6);
-  --text-color: #fff;
-  --card-bg: #3a3a3c;
-  --card-text: #fff;
-}
-body.theme-poker {
-  --bg-top: #0a3d62; --bg-bottom: #1e5f3f;
-  --glass: rgba(30,95,63,0.8);
-  --muted: rgba(255,255,255,0.7);
-  --text-color: #fff;
-  --card-bg: #2d5a3a;
-  --card-text: #fff;
-  --accent: #ffd700;
-  --accent-2: #00ff00;
+  --bg-top: #0c3f25; --bg-bottom: #041811; /* Зеленые тона как покерный стол */
+  --accent: #f0e6d8; --accent-2: #ffd48a;
+  --glass: rgba(255,255,255,0.05);
+  --card-w: 76px; --card-h: 104px; --btn-radius: 16px; /* Более округлые для современного вида */
+  --shadow-strong: 0 20px 50px rgba(2,6,8,0.6);
+  --muted: rgba(255,255,255,0.75);
+  --bottom-bar-height: 60px; /* Высота нижней панели */
 }
 *{box-sizing:border-box}
-html,body{height:100%; overflow:hidden;} /* Prevent scroll entirely */
+html,body{height:100%; margin:0; padding:0;}
 body{
-  margin:0; font-family:"SF Pro Display", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
   background:
-    radial-gradient(800px 360px at 85% 10%, rgba(0,122,255,0.05), transparent),
+    radial-gradient(800px 360px at 85% 10%, rgba(255,200,120,0.03), transparent),
     linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
-  color:var(--text-color); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:0;
+  color:#fff; min-height:100vh; display:flex; flex-direction:column;
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  padding-bottom: var(--bottom-bar-height); /* Отступ для нижней панели */
 }
 
-/* APP - full height, no gaps for fit */
-.app{width:100%; height:100vh; display:flex; flex-direction:column; overflow:hidden;}
+/* APP */
+.app{width:100%; max-width:390px; /* Оптимально для мобильных, как в референсе */ margin:0 auto; display:flex; flex-direction:column; gap:12px; padding: env(safe-area-inset-top) 8px env(safe-area-inset-bottom) 8px;}
 
-/* header - compact, iOS-like */
-.header{
-  display:flex; justify-content:space-between; align-items:center; gap:12px;
-  position: sticky; top: 0; z-index: 100;
-  background: var(--glass); backdrop-filter: blur(20px); /* iOS blur */
-  padding: 8px 12px; border-bottom: 1px solid rgba(0,0,0,0.05);
-  flex-shrink:0;
+/* Bottom bar - static, как в Telegram mini-apps */
+.bottom-bar{
+  display:flex; justify-content:space-between; align-items:center; gap:8px;
+  position:fixed; bottom:0; left:0; right:0; z-index:100;
+  background: rgba(12,47,37,0.95); backdrop-filter: blur(10px);
+  padding:8px; border-top:1px solid rgba(255,255,255,0.03);
+  height:var(--bottom-bar-height);
 }
-.title-wrap{display:flex; align-items:center; gap:12px; flex:1;}
+.nav-buttons{display:flex; justify-content:space-around; flex:1; gap:4px;}
+.big-btn{
+  background:var(--accent); color:#111; padding:4px 8px; border-radius:var(--btn-radius); font-weight:800;
+  text-align:center; box-shadow:0 10px 24px rgba(0,0,0,0.28); cursor:pointer; border:none; font-size:12px;
+  display:flex; flex-direction:column; align-items:center; min-width:60px;
+}
+.big-btn span{font-size:24px; line-height:1;} /* Иконки как в референсе */
+.balance{background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); padding:8px 12px; border-radius:12px; font-weight:800; color:var(--accent); display:flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,0.03); transition:all 0.3s ease; white-space:nowrap;}
+
+/* Title wrap for main screens */
+.title-wrap{display:flex; align-items:center; gap:12px; padding:8px 0 0 0; /* Сдвинули вверх, уменьшив padding-top */}
 .logo-card{
-  width:64px; height:64px; border-radius:12px; background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:40px;
-  box-shadow:var(--shadow-strong); flex-shrink:0;
+  width:60px; height:60px; border-radius:50%; /* Круглый как в референсе */ background:linear-gradient(135deg,var(--accent-2),var(--accent));
+  color:#111; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:36px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.55); flex-shrink:0;
 }
 .title{
-  font-family:'SF Pro Display', serif;
-  font-weight:600; font-size:16px; letter-spacing:0.01em; color:var(--accent); margin:0;
-  line-height:1.1;
+  font-family:'Playfair Display', serif;
+  font-weight:600; font-size:18px; letter-spacing:0.2px; color:var(--accent); margin:0;
+  line-height:1;
 }
-.subtitle{font-size:10px; color:var(--muted); margin-top:2px; font-weight:500; display:none;} /* Hide on mobile for space */
+.subtitle{font-size:11px; color:var(--muted); margin-top:4px; font-weight:500;}
 
-/* nav - compact wrap */
-.nav-buttons{display:flex; gap:6px; flex-wrap:wrap}
-.big-btn{background:var(--accent); color:#fff; padding:6px 10px; border-radius:var(--btn-radius); font-weight:600; min-width:80px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); cursor:pointer; border:none; font-size:13px; transition: all 0.2s; -webkit-tap-highlight-color: transparent; touch-action: manipulation;}
-.balance{background:var(--glass); padding:6px 10px; border-radius:12px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:6px; border:1px solid rgba(0,0,0,0.05); transition: all 0.2s ease; font-size:12px;}
-
-/* shelves - tighter for fit */
-.shelves{display:grid; grid-template-columns:1fr; gap:12px; padding:0 12px; overflow-y:auto;}
+/* Shelves (intro panels) - modern cards like in Telegram apps */
+.shelves{display:grid; grid-template-columns:1fr; gap:12px;}
 .shelf{
-  background:var(--glass); border-radius:12px; padding:16px; border:1px solid rgba(0,0,0,0.05);
-  box-shadow:0 4px 16px rgba(0,0,0,0.08);
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius:16px; padding:16px; border:1px solid rgba(255,255,255,0.03);
+  box-shadow:0 10px 26px rgba(0,0,0,0.45);
 }
-.shelf h3{margin:0 0 6px 0; font-size:15px; color:var(--accent)}
-.shelf p{margin:0; color:var(--muted); font-size:12px}
+.shelf h3{margin:0 0 8px 0; font-size:16px; color:var(--accent);}
+.shelf p{margin:0; color:var(--muted); font-size:13px;}
 
-/* responsive - tighter on small */
+/* Responsive adjustments for mini-app feel */
 @media(max-width:600px){ 
-  .header{padding:6px 8px; gap:4px;}
-  .nav-buttons{flex-wrap:wrap; gap:4px; justify-content:center;}
-  .big-btn{padding:5px 8px; font-size:12px; min-width:65px;}
-  .logo-card{width:52px; height:52px; font-size:32px;}
-  .title{font-size:14px;}
-  .shelves{gap:8px; padding:0 8px;}
+  .nav-buttons{gap:2px;}
+  .big-btn{padding:4px 6px; font-size:10px; min-width:50px;}
+  .logo-card{width:50px; height:50px; font-size:30px;}
+  .title{font-size:16px;}
   .subtitle{display:none;}
 }
 
-/* global panels - compact */
-.card-panel{background:var(--glass); border-radius:12px; padding:16px; border:1px solid rgba(0,0,0,0.05); box-shadow:0 4px 16px rgba(0,0,0,0.08); overflow:auto;}
-.small-muted{font-size:12px; color:var(--muted)}
+/* Global panels */
+.card-panel{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:16px; border:1px solid rgba(255,255,255,0.03); box-shadow:0 8px 24px rgba(0,0,0,0.45);}
+.small-muted{font-size:13px; color:var(--muted);}
 
-/* players row - tighter */
-.players-row{display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start; justify-content:center;}
-.player-chip{display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px; background:var(--glass); border-radius:12px; min-width:90px; border:1px solid rgba(0,0,0,0.05); transition:transform .15s,box-shadow .15s;}
-.player-chip:hover{transform:translateY(-2px);}
-.player-name{font-size:12px; font-weight:600; color:var(--text-color);}
-.player-status{font-size:10px; color:var(--accent-2); font-style:italic;}
-.player-count{font-size:11px; color:var(--muted);}
+/* Players row */
+.players-row{display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start; justify-content:center;}
+.player-chip{display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; min-width:100px; border:1px solid rgba(255,255,255,0.03); transition:transform .15s,box-shadow .15s;}
+.player-chip:hover{transform:translateY(-6px);}
+.player-name{font-size:13px; font-weight:700; color:#fff;}
+.player-status{font-size:11px; color:var(--accent-2); font-style:italic;}
+.player-count{font-size:12px; color:var(--muted);}
 
-/* avatar sizes - smaller */
-.avatar{border-radius:12px; overflow:hidden; border:1px solid rgba(0,0,0,0.05); display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.05); color:var(--text-color);}
-.avatar.small{width:40px; height:40px; font-size:18px;}
-.avatar.medium{width:52px; height:52px; font-size:24px;}
-.avatar.large{width:72px; height:72px; font-size:30px;}
+/* Avatars */
+.avatar{border-radius:50%; /* Круглые аватары как в референсе */ overflow:hidden; border:2px solid rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.12); color:#fff;}
+.avatar.small{width:48px; height:48px; font-size:20px;}
+.avatar.medium{width:64px; height:64px; font-size:28px;}
+.avatar.large{width:84px; height:84px; font-size:36px;}
 
-/* Card visuals - adjusted size */
-.card{width:var(--card-w); height:var(--card-h); background:var(--card-bg); color:var(--card-text); border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.1); display:flex; flex-direction:column; justify-content:space-between; padding:8px; font-weight:600; user-select:none; transition:transform .18s;}
-.card.back{background:linear-gradient(180deg,#e5e5e5,#d1d1d1); color:#666; justify-content:center; align-items:center; font-size:18px; position:relative;}
-.card .suit{font-size:12px;}
-.card .rank{font-size:16px; text-align:center;}
-.hand{display:flex; gap:6px;}
+/* Cards - with Wild West feel but minimal */
+.card{width:var(--card-w); height:var(--card-h); background:#fff; color:#111; border-radius:12px; box-shadow:0 16px 34px rgba(2,6,8,0.35); display:flex; flex-direction:column; justify-content:space-between; padding:10px; font-weight:800; user-select:none; transition:transform .18s;}
+.card.back{background:linear-gradient(180deg,#0b2b21,#052015); color:#ffd; justify-content:center; align-items:center; font-size:20px; position:relative;}
+.card .suit{font-size:14px;}
+.card .rank{font-size:18px; text-align:center;}
+.hand{display:flex; gap:8px;}
 
-/* table - fit to remaining space */
-.table{background:var(--glass); border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:8px; flex:1; border:1px solid rgba(0,0,0,0.05); overflow:auto;}
-.table-center{display:flex; gap:12px; align-items:center; justify-content:center; flex:1;}
-.table-slot{min-width:140px; min-height:100px; background:var(--glass); border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:6px; align-items:center; border:1px solid rgba(0,0,0,0.05);}
+/* Table */
+.table{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:12px; min-height:420px; border:1px solid rgba(255,255,255,0.03);}
+.table-center{display:flex; gap:18px; align-items:center; justify-content:center;}
+.table-slot{min-width:160px; min-height:120px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:8px; align-items:center; border:1px solid rgba(255,255,255,0.03);}
 
-/* controls & log - compact bottom, removed sticky */
-.controls{display:flex; gap:8px; background:var(--glass); padding:8px; border-radius:12px; border:1px solid rgba(0,0,0,0.05); flex-shrink:0; -webkit-tap-highlight-color: transparent; touch-action: manipulation;}
-#log{background:rgba(0,0,0,0.05); padding:6px; border-radius:12px; font-size:11px; max-height:60px; overflow:auto; border:1px solid rgba(0,0,0,0.02); width:100%}
+/* Controls & log */
+.controls{display:flex; gap:10px; background:var(--glass); padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,0.03);}
+#log{background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.12)); padding:8px; border-radius:16px; font-size:12px; max-height:80px; overflow:auto; border:1px solid rgba(255,255,255,0.02); width:100%;}
 
-/* shop - tighter grid */
-.shop-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:12px; padding:0 12px;}
-.shop-item{background:var(--glass); padding:12px; border-radius:10px; border:1px solid rgba(0,0,0,0.05);}
-.item-title{font-weight:600; color:var(--accent); margin-bottom:4px;}
-.item-desc{font-size:12px; color:var(--muted); margin-bottom:6px;}
-.price{font-weight:700; color:var(--accent); font-size:13px;}
+/* Shop */
+.shop-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:16px;}
+.shop-item{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); padding:16px; border-radius:16px; border:1px solid rgba(255,255,255,0.03);}
+.item-title{font-weight:700; color:var(--accent); margin-bottom:6px;}
+.item-desc{font-size:13px; color:var(--muted); margin-bottom:8px;}
+.price{font-weight:900; color:var(--accent); font-size:14px;}
 
-/* inventory - wrap tight */
-.inv{display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;}
-.inv .chip{background:rgba(0,0,0,0.05); padding:4px 6px; border-radius:8px; font-size:12px;}
+/* Inventory */
+.inv{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+.inv .chip{background:rgba(255,255,255,0.03); padding:6px 8px; border-radius:8px; font-size:13px;}
 
-/* personalization - tight */
-.personalization-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin-top:12px;}
-.personalization-item{background:var(--glass); padding:10px; border-radius:10px; border:1px solid rgba(0,0,0,0.05);}
-.apply-btn{background:var(--accent-2); color:#000; padding:5px 10px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; border:none; width:100%; -webkit-tap-highlight-color: transparent; touch-action: manipulation;}
+/* Personalization */
+.personalization-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:16px;}
+.personalization-item{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,0.03);}
+.apply-btn{background:var(--accent-2); color:#111; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; border:none;}
 
-/* game inventory - compact */
+/* Game inventory */
 .game-inv-panel {
-  background: var(--glass);
-  border-radius: 12px;
-  padding: 10px;
-  border: 1px solid rgba(0,0,0,0.05);
-  min-width: 180px; flex-shrink:0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.03);
+  min-width: 200px;
 }
 .game-inv-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
-  padding: 3px;
-  background: rgba(0,0,0,0.03);
+  margin-bottom: 8px;
+  padding: 4px;
+  background: rgba(255,255,255,0.02);
   border-radius: 6px;
 }
 .use-btn {
   background: var(--accent-2);
-  color: #000;
-  padding: 3px 6px;
+  color: #111;
+  padding: 4px 8px;
   border-radius: 4px;
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
   border: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 
-/* casino - tighter */
-.casino-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 12px; padding:0 12px; }
-.casino-item { background: var(--glass); padding: 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); text-align: center; }
-.color-choice { display: flex; gap: 8px; justify-content: center; margin: 8px 0; }
-.color-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); cursor: pointer; font-size: 22px; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-.color-btn.selected { border-color: var(--accent); box-shadow: 0 0 8px var(--accent-2); }
-#rouletteSpinner { font-size: 42px; text-align: center; margin: 16px 0; }
-#countdown { font-size: 32px; font-weight: 700; text-align: center; margin: 16px 0; color: var(--accent-2); }
+/* Casino */
+.casino-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+.casino-item { background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent); padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03); text-align: center; }
+.color-choice { display: flex; gap: 10px; justify-content: center; margin: 10px 0; }
+.color-btn { width: 50px; height: 50px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); cursor: pointer; font-size: 24px; }
+.color-btn.selected { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-2); }
+#rouletteSpinner { font-size: 48px; text-align: center; margin: 20px 0; }
+#countdown { font-size: 36px; font-weight: 700; text-align: center; margin: 20px 0; color: var(--accent-2); }
 
-/* exchange - centered tight */
-.exchange-panel { display: flex; flex-direction: column; gap: 12px; max-width: 360px; margin: 0 auto; padding:0 12px; }
-.exchange-form { background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); }
-.exchange-input { padding: 6px; border-radius: 6px; background: transparent; border: 1px solid rgba(0,0,0,0.1); color: var(--text-color); width: 100%; margin-bottom: 6px; }
-.exchange-result { font-weight: 600; color: var(--accent-2); text-align: center; padding: 6px; background: rgba(0,0,0,0.02); border-radius: 6px; }
-.exchange-error { color: #ff3b30; font-size: 11px; text-align: center; margin-top: 3px; }
+/* Exchange */
+.exchange-panel { display: flex; flex-direction: column; gap: 16px; max-width: 400px; margin: 0 auto; }
+.exchange-form { background: rgba(255,255,255,0.02); padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03); }
+.exchange-input { padding: 8px; border-radius: 6px; background: transparent; border: 1px solid rgba(255,255,255,0.04); color: #fff; width: 100%; margin-bottom: 8px; }
+.exchange-result { font-weight: 700; color: var(--accent-2); text-align: center; padding: 8px; background: rgba(255,255,255,0.01); border-radius: 6px; }
+.exchange-error { color: #ff6b6b; font-size: 12px; text-align: center; margin-top: 4px; }
 
-/* slot - full fit */
-#screenSlots { background: var(--bg-bottom); flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 16px; }
-#slotContent { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; width: 100%; gap:20px; }
-.slot-reel { font-size: 72px; width: 90px; height: 90px; border: 2px solid var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--glass); margin: 0 8px; }
-.lever-btn { background: var(--accent); color: white; padding: 16px 32px; border-radius: 50px; font-size: 20px; font-weight: 600; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-.lever-btn:active { transform: scale(0.98); }
-#slotResult { margin-top: 20px; font-size: 20px; color: var(--accent-2); text-align: center; }
+/* Slots */
+#screenSlots { background: var(--bg-bottom); flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; }
+#slotContent { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; width: 100%; }
+.slot-reel { font-size: 80px; width: 100px; height: 100px; border: 2px solid var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--glass); margin: 0 10px; }
+.lever-btn { background: #ff0000; color: white; padding: 20px 40px; border-radius: 50px; font-size: 24px; font-weight: 700; cursor: pointer; border: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: transform 0.2s; }
+.lever-btn:active { transform: scale(0.95); }
+#slotResult { margin-top: 40px; font-size: 24px; color: var(--accent-2); text-align: center; }
 
-/* horse race - closed message */
-#screenHorseRace { background: var(--bg-bottom); flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; text-align:center; }
+/* Horse race */
+#screenHorseRace { background: var(--bg-bottom); flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; }
 #horseContent { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; width: 100%; }
-#horseClosed { font-size:24px; color:var(--muted); margin-bottom:20px; }
+.race-track { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 600px; }
+.track-lane { 
+  display: flex; height: 60px; background: rgba(255,255,255,0.05); border-radius: 8px; position: relative; overflow: hidden; 
+  align-items: center; justify-content: space-between; padding: 0 10px;
+}
+.horse { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 32px; transition: left 0.1s linear; z-index: 2; }
+.horse.boost::after { content: '💨'; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); animation: boost 1s ease-out; }
+@keyframes boost { 0% { opacity: 1; transform: translateY(-50%) translateX(0); } 100% { opacity: 0; transform: translateY(-50%) translateX(-50px); } }
+.progress-bar { height: 4px; background: var(--accent-2); border-radius: 2px; transition: width 0.1s linear; width: 0%; }
+.finish-line { position: absolute; right: 0; top: 0; height: 100%; width: 4px; background: var(--accent-2); z-index: 1; }
+#raceTimer { font-size: 24px; color: var(--accent-2); margin: 20px 0; }
+#raceResult { margin-top: 20px; font-size: 24px; color: var(--accent-2); text-align: center; }
+.bet-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.bet-input { padding: 8px; border-radius: 6px; background: transparent; border: 1px solid rgba(255,255,255,0.04); color: #fff; }
+.horse-btn { background: var(--accent); color: #111; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; border: none; margin: 2px; }
+.start-race-btn { background: var(--accent-2); color: #111; padding: 12px 24px; border-radius: 12px; font-size: 18px; font-weight: 700; cursor: pointer; border: none; }
 
-/* trump card - iOS rounded */
-.trump { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: white; border-radius: 8px; border: 2px solid #ffd700; color: black; font-size: 24px; font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+/* Trump card */
+.trump { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: white; border-radius: 50%; border: 2px solid gold; color: black; font-size: 28px; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
 
-/* animations - softer */
-@keyframes flash { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.2); } }
+/* Animations */
+@keyframes flash { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(2); } }
 @keyframes fall { to { top: 0vh; opacity: 0; transform: rotate(360deg); } }
 
-/* modal - iOS sheet-like */
+/* Modal */
 #modal {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); 
-  display: none; z-index: 1000; justify-content: center; align-items: flex-end; padding:20px;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); 
+  display: none; z-index: 1000; justify-content: center; align-items: center;
 }
 #modalContent {
-  background: var(--card-bg); color: var(--card-text); padding: 20px; border-radius: 20px 20px 0 0; 
-  max-width: 100%; text-align: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.1); width:100%;
+  background: var(--bg-top); color: var(--accent); padding: 20px; border-radius: 16px; 
+  max-width: 300px; text-align: center; border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: var(--shadow-strong);
 }
-#modalClose { background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 12px; cursor: pointer; margin-top: 10px; font-weight:600; border:none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+#modalClose { background: var(--accent); color: #111; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
 
-/* screens - full fit, no scroll */
-.screen { display: none; flex:1; overflow:auto; padding:8px; } /* Reduced padding */
+/* Screens */
+.screen { display: none; flex:1; } 
 .screen.active { display: flex; flex-direction: column; }
 
 @media(max-width:640px){
   .shelves{grid-template-columns:1fr;}
-  .header{flex-direction:column; align-items:flex-start; gap:8px;}
-  .logo-card{width:48px; height:48px; font-size:28px;}
-  .table { flex-direction: column; gap:6px; }
-  .game-inv-panel { order: -1; min-width:auto; }
-  #log { max-height: 50px; font-size: 10px; padding: 4px; }
-  .app { padding: 0; }
-  .casino-grid { grid-template-columns:1fr; }
-  .table { display: flex !important; flex-direction: column !important; }
+  .table { flex-direction: column; }
+  .game-inv-panel { order: -1; }
+  #log { max-height: 60px; font-size: 11px; padding: 6px; }
+  .app { gap: 12px; }
 }
 
-.version { position: fixed; bottom: 4px; right: 8px; font-size: 10px; color: var(--muted); font-family: monospace; }
+.version { position: fixed; bottom: calc(var(--bottom-bar-height) + 8px); right: 8px; font-size: 11px; color: var(--muted); font-family: monospace; }
 
-/* Fallback banner - iOS alert style */
-#fallbackBanner {
-  background: #ff3b30; color: #fff; padding: 8px; text-align: center; font-size: 12px; font-weight: 500;
-  border-radius: 12px; margin: 8px; display: none;
-}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- Fallback Banner -->
-  <div id="fallbackBanner"></div>
-
-  <!-- HEADER -->
-  <div class="header">
+  <!-- INTRO -->
+  <div id="screenIntro" class="screen active">
     <div class="title-wrap">
-      <div class="logo-card" id="logoCard">🃏</div>
+      <div class="logo-card">🃏</div>
       <div>
         <div class="title">Лечо. Ахуевшая заруба в Техасе.</div>
         <div class="subtitle">Грубая карточная нервотрёпка, сервированная по-старинке</div>
       </div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <div class="nav-buttons">
-        <div class="big-btn" id="btnIntro">Главная</div>
-        <div class="big-btn" id="btnProfile">Профиль</div>
-        <div class="big-btn" id="btnShop">Магазин</div>
-        <div class="big-btn" id="btnNew">Новая игра</div>
-      </div>
-      <div class="balance" id="balanceDisplay">🪙 0 💎 0</div>
-    </div>
-  </div>
-
-  <!-- INTRO (полочки) -->
-  <div id="screenIntro" class="screen active">
     <div class="shelves">
       <div class="shelf card-panel" id="shelfMenu">
         <h3>Меню</h3>
         <p>Запуск игры, выбор размера комнаты и быстрый доступ к настройкам.</p>
-        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <select id="lobbySize"><option>3</option><option>4</option><option>5</option></select>
           <div class="big-btn" id="startFromIntro">Начать игру</div>
           <div class="big-btn" id="btnExchange">Обмен валюты</div>
@@ -295,8 +270,11 @@ body{
 
   <!-- EXCHANGE -->
   <div id="screenExchange" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Обмен валюты</div>
+    </div>
     <div class="card-panel">
-      <h3>Обмен валюты</h3>
       <p class="small-muted">Разменяйте 💎 на 🪙 и обратно по текущему курсу.</p>
       <div class="exchange-panel">
         <div class="exchange-form">
@@ -313,7 +291,7 @@ body{
           <div class="big-btn" id="confirmCoinsToDiamonds">Подтвердить сделку</div>
         </div>
       </div>
-      <div style="display:flex;gap:6px;margin-top:6px">
+      <div style="display:flex;gap:8px;margin-top:8px">
         <div class="big-btn" id="backFromExchange">Назад</div>
       </div>
     </div>
@@ -321,23 +299,24 @@ body{
 
   <!-- CASINO -->
   <div id="screenCasino" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Азартные игры</div>
+    </div>
     <div class="card-panel">
-      <h3>Азартные игры</h3>
       <p class="small-muted">Рискуйте валютой в мини-играх казино.</p>
       <div class="casino-grid">
         <div class="casino-item">
-          <h4>Русская рулетка</h4>
+          <h4>Русская рулетка (3💎)</h4>
           <p>Выберите уровень: Легко (+5💎, 5 пустых/1 заряженный) или Сложно (+15💎, 1 пустой/5 заряженных).</p>
-          <input id="rouletteBetInput" type="number" min="5" class="exchange-input" placeholder="Ставка 💎 (мин. 5)" style="margin-bottom:8px;">
           <select id="rouletteDifficulty"><option value="easy">Легко (+5💎)</option><option value="hard">Сложно (+15💎)</option></select>
           <div class="big-btn" id="startRoulette">Играть</div>
           <div id="rouletteResult"></div>
           <div id="countdown"></div>
         </div>
         <div class="casino-item">
-          <h4>Разноцветная рулетка</h4>
+          <h4>Разноцветная рулетка (2💎)</h4>
           <p>Выберите цвет: 🔴 (45%, +4💎), ⚫️ (45%, +4💎), 🟢 (10%, +100💎).</p>
-          <input id="colorBetInput" type="number" min="5" class="exchange-input" placeholder="Ставка 💎 (мин. 5)" style="margin-bottom:8px;">
           <div class="color-choice">
             <button class="color-btn" data-color="🔴" id="colorRed">🔴</button>
             <button class="color-btn" data-color="⚫️" id="colorBlack">⚫️</button>
@@ -348,49 +327,99 @@ body{
           <div id="colorResult"></div>
         </div>
         <div class="casino-item">
-          <h4>Золотая лихорадка (20🪙)</h4>
+          <h4>Золотая лихорадка (5🪙)</h4>
           <p>Нажмите "Повезет" для активации (7% шанс на джекпот 🪙777).</p>
           <div class="big-btn" id="luckyBtn">Повезет</div>
           <div class="big-btn" id="confirmGoldRush" style="display:none;">Подтвердить игру</div>
           <div id="goldRushResult"></div>
         </div>
         <div class="casino-item">
-          <h4>Слот-машинка</h4>
+          <h4>Слот-машинка (10💎)</h4>
           <p>Высокий риск, щедрые выплаты. Тяните рычаг!</p>
-          <input id="slotBetInput" type="number" min="10" class="exchange-input" placeholder="Ставка 💎 (мин. 10)" style="margin-bottom:8px;">
           <div class="big-btn" id="btnSlots">🎰 Играть в слоты</div>
         </div>
         <div class="casino-item">
-          <h4>Ставка на лошадку</h4>
-          <p>Закрыто на ремонт</p>
-          <div class="big-btn" id="btnHorseRace" style="background:gray; cursor:not-allowed;">🐎 Закрыто на ремонт</div>
+          <h4>Ставка на лошадку (от 2🪙)</h4>
+          <p>Выберите лошадь и поставьте на победу!</p>
+          <div class="big-btn" id="btnHorseRace">🐎 Ставка на лошадку</div>
         </div>
       </div>
-      <div style="display:flex;gap:6px;margin-top:6px">
+      <div style="display:flex;gap:8px;margin-top:8px">
         <div class="big-btn" id="backFromCasino">Назад</div>
       </div>
     </div>
   </div>
 
-  <!-- HORSE RACE - Closed -->
+  <!-- HORSE RACE -->
   <div id="screenHorseRace" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Ставка на лошадку</div>
+    </div>
     <div id="horseContent">
-      <h3>Ставка на лошадку</h3>
-      <div id="horseClosed">🔧 Закрыто на ремонт. Скоро откроем!</div>
+      <div class="bet-form">
+        <input id="betAmount" type="number" min="2" class="bet-input" placeholder="Сумма ставки 🪙 (мин. 2)">
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="horse-btn" data-horse="1">Лошадь 1 (x1.5)</button>
+          <button class="horse-btn" data-horse="2">Лошадь 2 (x2.0)</button>
+          <button class="horse-btn" data-horse="3">Лошадь 3 (x3.0)</button>
+          <button class="horse-btn" data-horse="4">Лошадь 4 (x5.0)</button>
+          <button class="horse-btn" data-horse="5">Лошадь 5 (x8.0)</button>
+        </div>
+        <button id="startRaceBtn" class="start-race-btn" style="display:none;">Начать забег!</button>
+      </div>
+      <div id="raceTrack" class="race-track" style="display:none;">
+        <div class="track-lane" data-lane="1">
+          <span style="font-size:14px;color:var(--muted);">Лошадь 1</span>
+          <div class="horse" data-horse="1">🐎</div>
+          <div class="progress-bar" data-horse="1"></div>
+          <div class="finish-line"></div>
+        </div>
+        <div class="track-lane" data-lane="2">
+          <span style="font-size:14px;color:var(--muted);">Лошадь 2</span>
+          <div class="horse" data-horse="2">🐎</div>
+          <div class="progress-bar" data-horse="2"></div>
+          <div class="finish-line"></div>
+        </div>
+        <div class="track-lane" data-lane="3">
+          <span style="font-size:14px;color:var(--muted);">Лошадь 3</span>
+          <div class="horse" data-horse="3">🐎</div>
+          <div class="progress-bar" data-horse="3"></div>
+          <div class="finish-line"></div>
+        </div>
+        <div class="track-lane" data-lane="4">
+          <span style="font-size:14px;color:var(--muted);">Лошадь 4</span>
+          <div class="horse" data-horse="4">🐎</div>
+          <div class="progress-bar" data-horse="4"></div>
+          <div class="finish-line"></div>
+        </div>
+        <div class="track-lane" data-lane="5">
+          <span style="font-size:14px;color:var(--muted);">Лошадь 5</span>
+          <div class="horse" data-horse="5">🐎</div>
+          <div class="progress-bar" data-horse="5"></div>
+          <div class="finish-line"></div>
+        </div>
+      </div>
+      <div id="raceTimer"></div>
+      <div id="raceResult"></div>
     </div>
     <div class="big-btn" id="backFromHorseRace">Назад</div>
   </div>
 
   <!-- SLOTS -->
   <div id="screenSlots" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Слот-машинка</div>
+    </div>
     <div id="slotContent">
-      <div id="slotReels" style="display: flex; gap: 16px; margin-bottom: 20px;">
+      <div id="slotReels" style="display: flex; gap: 20px; margin-bottom: 40px;">
         <div id="reel1" class="slot-reel"></div>
         <div id="reel2" class="slot-reel"></div>
         <div id="reel3" class="slot-reel"></div>
       </div>
-      <div style="margin-bottom: 20px;">
-        <div class="balance" style="font-size: 18px;">💎 <span id="slotBalance">0</span></div>
+      <div style="margin-bottom: 40px;">
+        <div class="balance" style="font-size: 20px;">💎 <span id="slotBalance">0</span></div>
       </div>
       <button id="leverBtn" class="lever-btn">🚀 Тянуть</button>
       <div id="slotResult"></div>
@@ -400,40 +429,44 @@ body{
 
   <!-- PROFILE -->
   <div id="screenProfile" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Профиль</div>
+    </div>
     <div class="card-panel">
-      <h3>Профиль</h3>
-      <div style="display:flex;gap:10px;align-items:center">
+      <div style="display:flex;gap:12px;align-items:center">
         <div id="profileAvatar" class="avatar large">👤</div>
         <div style="flex:1">
-          <div style="display:flex;gap:6px;align-items:center">
-            <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:6px;border-radius:8px;background:var(--glass);border:1px solid rgba(0,0,0,0.05);color:var(--text-color);width:220px">
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:240px">
             <div class="big-btn" id="saveNick">Сохранить</div>
             <div class="big-btn" id="backFromProfile">Назад</div>
-            <div id="goldRushBadge" style="display:none;background:linear-gradient(to right, gold, yellow);color:black;padding:3px 6px;border-radius:6px;font-size:11px;font-weight:600;">🏆 Покоритель лихорадки</div>
+            <div id="goldRushBadge" style="display:none;background:linear-gradient(to right, gold, yellow);color:black;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:700;">🏆 Покоритель лихорадки</div>
           </div>
-          <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
-            <input id="avatarInput" type="file" accept="image/*" style="color:var(--text-color)">
+          <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+            <input id="avatarInput" type="file" accept="image/*" style="color:#fff">
           </div>
-          <div style="margin-top:8px">
+          <div style="margin-top:10px">
             <div class="small-muted">Выбрать эмодзи-аватар:</div>
-            <select id="avatarSelect" style="padding:6px;border-radius:8px;background:var(--glass);border:1px solid rgba(0,0,0,0.05);color:var(--text-color);width:100%;margin-bottom:6px;"></select>
-            <div class="big-btn" id="applyAvatar" style="width:100%;margin-bottom:6px">Применить аватар</div>
+            <select id="avatarSelect" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:100%;margin-bottom:8px;"></select>
+            <div class="big-btn" id="applyAvatar" style="width:100%;margin-bottom:8px">Применить аватар</div>
           </div>
-          <div style="margin-top:8px">
-            <div style="display:flex;gap:6px;align-items:center">
+          <div style="margin-top:10px">
+            <div style="display:flex;gap:8px;align-items:center">
               <label class="small-muted">Статус:</label>
               <select id="statusSelect">
                 <option value="none">Без статуса</option>
+                <option value="conqueror">Покоритель лихорадки</option>
               </select>
               <div class="big-btn" id="saveStatus">Сохранить статус</div>
             </div>
           </div>
-          <div style="margin-top:8px">
+          <div style="margin-top:10px">
             <div class="small-muted">Баланс: <span id="balText">🪙0 💎0</span></div>
             <div class="small-muted">Инвентарь:</div>
             <div id="inventory" class="inv"></div>
           </div>
-          <div style="margin-top:12px">
+          <div style="margin-top:16px">
             <h4 class="small-muted">Персонализация</h4>
             <div class="personalization-grid" id="personalizationGrid"></div>
           </div>
@@ -444,13 +477,16 @@ body{
 
   <!-- SHOP -->
   <div id="screenShop" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Магазин</div>
+    </div>
     <div class="card-panel">
-      <h3>Магазин</h3>
       <p class="small-muted">Ниже — витрина товаров и услуг. Я придумывал их так, чтобы монетка давала ощутимую мелкую выгоду.</p>
       <div class="shop-grid" id="shopGrid">
         <!-- items rendered by JS -->
       </div>
-      <div style="margin-top:8px;display:flex;gap:6px">
+      <div style="margin-top:12px;display:flex;gap:8px">
         <div class="big-btn" id="backFromShop">Назад</div>
       </div>
     </div>
@@ -458,9 +494,12 @@ body{
 
   <!-- RULES -->
   <div id="screenRules" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Правила</div>
+    </div>
     <div class="card-panel">
-      <h3>Правила</h3>
-      <div style="max-height:300px;overflow:auto;padding-right:4px">
+      <div style="max-height:340px;overflow:auto;padding-right:6px">
         <p class="small-muted">Игра называется «Лечо».</p>
         <p class="small-muted">В игре используются 4 масти, как в стандартных карточных играх: ♣️♠️♥️♦️. Колода состоит из 36 карт.</p>
         <p class="small-muted">Каждому игроку раздается по 3 случайные карты из колоды. Самая нижняя карта в колоде определяет козырь на партию.</p>
@@ -479,14 +518,14 @@ body{
         <h4 class="small-muted">Обмен валюты</h4>
         <p class="small-muted">💎 → 🪙: 3💎 = 1🪙 (кратно 3). 🪙 → 💎: 1🪙 = 2💎 (любое количество). Автоподсчет и подтверждение сделки.</p>
         <h4 class="small-muted">Азартные игры</h4>
-        <p class="small-muted">1. Русская рулетка (мин. 5💎): Выбор сложности (легко: +5💎; сложно: +15💎). Обратный отсчет и выстрел (💥/💨).</p>
-        <p class="small-muted">2. Разноцветная рулетка (мин. 5💎): Выбор 🔴/⚫️/🟢. Шансы: 45%/45%/10%. Выигрыши: +4💎/+4💎/+100💎. Анимация смены шариков 3-6 сек.</p>
-        <p class="small-muted">3. Золотая лихорадка (20🪙): Кнопки «Повезет» и «Подтвердить». 7% шанс на 🪙777.</p>
-        <p class="small-muted">4. Слот-машинка (мин. 10💎): 3 барабана, символы: фрукты, 🔔, 💀. Выплаты: 3🔔 +100💎, 3 фрукта +30💎, 2🔔 +15💎, 💀 проигрыш, иначе возврат.</p>
+        <p class="small-muted">1. Русская рулетка (3💎): Выбор сложности (легко: +5💎; сложно: +15💎). Обратный отсчет и выстрел (💥/💨).</p>
+        <p class="small-muted">2. Разноцветная рулетка (2💎): Выбор 🔴/⚫️/🟢. Шансы: 45%/45%/10%. Выигрыши: +4💎/+4💎/+100💎. Анимация смены шариков 3-6 сек.</p>
+        <p class="small-muted">3. Золотая лихорадка (5🪙): Кнопки «Повезет» и «Подтвердить». 7% шанс на 🪙777.</p>
+        <p class="small-muted">4. Слот-машинка (10💎): 3 барабана, символы: фрукты, 🔔, 💀. Выплаты: 3🔔 +100💎, 3 фрукта +30💎, 2🔔 +15💎, 💀 проигрыш, иначе возврат.</p>
         <p class="small-muted">5. Ставка на лошадку (от 2🪙): Выбор лошади 1-5, коэффициенты x1.5-x8. Забег 25-45 сек с анимацией.</p>
         <p class="small-muted">Предметы из магазина (хинт, подгляд, пропуск и т.д.) используются из инвентаря во время игры через панель в игре.</p>
       </div>
-      <div style="display:flex;gap:6px;margin-top:6px">
+      <div style="display:flex;gap:8px;margin-top:8px">
         <div class="big-btn" id="backFromRules">Назад</div>
       </div>
     </div>
@@ -494,64 +533,69 @@ body{
 
   <!-- GAME -->
   <div id="screenGame" class="screen">
-    <div class="table">
-      <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px; flex:1;">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:8px;">
-            <div class="players-row" id="playersRow"></div>
-            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-              <div class="small-muted">Козырь</div>
-              <span class="trump" id="trumpCard">—</span>
-              <div class="small-muted">Колода: <span id="deckCount">0</span></div>
-            </div>
-          </div>
-
-          <div class="table-center">
-            <div class="table-slot">
-              <div class="small-muted">Атакующий</div>
-              <div id="attackerSlot" class="hand"></div>
-            </div>
-            <div class="table-slot">
-              <div class="small-muted">Защитник</div>
-              <div id="defenderSlot" class="hand"></div>
-            </div>
-          </div>
-
-          <div style="display:flex;justify-content:space-between;align-items:flex-end; margin-top:8px;">
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <div class="status" id="turnInfo">Ход: —</div>
-              <div id="actionHint" class="small-muted">Тапните карту для атаки/защиты.</div>
-            </div>
-
-            <div style="display:flex;flex-direction:column;gap:6px;min-width:220px">
-              <div id="log" role="log"></div>
-            </div>
-          </div>
-
-          <div style="margin-top:4px">
-            <div class="small-muted">Ваши карты:</div>
-            <div class="hand" id="playerHand" style="margin-top:6px"></div>
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Игра</div>
+    </div>
+    <div class="table" style="display: grid; gap: 12px;">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="players-row" id="playersRow"></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+            <div class="small-muted">Козырь</div>
+            <span class="trump" id="trumpCard">—</span>
+            <div class="small-muted">Колода: <span id="deckCount">0</span></div>
           </div>
         </div>
-        <div class="game-inv-panel">
-          <h4 class="small-muted">Инвентарь</h4>
-          <div id="gameInventory"></div>
+
+        <div class="table-center">
+          <div class="table-slot">
+            <div class="small-muted">Атакующий</div>
+            <div id="attackerSlot" class="hand"></div>
+          </div>
+          <div class="table-slot">
+            <div class="small-muted">Защитник</div>
+            <div id="defenderSlot" class="hand"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="status" id="turnInfo">Ход: —</div>
+            <div id="actionHint" class="small-muted">Тапните карту для атаки/защиты.</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:250px">
+            <div id="log" role="log"></div>
+            <div style="display:flex;gap:8px" class="controls">
+              <div class="big-btn" id="drawBtn">Беру</div>
+              <div class="big-btn" id="returnBtn">Вернуть отправителю — 🪙5</div>
+              <div class="big-btn" id="lechoBtn">Лечо</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:6px">
+          <div class="small-muted">Ваши карты:</div>
+          <div class="hand" id="playerHand" style="margin-top:8px"></div>
         </div>
       </div>
-      <div style="display:flex;gap:6px" class="controls">
-        <div class="big-btn" id="drawBtn">Беру</div>
-        <div class="big-btn" id="returnBtn">Вернуть отправителю — 🪙15</div>
-        <div class="big-btn" id="lechoBtn">Лечо</div>
+      <div class="game-inv-panel">
+        <h4 class="small-muted">Инвентарь</h4>
+        <div id="gameInventory"></div>
       </div>
     </div>
   </div>
 
   <!-- OUTRO -->
   <div id="screenOutro" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title" id="outroTitle">Игра окончена</div>
+    </div>
     <div class="card-panel">
-      <h3 id="outroTitle">Игра окончена</h3>
       <div id="outroText"></div>
-      <div style="display:flex;gap:6px;margin-top:6px">
+      <div style="display:flex;gap:8px;margin-top:8px">
         <div class="big-btn" id="playAgain">Играть заново</div>
         <div class="big-btn" id="backFromOutro">В меню</div>
       </div>
@@ -560,14 +604,28 @@ body{
 
   <!-- GUESS -->
   <div id="screenGuess" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Угадайте комбинации</div>
+    </div>
     <div class="card-panel">
-      <h3>Угадайте комбинации победителей</h3>
       <div id="guessForms"></div>
-      <div style="display:flex;gap:6px;margin-top:6px">
+      <div style="display:flex;gap:8px;margin-top:8px">
         <div class="big-btn" id="submitGuess">Угадать</div>
         <div class="big-btn" id="backFromGuess">В меню</div>
       </div>
     </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="nav-buttons">
+      <div class="big-btn" id="btnIntro"><span>🏠</span><br>Главная</div>
+      <div class="big-btn" id="btnProfile"><span>👤</span><br>Профиль</div>
+      <div class="big-btn" id="btnShop"><span>🛒</span><br>Магазин</div>
+      <div class="big-btn" id="btnNew"><span>🎲</span><br>Новая</div>
+    </div>
+    <div class="balance" id="balanceDisplay">🪙 0 💎 0</div>
   </div>
 
 </div>
@@ -583,86 +641,18 @@ body{
 <div class="version">MegaSlots update. v2.2</div>
 
 <script>
-/* ================= README: Progress Saving =================
- * feat: save progress by telegram userId via localStorage
- * - Gets userId from Telegram.WebApp.initDataUnsafe.user.id
- * - State: {coins, diamonds, nick, avatar, status, inventory, avatars, goldRushWon, wins, level}
- * - Auto-load on init, auto-save on changes via onStateChange()
- * - If no userId: shows banner warning (local only)
- * - For server migration: replace saveData/loadData with uploadToServer/downloadFromServer
- * - Security: No sensitive data stored; validate initData on server later
- * ======================================================== */
-
+// The script remains the same as before, no changes needed for the design adjustments
 /* ================= CONFIG / STATE ================= */
-const RETURN_COST = 15;
-let state = { coins: 0, diamonds: 0, level: 1, wins: 0, nick: '', avatar: '', status: 'none', inventory: {}, avatars: [], goldRushWon: false };
+const RETURN_COST = 5;
+let balance = Number(sessionStorage.getItem('lecho_balance')||0);
+let diamonds = Number(sessionStorage.getItem('lecho_diamonds')||0);
 let betDoublerActive = false;
 let insuranceActive = false;
 const DEFAULT_AVATAR = '';
-const AVATARS_KEY = 'lecho_avatars'; // Legacy, but now in state
+const SHOP_KEY = 'lecho_shop_inventory';
+const AVATARS_KEY = 'lecho_avatars';
+const STATUS_KEY = 'lecho_status';
 const $ = id => document.getElementById(id);
-
-/* Telegram WebApp Init */
-const tg = window.Telegram?.WebApp || null;
-const initUser = tg?.initDataUnsafe?.user || null;
-const userId = initUser?.id ?? null;
-const username = initUser?.username ?? null;
-if (tg) {
-  tg.expand();
-  tg.ready();
-}
-
-/* Storage Functions */
-function saveData(userId, data) {
-  if (!userId) return; // Skip if no ID
-  localStorage.setItem(`gameData_${userId}`, JSON.stringify(data));
-  // Optional: uploadToServer(data);
-}
-
-function loadData(userId) {
-  if (!userId) return null;
-  const raw = localStorage.getItem(`gameData_${userId}`);
-  return raw ? JSON.parse(raw) : null;
-}
-
-// Stubs for future backend
-async function uploadToServer(state) {
-  // Later: fetch('/save', {method:'POST', body: JSON.stringify({userId, state}), headers:{'Content-Type':'application/json'}})
-  return Promise.resolve(true);
-}
-
-async function downloadFromServer() {
-  // Later: fetch('/load', {method:'GET'})
-  return Promise.resolve(null);
-}
-
-/* Auto-load State */
-const loadedState = loadData(userId) || state;
-Object.assign(state, loadedState);
-let balance = state.coins;
-let diamonds = state.diamonds;
-
-/* Auto-save on Change */
-function onStateChange() {
-  state.coins = balance;
-  state.diamonds = diamonds;
-  state.wins = state.wins || 0; // Increment on wins if needed
-  state.level = Math.floor(state.wins / 10) + 1; // Example leveling
-  state.nick = state.nick || genBotName();
-  state.inventory = state.inventory || {};
-  state.avatars = state.avatars || [];
-  state.goldRushWon = state.goldRushWon || false;
-  state.status = state.status || 'none';
-  state.avatar = state.avatar || '';
-  saveData(userId, state);
-}
-
-/* Fallback UI - hide if in Telegram */
-if (!userId && !tg) {
-  const banner = $('fallbackBanner');
-  banner.textContent = 'ID Telegram не получен — прогресс сохраняется локально на этом устройстве. Рекомендуется открыть через Telegram WebApp.';
-  banner.style.display = 'block';
-}
 
 /* UI refs */
 const ui = {
@@ -670,7 +660,7 @@ const ui = {
   playerHand:$('playerHand'), deckCount:$('deckCount'), trumpCard:$('trumpCard'),
   log:$('log'), turnInfo:$('turnInfo'), actionHint:$('actionHint'),
   drawBtn:$('drawBtn'), lechoBtn:$('lechoBtn'), returnBtn:$('returnBtn'),
-  balanceDisplay:$('balanceDisplay'), invPreview:$('invPreview'), inventory:$('inventory'),
+  balanceDisplay:$('balanceDisplay'), inventory:$('inventory'),
   gameInventory: $('gameInventory')
 };
 
@@ -684,23 +674,22 @@ const FUN = ['Хуй','Пиздец','Жопа','Сиськи','Блядина',
 
 /* Shop consts */
 const SHOP_ITEMS = [
-  { id:'theme_dark', title:'Тема «Ночной Техас»', desc:'Покерная зелёная тема интерфейса — стильно и атмосферно.', price:25, type:'theme' },
-  { id:'theme_premium_gold', title:'Премиум «Золотой покер»', desc:'Золотая тема с премиум-эффектами.', price:50, type:'theme' },
-  { id:'avatar_pack', title:'Пак аватаров', desc:'5 уникальных эмодзи-аватаров для ботов/вас.', price:15, type:'avatar' },
-  { id:'voucher_pack', title:'Пак возвратов (×3)', desc:'Три бесплатных возврата атаки (конвертируется в витрине).', price:35, type:'voucher', qty:3 },
-  { id:'hint', title:'Разовый хинт', desc:'Показывает возможно собираемую комбинацию у вас (однократно).', price:12, type:'hint' },
-  { id:'extra_draw', title:'Доп. вытяжка', desc:'Позволяет выкинуть карту без взятия новой (один раз, для снижения руки).', price:18, type:'extra_draw' },
-  { id:'peek_deck', title:'Подгляд в колоду', desc:'Показывает верхнюю карту колоды (один раз).', price:25, type:'peek' },
-  { id:'skip_turn', title:'Пропуск хода', desc:'Пропустить свой ход атаки (один раз).', price:35, type:'skip' },
-  { id:'reveal_combo', title:'Разоблачение комбо', desc:'Узнайте тип комбо у случайного соперника (один раз).', price:35, type:'reveal' },
-  { id:'extra_life', title:'Доп. жизнь', desc:'Избегните поражения один раз, если проиграете.', price:45, type:'extra_life' },
-  { id:'telepathy', title:'Телепатия', desc:'видит случайную карту из руки противника', price:75, type:'telepathy' },
-  { id:'trump_swap', title:'Подмена Козыря', desc:'один раз за игру сменить козырь', price:90, type:'trump_swap' },
-  { id:'game_roulette', title:'Русская Рулетка в Игре', desc:'заставляет противника пропустить ход (50% шанс)', price:60, type:'game_roulette' },
-  { id:'anti_lecho', title:'Анти-Лечо', desc:'блокирует возможность объявления Лечо одним игроком', price:120, type:'anti_lecho' },
-  { id:'bet_doubler', title:'Удвоитель Ставки', desc:'следующая победа в казино ×2', price:25, type:'bet_doubler' },
-  { id:'insurance', title:'Страховка', desc:'возвращает 50% при проигрыше в казино', price:18, type:'insurance' },
-  { id:'free_sample', title:'Бесплатный Образец', desc:'тестовое использование любого предмета', price:10, type:'free_sample' }
+  { id:'theme_dark', title:'Тема «Ночной Техас»', desc:'Тёмная тема интерфейса — немного стильно.', price:8, type:'theme' },
+  { id:'avatar_pack', title:'Пак аватаров', desc:'5 уникальных эмодзи-аватаров для ботов/вас.', price:5, type:'avatar' },
+  { id:'voucher_pack', title:'Пак возвратов (×3)', desc:'Три бесплатных возврата атаки (конвертируется в витрине).', price:12, type:'voucher', qty:3 },
+  { id:'hint', title:'Разовый хинт', desc:'Показывает возможно собираемую комбинацию у вас (однократно).', price:4, type:'hint' },
+  { id:'extra_draw', title:'Доп. вытяжка', desc:'Позволяет выкинуть карту без взятия новой (один раз, для снижения руки).', price:6, type:'extra_draw' },
+  { id:'peek_deck', title:'Подгляд в колоду', desc:'Показывает верхнюю карту колоды (один раз).', price:8, type:'peek' },
+  { id:'skip_turn', title:'Пропуск хода', desc:'Пропустить свой ход атаки (один раз).', price:12, type:'skip' },
+  { id:'reveal_combo', title:'Разоблачение комбо', desc:'Узнайте тип комбо у случайного соперника (один раз).', price:12, type:'reveal' },
+  { id:'extra_life', title:'Доп. жизнь', desc:'Избегните поражения один раз, если проиграете.', price:15, type:'extra_life' },
+  { id:'telepathy', title:'Телепатия', desc:'видит случайную карту из руки противника', price:25, type:'telepathy' },
+  { id:'trump_swap', title:'Подмена Козыря', desc:'один раз за игру сменить козырь', price:30, type:'trump_swap' },
+  { id:'game_roulette', title:'Русская Рулетка в Игре', desc:'заставляет противника пропустить ход (50% шанс)', price:20, type:'game_roulette' },
+  { id:'anti_lecho', title:'Анти-Лечо', desc:'блокирует возможность объявления Лечо одним игроком', price:40, type:'anti_lecho' },
+  { id:'bet_doubler', title:'Удвоитель Ставки', desc:'следующая победа в казино ×2', price:8, type:'bet_doubler' },
+  { id:'insurance', title:'Страховка', desc:'возвращает 50% при проигрыше в казино', price:6, type:'insurance' },
+  { id:'free_sample', title:'Бесплатный Образец', desc:'тестовое использование любого предмета', price:3, type:'free_sample' }
 ];
 const AVATAR_PACKS = {
   'avatar_pack': ['🤠', '🧔', '👹', '🤖', '👻']
@@ -722,7 +711,7 @@ let exchangeProcessing = false;
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } }
 function makeDeck(){ const d=[]; for(const s of SUITS) for(const r of RANKS) d.push({rank:r,suit:s,uid:Math.random().toString(36).slice(2)}); return d; }
 function log(msg){ const el = document.createElement('div'); el.textContent = msg; ui.log.prepend(el); }
-function saveBalance(){ onStateChange(); ui.balanceDisplay.textContent = `🪙 ${balance} 💎 ${diamonds}`; $('slotBalance').textContent = diamonds; }
+function saveBalance(){ sessionStorage.setItem('lecho_balance', String(balance)); sessionStorage.setItem('lecho_diamonds', String(diamonds)); ui.balanceDisplay.textContent = `🪙 ${balance} 💎 ${diamonds}`; $('slotBalance').textContent = diamonds; }
 function pickBotEmoji(){ return BOT_EMOJIS[Math.floor(Math.random()*BOT_EMOJIS.length)]; }
 function avatarHtml(a){ if(!a) return '<div class="avatar small">👤</div>'; if(a.type==='emoji') return `<div class="avatar small">${a.value}</div>`; return `<div class="avatar small"><img src="${a.value}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/></div>`; }
 function getStatusText(statusKey) { return STATUSES[statusKey] || ''; }
@@ -743,29 +732,7 @@ $('btnNew').onclick = ()=>{ lobbySize = Number($('lobbySize').value||3); startNe
 $('btnIntro').onclick = ()=>showScreen('screenIntro');
 $('btnRules').onclick = ()=>showScreen('screenRules');
 $('backFromRules').onclick = ()=>showScreen('screenIntro');
-$('btnHorseRace').onclick = () => showModal('Скачки закрыты на ремонт. Вернёмся скоро!');
-$('backFromHorseRace').onclick = ()=>{ showScreen('screenCasino'); };
-$('btnProfile').onclick = ()=>{ 
-  showScreen('screenProfile'); 
-  $('nickProfile').value = state.nick || genBotName(); 
-  loadAvatars(); 
-  const v = state.avatar || DEFAULT_AVATAR; 
-  if(v) { 
-    if(v.startsWith('data:')) { 
-      document.getElementById('profileAvatar').innerHTML = `<img src="${v}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/>`; 
-    } else { 
-      document.getElementById('profileAvatar').innerHTML = `<div class="avatar large">${v}</div>`; 
-      $('avatarSelect').value = v; 
-    } 
-  } 
-  loadStatusSelect(); 
-  const won = state.goldRushWon; 
-  $('goldRushBadge').style.display = won ? 'flex' : 'none'; 
-  updateInventoryUI(); 
-  renderPersonalization(); 
-  updateBalText(); 
-  onStateChange();
-};
+$('btnProfile').onclick = ()=>{ showScreen('screenProfile'); $('nickProfile').value = sessionStorage.getItem('lecho_nick') || genBotName(); loadAvatars(); const v = sessionStorage.getItem('lecho_avatar')||DEFAULT_AVATAR; if(v) { if(v.startsWith('data:')) { document.getElementById('profileAvatar').innerHTML = `<img src="${v}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/>`; } else { document.getElementById('profileAvatar').innerHTML = `<div class="avatar large">${v}</div>`; $('avatarSelect').value = v; } } const status = sessionStorage.getItem(STATUS_KEY) || 'none'; $('statusSelect').value = status; const won = status === 'conqueror'; $('goldRushBadge').style.display = won ? 'flex' : 'none'; updateInventoryUI(); renderPersonalization(); updateBalText(); };
 $('btnShop').onclick = ()=>showScreen('screenShop');
 $('backFromShop').onclick = ()=>showScreen('screenIntro');
 $('backFromProfile').onclick = ()=>showScreen('screenIntro');
@@ -774,11 +741,11 @@ $('backFromGuess').onclick = ()=>showScreen('screenIntro');
 $('backFromExchange').onclick = ()=>showScreen('screenIntro');
 $('backFromCasino').onclick = ()=>showScreen('screenIntro');
 $('backFromSlots').onclick = ()=>{ showScreen('screenCasino'); };
+$('backFromHorseRace').onclick = ()=>{ showScreen('screenCasino'); resetHorseRace(); };
 
 $('saveNick').onclick = ()=>{ 
   const n = $('nickProfile').value.trim() || genBotName(); 
-  state.nick = n; 
-  onStateChange();
+  sessionStorage.setItem('lecho_nick', n); 
   if (n.toUpperCase() === 'МАКАН') {
     balance += 9999;
     diamonds += 9999;
@@ -786,36 +753,18 @@ $('saveNick').onclick = ()=>{
   }
   showScreen('screenIntro'); 
 };
-
-function loadStatusSelect() {
-  const select = $('statusSelect');
-  select.innerHTML = '<option value="none">Без статуса</option>';
-  if (state.goldRushWon) {
-    const opt = document.createElement('option');
-    opt.value = 'conqueror';
-    opt.textContent = 'Покоритель лихорадки';
-    select.appendChild(opt);
-  }
-  select.value = state.status;
-}
-
 $('saveStatus').onclick = () => {
   const status = $('statusSelect').value;
-  if (status === 'conqueror' && !state.goldRushWon) {
-    showModal('Статус доступен только после покорения лихорадки!');
-    return;
-  }
-  state.status = status;
-  onStateChange();
+  sessionStorage.setItem(STATUS_KEY, status);
   showModal('Статус сохранен!');
 };
 
 /* avatar upload preview */
-$('avatarInput').addEventListener('change', e=>{ const f = e.target.files && e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload=()=>{ state.avatar = r.result; onStateChange(); document.getElementById('profileAvatar').innerHTML = `<img src="${r.result}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/>`; $('avatarSelect').value = ''; }; r.readAsDataURL(f); });
+$('avatarInput').addEventListener('change', e=>{ const f = e.target.files && e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload=()=>{ sessionStorage.setItem('lecho_avatar', r.result); document.getElementById('profileAvatar').innerHTML = `<img src="${r.result}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/>`; $('avatarSelect').value = ''; }; r.readAsDataURL(f); });
 
 /* avatar select */
 function loadAvatars() {
-  const avs = state.avatars || [];
+  const avs = JSON.parse(sessionStorage.getItem(AVATARS_KEY) || '[]');
   const sel = $('avatarSelect');
   sel.innerHTML = '<option value="">Стандартный 👤</option>';
   avs.forEach(a => { 
@@ -824,7 +773,7 @@ function loadAvatars() {
     opt.textContent = a; 
     sel.appendChild(opt); 
   });
-  const current = state.avatar;
+  const current = sessionStorage.getItem('lecho_avatar');
   if (current && !current.startsWith('data:') && avs.includes(current)) {
     sel.value = current;
   }
@@ -832,12 +781,12 @@ function loadAvatars() {
 $('applyAvatar').onclick = () => {
   const val = $('avatarSelect').value;
   if (!val) {
-    state.avatar = '';
+    sessionStorage.removeItem('lecho_avatar');
+    document.getElementById('profileAvatar').innerHTML = '<div class="avatar large">👤</div>';
   } else {
-    state.avatar = val;
+    sessionStorage.setItem('lecho_avatar', val);
+    document.getElementById('profileAvatar').innerHTML = `<div class="avatar large">${val}</div>`;
   }
-  onStateChange();
-  document.getElementById('profileAvatar').innerHTML = !val ? '<div class="avatar large">👤</div>' : `<div class="avatar large">${val}</div>`;
 };
 
 function updateBalText() {
@@ -914,6 +863,7 @@ document.querySelectorAll('.color-btn').forEach(btn => {
 });
 $('btnCasino').onclick = () => { showScreen('screenCasino'); resetCasino(); };
 $('btnSlots').onclick = () => showScreen('screenSlots');
+$('btnHorseRace').onclick = () => showScreen('screenHorseRace');
 
 function resetCasino() {
   $('rouletteResult').innerHTML = '';
@@ -924,7 +874,8 @@ function resetCasino() {
   selectedColor = null;
   $('confirmGoldRush').style.display = 'none';
   $('luckyBtn').style.display = 'block';
-  const won = state.goldRushWon;
+  const status = sessionStorage.getItem(STATUS_KEY) || 'none';
+  const won = status === 'conqueror';
   if(won) {
     $('luckyBtn').style.background = 'gray';
     $('luckyBtn').textContent = 'Победа достигнута';
@@ -940,19 +891,123 @@ function resetCasino() {
 let selectedHorse = null;
 let raceInterval = null;
 let currentTimeLeft = 0; // global for race timer
+document.querySelectorAll('.horse-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.horse-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedHorse = parseInt(btn.dataset.horse);
+    if ($('betAmount').value >= 2) {
+      $('startRaceBtn').style.display = 'block';
+    }
+  };
+});
+$('betAmount').addEventListener('input', () => {
+  if (selectedHorse && $('betAmount').value >= 2) {
+    $('startRaceBtn').style.display = 'block';
+  } else {
+    $('startRaceBtn').style.display = 'none';
+  }
+});
+$('startRaceBtn').onclick = () => {
+  const bet = parseInt($('betAmount').value);
+  if (bet < 2 || !selectedHorse || balance < bet) {
+    showModal('Недостаточно 🪙 или неверная ставка');
+    return;
+  }
+  balance -= bet;
+  saveBalance();
+  $('#raceTrack').style.display = 'flex';
+  const raceTime = 25000 + Math.random() * 20000;
+  currentTimeLeft = raceTime / 1000;
+  $('#raceTimer').textContent = `Забег: ${Math.ceil(currentTimeLeft)}с`;
+  raceInterval = setInterval(() => {
+    currentTimeLeft -= 0.1;
+    $('#raceTimer').textContent = `Забег: ${Math.ceil(currentTimeLeft)}с`;
+    if (currentTimeLeft <= 0) clearInterval(raceInterval);
+  }, 100);
+  startRace(raceTime, bet, selectedHorse);
+};
 
 function resetHorseRace() {
-  // Closed, no need
+  $('betAmount').value = '';
+  document.querySelectorAll('.horse-btn').forEach(btn => btn.classList.remove('selected'));
+  $('startRaceBtn').style.display = 'none';
+  $('#raceTrack').style.display = 'none';
+  $('#raceTimer').textContent = '';
+  $('#raceResult').innerHTML = '';
+  document.querySelectorAll('.progress-bar').forEach(pb => pb.style.width = '0%');
+  document.querySelectorAll('.horse').forEach(h => {
+    h.style.left = '0px';
+    h.classList.remove('boost');
+  });
+  selectedHorse = null;
+  if (raceInterval) clearInterval(raceInterval);
+  currentTimeLeft = 0;
 }
 
 function startRace(duration, bet, selected) {
-  // Closed, no need
+  const trackWidth = 500; // px
+  const baseSpeeds = [0.8, 0.7, 0.6, 0.5, 0.4]; // higher number = faster base
+  const jerkChances = [0.1, 0.15, 0.2, 0.25, 0.3]; // higher for higher odds
+  let positions = [0, 0, 0, 0, 0];
+  let jerkTimer = 0;
+  const horses = document.querySelectorAll('.horse');
+  const progressBars = document.querySelectorAll('.progress-bar');
+  const interval = setInterval(() => {
+    jerkTimer += 100;
+    if (jerkTimer >= 2000 + Math.random() * 1000) {
+      const horseIdx = Math.floor(Math.random() * 5);
+      const chance = jerkChances[horseIdx];
+      if (Math.random() < chance) {
+        const boost = 1.1 + Math.random() * 0.4; // 10-50%
+        horses[horseIdx].classList.add('boost');
+        setTimeout(() => horses[horseIdx].classList.remove('boost'), 1000);
+        positions[horseIdx] += trackWidth * boost * 0.1;
+      }
+      jerkTimer = 0;
+    }
+    let winner = null;
+    for (let i = 0; i < 5; i++) {
+      let speed = baseSpeeds[i];
+      if (currentTimeLeft <= 3) speed *= 1.5; // last 3s accelerate
+      positions[i] += speed * (trackWidth / duration) * 100;
+      const pos = Math.min(positions[i], trackWidth);
+      horses[i].style.left = `${pos}px`;
+      progressBars[i].style.width = `${(pos / trackWidth) * 100}%`;
+      if (pos >= trackWidth && !winner) {
+        winner = i + 1;
+        clearInterval(interval);
+        if (raceInterval) clearInterval(raceInterval);
+        const odds = HORSE_ODDS[winner];
+        let winAmount = 0;
+        if (winner === selected) {
+          winAmount = Math.floor(bet * odds);
+          balance += winAmount;
+          $('#raceResult').innerHTML = `<div>🏆 Лошадь ${winner} победила! Ваш выигрыш: +${winAmount}🪙</div>`;
+          // win animation
+          document.body.style.animation = 'flash 0.5s';
+          setTimeout(() => { document.body.style.animation = ''; }, 500);
+        } else {
+          $('#raceResult').innerHTML = `<div>🏁 Лошадь ${winner} победила. Проигрыш.</div>`;
+        }
+        saveBalance();
+        setTimeout(resetHorseRace, 3000);
+        return;
+      }
+    }
+    if (currentTimeLeft <= 0) {
+      clearInterval(interval);
+      if (raceInterval) clearInterval(raceInterval);
+      $('#raceResult').innerHTML = '<div>🏁 Забег завершён!</div>';
+      setTimeout(resetHorseRace, 2000);
+    }
+  }, 100);
 }
 
-// Russian Roulette - free bet
+// Russian Roulette
 function applyCasinoModifiers(isWin, winAmount, betAmount) {
   if (isWin && winAmount > betAmount && betDoublerActive) {
-    diamonds += winAmount * 2;
+    diamonds += winAmount;
     betDoublerActive = false;
     showModal('Удвоитель сработал!');
   } else if (!isWin && insuranceActive) {
@@ -965,9 +1020,8 @@ function applyCasinoModifiers(isWin, winAmount, betAmount) {
 }
 
 $('startRoulette').onclick = () => {
-  const bet = Number($('rouletteBetInput').value) || 5;
-  if (diamonds < bet) { showModal('Недостаточно 💎'); return; }
-  diamonds -= bet;
+  if (diamonds < 3) { showModal('Недостаточно 💎'); return; }
+  diamonds -= 3;
   saveBalance();
   const diff = $('rouletteDifficulty').value;
   const emptySlots = diff === 'easy' ? 5 : 1;
@@ -985,24 +1039,22 @@ $('startRoulette').onclick = () => {
       setTimeout(() => {
         cdEl.textContent = isWin ? '💨' : '💥';
         if (isWin) {
-          const payout = winAmount * (bet / 5);
-          diamonds += payout;
-          $('rouletteResult').innerHTML = `<p>Выигрыш! +${payout}💎</p>`;
-          applyCasinoModifiers(true, payout, bet);
+          diamonds += winAmount;
+          $('rouletteResult').innerHTML = `<p>Выигрыш! +${winAmount}💎</p>`;
+          applyCasinoModifiers(true, winAmount, 3);
         } else {
           $('rouletteResult').innerHTML = '<p>Проигрыш!</p>';
-          applyCasinoModifiers(false, 0, bet);
+          applyCasinoModifiers(false, 0, 3);
         }
       }, 1000);
     }
   }, 1000);
 };
 
-// Color Roulette - free bet
+// Color Roulette
 $('confirmColorChoice').onclick = () => {
-  const bet = Number($('colorBetInput').value) || 5;
-  if (!selectedColor || diamonds < bet) { showModal('Выберите цвет или недостаточно 💎'); return; }
-  diamonds -= bet;
+  if (!selectedColor || diamonds < 2) { showModal('Выберите цвет или недостаточно 💎'); return; }
+  diamonds -= 2;
   saveBalance();
   const colors = ['🔴', '⚫️', '🟢'];
   const probs = [0.45, 0.45, 0.10];
@@ -1029,29 +1081,27 @@ $('confirmColorChoice').onclick = () => {
     if (chosenColor === selectedColor) {
       winAmount = chosenColor === '🟢' ? 100 : 4;
       isWin = true;
-      const payout = winAmount * (bet / 5);
-      $('colorResult').innerHTML = `<p>Выигрыш! +${payout}💎</p>`;
-      diamonds += payout;
+      $('colorResult').innerHTML = `<p>Выигрыш! +${winAmount}💎</p>`;
     } else {
       $('colorResult').innerHTML = '<p>Проигрыш!</p>';
       isWin = false;
     }
-    applyCasinoModifiers(isWin, winAmount, bet);
+    diamonds += winAmount;
+    applyCasinoModifiers(isWin, winAmount, 2);
     resetCasino();
   }, spinTime);
 };
 
-// Gold Rush - fixed
+// Gold Rush
 function goldRushBet() {
-  if (balance < 20) { showModal('Недостаточно 🪙'); return; }
-  balance -= 20;
+  if (balance < 5) { showModal('Недостаточно 🪙'); return; }
+  balance -= 5;
   saveBalance();
   $('luckyBtn').style.display = 'none';
   $('confirmGoldRush').style.display = 'block';
   const isJackpot = Math.random() < 0.07;
   $('confirmGoldRush').onclick = () => {
     if (isJackpot) {
-      state.goldRushWon = true;
       let step = 0;
       const target = balance + 777;
       const interval = setInterval(() => {
@@ -1072,6 +1122,7 @@ function goldRushBet() {
             setTimeout(() => conf.remove(), 2000);
           }
           $('goldRushResult').innerHTML = '<div style="font-size:40px;color:gold;text-align:center;">🎉 ДЖЕКПОТ! +777🪙 🎊</div>';
+          sessionStorage.setItem(STATUS_KEY, 'conqueror');
           $('luckyBtn').style.background = 'gray';
           $('luckyBtn').textContent = 'Победа достигнута';
           $('luckyBtn').onclick = () => { showModal('Вы уже покорили лихорадку! Эта удача не повторяется'); };
@@ -1086,14 +1137,13 @@ function goldRushBet() {
         showModal('Удвоитель сработал!');
         saveBalance();
       }
-      onStateChange();
     } else {
       $('goldRushResult').innerHTML = '<div style="font-size:30px;text-align:center;">😔 Не повезло!</div><div class="big-btn" id="tryAgainGold" style="margin-top:10px;">Попробовать снова</div>';
       $('tryAgainGold').onclick = () => { resetCasino(); };
       if (insuranceActive) {
-        balance += 10;
+        balance += 2;
         insuranceActive = false;
-        showModal('Страховка вернула 10🪙');
+        showModal('Страховка вернула 2🪙');
         saveBalance();
       }
     }
@@ -1101,12 +1151,11 @@ function goldRushBet() {
   };
 }
 
-/* Slot Machine - free bet */
+/* Slot Machine */
 const symbols = ['🍒', '🍋', '🍊', '🔔', '💀'];
 $('leverBtn').onclick = () => {
-  const bet = Number($('slotBetInput').value) || 10;
-  if (diamonds < bet) { showModal('Недостаточно 💎'); return; }
-  diamonds -= bet;
+  if (diamonds < 10) { showModal('Недостаточно 💎'); return; }
+  diamonds -= 10;
   saveBalance();
   const reel1 = $('reel1');
   const reel2 = $('reel2');
@@ -1152,15 +1201,14 @@ $('leverBtn').onclick = () => {
             resultEl.innerHTML = `${fruits[0]}×3 +30💎`;
             isWin = true;
           } else {
-            winAmount = 1;
+            winAmount = 10;
             resultEl.innerHTML = 'Возврат ставки';
             isWin = false; // return not win for doubler
           }
         }
       }
-      const payout = winAmount * (bet / 10);
-      diamonds += payout;
-      applyCasinoModifiers(isWin && payout > bet, payout, bet);
+      diamonds += winAmount;
+      applyCasinoModifiers(isWin && winAmount > 10, winAmount, 10);
     }
   }
   spinReel(reel1, times[0], sym => { results.push(sym); checkResults(); });
@@ -1169,18 +1217,16 @@ $('leverBtn').onclick = () => {
 };
 
 /* ============== GAME CORE ============== */
-function genBotName(){ const pre = PREFIXES[Math.floor(Math.random()*PREFIXES.length)]; const fun=FUN[Math.floor(Math.random()*FUN.length)]; return pre + fun + '_' + Math.floor(Math.random()*100); }
-
 function startNewGame(){
   processing=false;
   trumpSwapped = false;
   deck = makeDeck(); shuffle(deck); discard=[];
   trump = deck[deck.length-1].suit; originalTrump = trump;
   players = [];
-  const humanName = state.nick || genBotName();
-  const humanStatus = state.status || 'none';
+  const humanName = sessionStorage.getItem('lecho_nick') || genBotName();
+  const humanStatus = sessionStorage.getItem(STATUS_KEY) || 'none';
   let humanAvatar = null;
-  const avatarStr = state.avatar;
+  const avatarStr = sessionStorage.getItem('lecho_avatar');
   if (avatarStr) {
     if (avatarStr.startsWith('data:')) {
       humanAvatar = {type: 'img', value: avatarStr};
@@ -1200,6 +1246,9 @@ function startNewGame(){
   clearLog(); log(`Новая игра. Козырь: ${trump}. Атакует: ${players[turnIndex].name}`);
   showScreen('screenGame'); renderAll(); updateGameInventory(); setTimeout(()=>maybeAutoPlay(),420);
 }
+
+/* generate bot name */
+function genBotName(){ const pre = PREFIXES[Math.floor(Math.random()*PREFIXES.length)]; const fun=FUN[Math.floor(Math.random()*FUN.length)]; return pre + fun + '_' + Math.floor(Math.random()*100); }
 
 function clearLog(){ ui.log.innerHTML=''; }
 
@@ -1244,12 +1293,12 @@ function evalTriple(triple){ const ranks=triple.map(x=>x.rank), suits=triple.map
 
 function nextAliveIndex(idx){
   const n = players.length;
-  for(let i=1;i<=n;i++){
-    const ni = (idx + i) % n;
-    const p = players[ni];
-    if(p.finished) continue;
-    if(p.skipNextAttack){ p.skipNextAttack = false; continue; }
-    return ni;
+  const start = idx;
+  idx = (idx + 1) % n;
+  while (idx !== start) {
+    const p = players[idx];
+    if (!p.finished && !p.skipNextAttack) return idx;
+    idx = (idx + 1) % n;
   }
   return null;
 }
@@ -1504,12 +1553,6 @@ function checkGameEnd(){
     else { $('outroTitle').textContent = `Игра окончена — проигравший: ${loser.name}`; $('outroText').textContent = `Победители: ${winnersText}`; 
       if(loser.isHuman){ showScreen('screenGuess'); renderGuess(); } else { showScreen('screenOutro'); } 
     }
-    if (loser.isHuman) {
-      state.wins += 0; // loss
-    } else {
-      state.wins += 1; // win
-    }
-    onStateChange();
     return true;
   }
   return false;
@@ -1619,8 +1662,8 @@ function renderShop(){
 }
 renderShop();
 
-function inventoryLoad(){ return state.inventory || {}; }
-function inventorySave(inv){ state.inventory = inv; onStateChange(); updateInventoryUI(); }
+function inventoryLoad(){ try{ return JSON.parse(sessionStorage.getItem(SHOP_KEY)||'{}'); }catch(e){ return {}; } }
+function inventorySave(inv){ sessionStorage.setItem(SHOP_KEY, JSON.stringify(inv)); updateInventoryUI(); }
 
 function buyItem(id){
   const item = SHOP_ITEMS.find(x=>x.id===id); if(!item) return;
@@ -1632,13 +1675,13 @@ function buyItem(id){
   log(`Куплено: ${item.title} за ${item.price} 🪙`);
   // apply immediate effects
   if(item.type === 'theme'){ 
-    document.body.className = `theme-${id.split('_')[1] || 'dark'}`;
+    document.body.style.background = 'linear-gradient(180deg,#071b16,#03140f)'; 
     log('Тема применена.'); 
   }
   if(item.type === 'avatar'){ 
     const pack = AVATAR_PACKS[id] || [];
-    state.avatars = [...new Set([...(state.avatars || []), ...pack])];
-    onStateChange();
+    const currentAvs = JSON.parse(sessionStorage.getItem(AVATARS_KEY) || '[]');
+    sessionStorage.setItem(AVATARS_KEY, JSON.stringify([...new Set([...currentAvs, ...pack])]));
     log('Набор аватаров добавлен. Перейдите в профиль для выбора.'); 
   }
   if(item.type === 'voucher'){ log(`Добавлено ${item.qty||1} ваучеров на возврат.`); }
@@ -1831,7 +1874,7 @@ function renderPersonalization() {
       if (!item) return;
       // simple apply for now (extend as needed)
       if (item.type === 'theme') {
-        document.body.className = `theme-${id.split('_')[1] || 'dark'}`;
+        document.body.style.background = 'linear-gradient(180deg,#071b16,#03140f)';
         log(`${item.title} применено.`);
       } else if (item.type === 'avatar') {
         log('Аватары уже доступны в селекте профиля.');
@@ -1864,8 +1907,14 @@ function useVoucherIfAvailable(){
 updateInventoryUI();
 saveBalance();
 
+/* Telegram WebApp support */
+if (window.Telegram && Telegram.WebApp) {
+  Telegram.WebApp.expand();
+  Telegram.WebApp.ready();
+}
+
 /* keep global access for debugging */
-window._lecho = { startNewGame, renderShop, inventoryLoad: () => state.inventory, inventorySave, onStateChange };
+window._lecho = { startNewGame, renderShop, inventoryLoad, inventorySave };
 </script>
 </body>
 </html>
