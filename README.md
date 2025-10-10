@@ -19,6 +19,9 @@
   --shadow-strong: 0 20px 50px rgba(2,6,8,0.6);
   --muted: rgba(255,255,255,0.75);
   --bottom-bar-height: 60px; /* Высота нижней панели */
+  /* Dynamic app height for Telegram Mini Apps */
+  --app-height: 100vh;
+  --log-h: 140px;
 }
 *{box-sizing:border-box}
 html,body{height:100%; margin:0; padding:0;}
@@ -27,8 +30,10 @@ body{
   background:
     radial-gradient(800px 360px at 85% 10%, rgba(255,200,120,0.03), transparent),
     linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+  background-attachment: fixed;
   color:#fff; min-height:100vh; display:flex; flex-direction:column;
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  height: var(--app-height);
   padding-bottom: var(--bottom-bar-height); /* Отступ для нижней панели */
 }
 
@@ -88,18 +93,19 @@ body{
 .card-panel{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:16px; border:1px solid rgba(255,255,255,0.03); box-shadow:0 8px 24px rgba(0,0,0,0.45);}
 .small-muted{font-size:13px; color:var(--muted);}
 
-/* Players row */
-.players-row{display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start; justify-content:center;}
-.player-chip{display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; min-width:100px; border:1px solid rgba(255,255,255,0.03); transition:transform .15s,box-shadow .15s;}
-.player-chip:hover{transform:translateY(-6px);}
-.player-name{font-size:13px; font-weight:700; color:#fff;}
-.player-status{font-size:11px; color:var(--accent-2); font-style:italic;}
-.player-count{font-size:12px; color:var(--muted);}
+/* Players row - static grid layout */
+.players-row{display: grid; gap:4px; justify-content:center;}
+.players-row[style*="grid-template-columns"] { grid-template-columns: repeat(var(--lobby-size, 3), 1fr); }
+.player-chip{display:flex; flex-direction:column; align-items:center; gap:2px; padding:4px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:12px; width:100%; border:1px solid rgba(255,255,255,0.03); transition: none;}
+.player-chip:hover{transform:none;}
+.player-name{font-size:11px; font-weight:700; color:#fff; text-align:center;}
+.player-status{font-size:10px; color:var(--accent-2); font-style:italic;}
+.player-count{font-size:11px; color:var(--muted);}
 
-/* Avatars */
+/* Avatars - smaller for table */
 .avatar{border-radius:50%; /* Круглые аватары как в референсе */ overflow:hidden; border:2px solid rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.12); color:#fff;}
-.avatar.small{width:48px; height:48px; font-size:20px;}
-.avatar.medium{width:64px; height:64px; font-size:28px;}
+.avatar.small{width:40px; height:40px; font-size:18px;}
+.avatar.medium{width:48px; height:48px; font-size:20px;}
 .avatar.large{width:84px; height:84px; font-size:36px;}
 
 /* Cards - with Wild West feel but minimal */
@@ -110,13 +116,13 @@ body{
 .hand{display:flex; gap:8px;}
 
 /* Table */
-.table{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:12px; min-height:420px; border:1px solid rgba(255,255,255,0.03);}
-.table-center{display:flex; gap:18px; align-items:center; justify-content:center;}
-.table-slot{min-width:160px; min-height:120px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:8px; align-items:center; border:1px solid rgba(255,255,255,0.03);}
+.table{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:10px; display:flex; flex-direction:column; gap:8px; border:1px solid rgba(255,255,255,0.03);}
+.table-center{display:flex; gap:8px; align-items:center; justify-content:center;}
+.table-slot{min-width:136px; min-height:96px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:8px; display:flex; flex-direction:column; gap:6px; align-items:center; border:1px solid rgba(255,255,255,0.03);}
 
-/* Controls & log */
-.controls{display:flex; gap:10px; background:var(--glass); padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,0.03);}
-#log{background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.12)); padding:8px; border-radius:16px; font-size:12px; max-height:80px; overflow:auto; border:1px solid rgba(255,255,255,0.02); width:100%;}
+/* Controls - now in flow, no fixed */
+.controls{display:flex; gap:6px; background:var(--glass); padding:8px; border-radius:12px; border:1px solid rgba(255,255,255,0.03);}
+#log{display:none !important;}
 
 /* Shop */
 .shop-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:16px;}
@@ -134,29 +140,32 @@ body{
 .personalization-item{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,0.03);}
 .apply-btn{background:var(--accent-2); color:#111; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; border:none;}
 
-/* Game inventory */
+/* Game inventory - smaller and scrollable */
 .game-inv-panel {
   background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
   border-radius: 16px;
-  padding: 12px;
+  padding: 8px;
   border: 1px solid rgba(255,255,255,0.03);
-  min-width: 200px;
+  width: 100%;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
 }
 .game-inv-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   padding: 4px;
   background: rgba(255,255,255,0.02);
   border-radius: 6px;
+  font-size: 11px;
 }
 .use-btn {
   background: var(--accent-2);
   color: #111;
-  padding: 4px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   cursor: pointer;
   border: none;
@@ -187,7 +196,7 @@ body{
 #slotResult { margin-top: 40px; font-size: 24px; color: var(--accent-2); text-align: center; }
 
 /* Horse race */
-#screenHorseRace { background: var(--bg-bottom); flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; }
+#screenHorseRace { background: var(--bg-bottom); flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; display: none; }
 #horseContent { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; width: 100%; }
 .race-track { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 600px; }
 .track-lane { 
@@ -213,28 +222,53 @@ body{
 @keyframes flash { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(2); } }
 @keyframes fall { to { top: 0vh; opacity: 0; transform: rotate(360deg); } }
 
-/* Modal */
-#modal {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); 
-  display: none; z-index: 1000; justify-content: center; align-items: center;
-}
-#modalContent {
-  background: var(--bg-top); color: var(--accent); padding: 20px; border-radius: 16px; 
-  max-width: 300px; text-align: center; border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: var(--shadow-strong);
-}
-#modalClose { background: var(--accent); color: #111; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+/* Modal: hidden (replaced by toast) */
+#modal { display: none !important; }
+#modalContent { display:none; }
+#modalClose { display:none; }
+
+/* Toast (non-blocking notifications) */
+#toast{ position:fixed; left:8px; right:8px; bottom: calc(var(--bottom-bar-height) + 8px); z-index:1000; display:none; }
+.toast-msg{ background: rgba(0,0,0,0.78); color: var(--accent); padding:10px 12px; border-radius:12px; text-align:center; border:1px solid rgba(255,255,255,0.1); box-shadow: var(--shadow-strong); }
 
 /* Screens */
-.screen { display: none; flex:1; } 
+.screen { display: none; flex:1; overflow-y: auto; min-height: calc(var(--app-height) - var(--bottom-bar-height)); } 
 .screen.active { display: flex; flex-direction: column; }
+
+/* Game screen allows scroll if needed */
+#screenGame { overflow-y: auto; }
+
+/* Fixed HUD */
+.hud-fixed{ position: fixed; top: 8px; right: 8px; z-index: 5; background: rgba(0,0,0,0.15); border-radius: 12px; padding: 6px 8px; backdrop-filter: blur(6px); }
+
+/* Controls no longer fixed */
+.controls-fixed { display: none; }
 
 @media(max-width:640px){
   .shelves{grid-template-columns:1fr;}
   .table { flex-direction: column; }
-  .game-inv-panel { order: -1; }
   #log { max-height: 60px; font-size: 11px; padding: 6px; }
   .app { gap: 12px; }
+  #nickProfile { width: 100% !important; }
+  .card-panel { overflow-y: auto; max-height: calc(100vh - 120px); }
+}
+
+/* Fit whole field on shorter heights */
+@media (max-height:730px){
+  :root{ --card-w:60px; --card-h:84px; --log-h:110px; }
+  .table{ gap:8px; padding:10px; }
+  .title-wrap{ padding-top:4px; }
+  .table-center{ gap:8px; }
+  .table-slot{ min-width:120px; min-height:88px; padding:8px; }
+  .avatar.large{ width:72px; height:72px; font-size:30px; }
+}
+
+/* Ultra-compact for very short viewports */
+@media (max-height:660px){
+  :root{ --card-w:56px; --card-h:78px; --log-h:96px; }
+  .player-chip{ padding:4px; }
+  .avatar.small{ width:36px; height:36px; font-size:16px; }
+  .avatar.medium{ width:42px; height:42px; font-size:18px; }
 }
 
 .version { position: fixed; bottom: calc(var(--bottom-bar-height) + 8px); right: 8px; font-size: 11px; color: var(--muted); font-family: monospace; }
@@ -307,16 +341,18 @@ body{
       <p class="small-muted">Рискуйте валютой в мини-играх казино.</p>
       <div class="casino-grid">
         <div class="casino-item">
-          <h4>Русская рулетка (3💎)</h4>
-          <p>Выберите уровень: Легко (+5💎, 5 пустых/1 заряженный) или Сложно (+15💎, 1 пустой/5 заряженных).</p>
-          <select id="rouletteDifficulty"><option value="easy">Легко (+5💎)</option><option value="hard">Сложно (+15💎)</option></select>
+          <h4>Русская рулетка</h4>
+          <p>Выберите уровень: Легко (выигрыш x1.67, 5 пустых/1 заряженный) или Сложно (выигрыш x5, 1 пустой/5 заряженных).</p>
+          <input id="rouletteBet" type="number" min="1" class="bet-input" placeholder="Ставка 💎 (мин. 1)">
+          <select id="rouletteDifficulty"><option value="easy">Легко</option><option value="hard">Сложно</option></select>
           <div class="big-btn" id="startRoulette">Играть</div>
           <div id="rouletteResult"></div>
           <div id="countdown"></div>
         </div>
         <div class="casino-item">
-          <h4>Разноцветная рулетка (2💎)</h4>
-          <p>Выберите цвет: 🔴 (45%, +4💎), ⚫️ (45%, +4💎), 🟢 (10%, +100💎).</p>
+          <h4>Разноцветная рулетка</h4>
+          <p>Выберите цвет: 🔴 (45%, выигрыш x2), ⚫️ (45%, выигрыш x2), 🟢 (10%, выигрыш x50).</p>
+          <input id="colorBet" type="number" min="1" class="bet-input" placeholder="Ставка 💎 (мин. 1)">
           <div class="color-choice">
             <button class="color-btn" data-color="🔴" id="colorRed">🔴</button>
             <button class="color-btn" data-color="⚫️" id="colorBlack">⚫️</button>
@@ -327,21 +363,22 @@ body{
           <div id="colorResult"></div>
         </div>
         <div class="casino-item">
-          <h4>Золотая лихорадка (5🪙)</h4>
-          <p>Нажмите "Повезет" для активации (7% шанс на джекпот 🪙777).</p>
+          <h4>Золотая лихорадка</h4>
+          <p>Нажмите "Повезет" для активации (7% шанс на джекпот x155).</p>
+          <input id="goldBet" type="number" min="1" class="bet-input" placeholder="Ставка 🪙 (мин. 1)">
           <div class="big-btn" id="luckyBtn">Повезет</div>
           <div class="big-btn" id="confirmGoldRush" style="display:none;">Подтвердить игру</div>
           <div id="goldRushResult"></div>
         </div>
         <div class="casino-item">
-          <h4>Слот-машинка (10💎)</h4>
+          <h4>Слот-машинка</h4>
           <p>Высокий риск, щедрые выплаты. Тяните рычаг!</p>
+          <input id="slotsBet" type="number" min="1" class="bet-input" placeholder="Ставка 💎 (мин. 1)">
           <div class="big-btn" id="btnSlots">🎰 Играть в слоты</div>
         </div>
         <div class="casino-item">
-          <h4>Ставка на лошадку (от 2🪙)</h4>
-          <p>Выберите лошадь и поставьте на победу!</p>
-          <div class="big-btn" id="btnHorseRace">🐎 Ставка на лошадку</div>
+          <h4>Ставка на лошадку (на ремонте)</h4>
+          <p>Временно недоступно</p>
         </div>
       </div>
       <div style="display:flex;gap:8px;margin-top:8px">
@@ -358,7 +395,7 @@ body{
     </div>
     <div id="horseContent">
       <div class="bet-form">
-        <input id="betAmount" type="number" min="2" class="bet-input" placeholder="Сумма ставки 🪙 (мин. 2)">
+        <input id="betAmount" type="number" min="1" class="bet-input" placeholder="Сумма ставки 🪙 (мин. 1)">
         <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
           <button class="horse-btn" data-horse="1">Лошадь 1 (x1.5)</button>
           <button class="horse-btn" data-horse="2">Лошадь 2 (x2.0)</button>
@@ -438,7 +475,7 @@ body{
         <div id="profileAvatar" class="avatar large">👤</div>
         <div style="flex:1">
           <div style="display:flex;gap:8px;align-items:center">
-            <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:240px">
+            <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:100%">
             <div class="big-btn" id="saveNick">Сохранить</div>
             <div class="big-btn" id="backFromProfile">Назад</div>
             <div id="goldRushBadge" style="display:none;background:linear-gradient(to right, gold, yellow);color:black;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:700;">🏆 Покоритель лихорадки</div>
@@ -518,11 +555,11 @@ body{
         <h4 class="small-muted">Обмен валюты</h4>
         <p class="small-muted">💎 → 🪙: 3💎 = 1🪙 (кратно 3). 🪙 → 💎: 1🪙 = 2💎 (любое количество). Автоподсчет и подтверждение сделки.</p>
         <h4 class="small-muted">Азартные игры</h4>
-        <p class="small-muted">1. Русская рулетка (3💎): Выбор сложности (легко: +5💎; сложно: +15💎). Обратный отсчет и выстрел (💥/💨).</p>
-        <p class="small-muted">2. Разноцветная рулетка (2💎): Выбор 🔴/⚫️/🟢. Шансы: 45%/45%/10%. Выигрыши: +4💎/+4💎/+100💎. Анимация смены шариков 3-6 сек.</p>
-        <p class="small-muted">3. Золотая лихорадка (5🪙): Кнопки «Повезет» и «Подтвердить». 7% шанс на 🪙777.</p>
-        <p class="small-muted">4. Слот-машинка (10💎): 3 барабана, символы: фрукты, 🔔, 💀. Выплаты: 3🔔 +100💎, 3 фрукта +30💎, 2🔔 +15💎, 💀 проигрыш, иначе возврат.</p>
-        <p class="small-muted">5. Ставка на лошадку (от 2🪙): Выбор лошади 1-5, коэффициенты x1.5-x8. Забег 25-45 сек с анимацией.</p>
+        <p class="small-muted">1. Русская рулетка (1💎): Выбор сложности (легко: +5💎; сложно: +15💎). Обратный отсчет и выстрел (💥/💨).</p>
+        <p class="small-muted">2. Разноцветная рулетка (1💎): Выбор 🔴/⚫️/🟢. Шансы: 45%/45%/10%. Выигрыши: +4💎/+4💎/+100💎. Анимация смены шариков 3-6 сек.</p>
+        <p class="small-muted">3. Золотая лихорадка (1🪙): Кнопки «Повезет» и «Подтвердить». 7% шанс на 🪙777.</p>
+        <p class="small-muted">4. Слот-машинка (1💎): 3 барабана, символы: фрукты, 🔔, 💀. Выплаты: 3🔔 +100💎, 3 фрукта +30💎, 2🔔 +15💎, 💀 проигрыш, иначе возврат.</p>
+        <p class="small-muted">5. Ставка на лошадку (на ремонте): Временно недоступно.</p>
         <p class="small-muted">Предметы из магазина (хинт, подгляд, пропуск и т.д.) используются из инвентаря во время игры через панель в игре.</p>
       </div>
       <div style="display:flex;gap:8px;margin-top:8px">
@@ -537,50 +574,45 @@ body{
       <div class="logo-card">🃏</div>
       <div class="title">Игра</div>
     </div>
-    <div class="table" style="display: grid; gap: 12px;">
-      <div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div class="players-row" id="playersRow"></div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+    <div class="table" style="display: grid; gap: 8px; grid-template-columns: 1fr 120px; grid-template-rows: auto auto 1fr auto; align-items: start;">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="players-row" id="playersRow"></div>
+        <div id="gameHud" class="hud-fixed" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
             <div class="small-muted">Козырь</div>
             <span class="trump" id="trumpCard">—</span>
             <div class="small-muted">Колода: <span id="deckCount">0</span></div>
           </div>
+      </div>
+
+      <div class="table-center">
+        <div class="table-slot">
+          <div class="small-muted">Атакующий</div>
+          <div id="attackerSlot" class="hand"></div>
         </div>
-
-        <div class="table-center">
-          <div class="table-slot">
-            <div class="small-muted">Атакующий</div>
-            <div id="attackerSlot" class="hand"></div>
-          </div>
-          <div class="table-slot">
-            <div class="small-muted">Защитник</div>
-            <div id="defenderSlot" class="hand"></div>
-          </div>
-        </div>
-
-        <div style="display:flex;justify-content:space-between;align-items:flex-end">
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <div class="status" id="turnInfo">Ход: —</div>
-            <div id="actionHint" class="small-muted">Тапните карту для атаки/защиты.</div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:8px;min-width:250px">
-            <div id="log" role="log"></div>
-            <div style="display:flex;gap:8px" class="controls">
-              <div class="big-btn" id="drawBtn">Беру</div>
-              <div class="big-btn" id="returnBtn">Вернуть отправителю — 🪙5</div>
-              <div class="big-btn" id="lechoBtn">Лечо</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:6px">
-          <div class="small-muted">Ваши карты:</div>
-          <div class="hand" id="playerHand" style="margin-top:8px"></div>
+        <div class="table-slot">
+          <div class="small-muted">Защитник</div>
+          <div id="defenderSlot" class="hand"></div>
         </div>
       </div>
-      <div class="game-inv-panel">
+
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+          <div class="status" id="turnInfo">Ход: —</div>
+          <div id="actionHint" class="small-muted">Тапните карту для атаки/защиты.</div>
+          <div style="display:flex;gap:6px" class="controls">
+            <div class="big-btn" id="drawBtn">Беру</div>
+            <div class="big-btn" id="returnBtn">Возврат 🪙5</div>
+            <div class="big-btn" id="lechoBtn">Лечо</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:4px">
+        <div class="small-muted">Ваши карты:</div>
+        <div class="hand" id="playerHand" style="margin-top:4px"></div>
+      </div>
+
+      <div class="game-inv-panel" id="gameInvPanel" style="grid-column: 2; grid-row: 1 / span 4; position: sticky; top: 8px; align-self: start;">
         <h4 class="small-muted">Инвентарь</h4>
         <div id="gameInventory"></div>
       </div>
@@ -631,17 +663,20 @@ body{
 </div>
 
 <!-- Modal -->
-<div id="modal">
+<div id="modal" style="display:none">
   <div id="modalContent">
     <div id="modalText"></div>
     <button id="modalClose">OK</button>
   </div>
-</div>
+  <!-- kept for backward compatibility, but hidden by CSS -->
+  </div>
+
+<!-- Toast container -->
+<div id="toast"><div class="toast-msg" id="toastMsg"></div></div>
 
 <div class="version">MegaSlots update. v2.2</div>
 
 <script>
-// The script remains the same as before, no changes needed for the design adjustments
 /* ================= CONFIG / STATE ================= */
 const RETURN_COST = 5;
 let balance = Number(sessionStorage.getItem('lecho_balance')||0);
@@ -674,22 +709,22 @@ const FUN = ['Хуй','Пиздец','Жопа','Сиськи','Блядина',
 
 /* Shop consts */
 const SHOP_ITEMS = [
-  { id:'theme_dark', title:'Тема «Ночной Техас»', desc:'Тёмная тема интерфейса — немного стильно.', price:8, type:'theme' },
-  { id:'avatar_pack', title:'Пак аватаров', desc:'5 уникальных эмодзи-аватаров для ботов/вас.', price:5, type:'avatar' },
-  { id:'voucher_pack', title:'Пак возвратов (×3)', desc:'Три бесплатных возврата атаки (конвертируется в витрине).', price:12, type:'voucher', qty:3 },
-  { id:'hint', title:'Разовый хинт', desc:'Показывает возможно собираемую комбинацию у вас (однократно).', price:4, type:'hint' },
-  { id:'extra_draw', title:'Доп. вытяжка', desc:'Позволяет выкинуть карту без взятия новой (один раз, для снижения руки).', price:6, type:'extra_draw' },
-  { id:'peek_deck', title:'Подгляд в колоду', desc:'Показывает верхнюю карту колоды (один раз).', price:8, type:'peek' },
-  { id:'skip_turn', title:'Пропуск хода', desc:'Пропустить свой ход атаки (один раз).', price:12, type:'skip' },
-  { id:'reveal_combo', title:'Разоблачение комбо', desc:'Узнайте тип комбо у случайного соперника (один раз).', price:12, type:'reveal' },
-  { id:'extra_life', title:'Доп. жизнь', desc:'Избегните поражения один раз, если проиграете.', price:15, type:'extra_life' },
-  { id:'telepathy', title:'Телепатия', desc:'видит случайную карту из руки противника', price:25, type:'telepathy' },
-  { id:'trump_swap', title:'Подмена Козыря', desc:'один раз за игру сменить козырь', price:30, type:'trump_swap' },
-  { id:'game_roulette', title:'Русская Рулетка в Игре', desc:'заставляет противника пропустить ход (50% шанс)', price:20, type:'game_roulette' },
-  { id:'anti_lecho', title:'Анти-Лечо', desc:'блокирует возможность объявления Лечо одним игроком', price:40, type:'anti_lecho' },
-  { id:'bet_doubler', title:'Удвоитель Ставки', desc:'следующая победа в казино ×2', price:8, type:'bet_doubler' },
-  { id:'insurance', title:'Страховка', desc:'возвращает 50% при проигрыше в казино', price:6, type:'insurance' },
-  { id:'free_sample', title:'Бесплатный Образец', desc:'тестовое использование любого предмета', price:3, type:'free_sample' }
+  { id:'theme_dark', title:'Тема «Ночной Техас»', desc:'Тёмная тема интерфейса — немного стильно.', price:200, type:'theme' },
+  { id:'avatar_pack', title:'Пак аватаров', desc:'5 уникальных эмодзи-аватаров для ботов/вас.', price:125, type:'avatar' },
+  { id:'voucher_pack', title:'Пак возвратов (×3)', desc:'Три бесплатных возврата атаки (конвертируется в витрине).', price:300, type:'voucher', qty:3 },
+  { id:'hint', title:'Разовый хинт', desc:'Показывает возможно собираемую комбинацию у вас (однократно).', price:100, type:'hint' },
+  { id:'extra_draw', title:'Доп. вытяжка', desc:'Позволяет выкинуть карту без взятия новой (один раз, для снижения руки).', price:150, type:'extra_draw' },
+  { id:'peek_deck', title:'Подгляд в колоду', desc:'Показывает верхнюю карту колоды (один раз).', price:200, type:'peek' },
+  { id:'skip_turn', title:'Пропуск хода', desc:'Пропустить свой ход атаки (один раз).', price:300, type:'skip' },
+  { id:'reveal_combo', title:'Разоблачение комбо', desc:'Узнайте тип комбо у случайного соперника (один раз).', price:300, type:'reveal' },
+  { id:'extra_life', title:'Доп. жизнь', desc:'Избегните поражения один раз, если проиграете.', price:375, type:'extra_life' },
+  { id:'telepathy', title:'Телепатия', desc:'видит случайную карту из руки противника', price:625, type:'telepathy' },
+  { id:'trump_swap', title:'Подмена Козыря', desc:'один раз за игру сменить козырь', price:750, type:'trump_swap' },
+  { id:'game_roulette', title:'Русская Рулетка в Игре', desc:'заставляет противника пропустить ход (50% шанс)', price:500, type:'game_roulette' },
+  { id:'anti_lecho', title:'Анти-Лечо', desc:'блокирует возможность объявления Лечо одним игроком', price:1000, type:'anti_lecho' },
+  { id:'bet_doubler', title:'Удвоитель Ставки', desc:'следующая победа в казино ×2', price:200, type:'bet_doubler' },
+  { id:'insurance', title:'Страховка', desc:'возвращает 50% при проигрыше в казино', price:150, type:'insurance' },
+  { id:'free_sample', title:'Бесплатный Образец', desc:'тестовое использование любого предмета', price:75, type:'free_sample' }
 ];
 const AVATAR_PACKS = {
   'avatar_pack': ['🤠', '🧔', '👹', '🤖', '👻']
@@ -710,7 +745,7 @@ let exchangeProcessing = false;
 /* ================= Helpers ================= */
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } }
 function makeDeck(){ const d=[]; for(const s of SUITS) for(const r of RANKS) d.push({rank:r,suit:s,uid:Math.random().toString(36).slice(2)}); return d; }
-function log(msg){ const el = document.createElement('div'); el.textContent = msg; ui.log.prepend(el); }
+function log(msg){ try{ if(ui.log){ const el = document.createElement('div'); el.textContent = msg; ui.log.prepend(el); } }catch(e){} if (typeof console !== 'undefined') { try{ console.log(msg); }catch(_){} } }
 function saveBalance(){ sessionStorage.setItem('lecho_balance', String(balance)); sessionStorage.setItem('lecho_diamonds', String(diamonds)); ui.balanceDisplay.textContent = `🪙 ${balance} 💎 ${diamonds}`; $('slotBalance').textContent = diamonds; }
 function pickBotEmoji(){ return BOT_EMOJIS[Math.floor(Math.random()*BOT_EMOJIS.length)]; }
 function avatarHtml(a){ if(!a) return '<div class="avatar small">👤</div>'; if(a.type==='emoji') return `<div class="avatar small">${a.value}</div>`; return `<div class="avatar small"><img src="${a.value}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/></div>`; }
@@ -718,21 +753,22 @@ function getStatusText(statusKey) { return STATUSES[statusKey] || ''; }
 
 /* Modal helper */
 function showModal(msg, title = '') {
-  const modal = $('modal');
-  const content = $('modalContent');
-  const text = $('modalText');
-  text.innerHTML = title ? `<h4>${title}</h4><p>${msg}</p>` : `<p>${msg}</p>`;
-  modal.style.display = 'flex';
+  // replaced with toast
+  const toast = $('toast');
+  const msgEl = $('toastMsg');
+  msgEl.innerHTML = title ? `<strong>${title}</strong><br>${msg}` : msg;
+  toast.style.display = 'block';
+  clearTimeout(showModal._t);
+  showModal._t = setTimeout(()=>{ toast.style.display = 'none'; }, 2200);
 }
-$('modal').onclick = $('modalClose').onclick = () => { $('modal').style.display = 'none'; };
 
 /* ============== Lobby / Start ============== */
 $('startFromIntro').onclick = ()=>{ lobbySize = Number($('lobbySize').value||3); startNewGame(); };
-$('btnNew').onclick = ()=>{ lobbySize = Number($('lobbySize').value||3); startNewGame(); };
+$('btnNew').onclick = ()=>{ lobbySize = Number($('lobbySize').value||3); try{ clearLog(); }catch(e){} startNewGame(); };
 $('btnIntro').onclick = ()=>showScreen('screenIntro');
 $('btnRules').onclick = ()=>showScreen('screenRules');
 $('backFromRules').onclick = ()=>showScreen('screenIntro');
-$('btnProfile').onclick = ()=>{ showScreen('screenProfile'); $('nickProfile').value = sessionStorage.getItem('lecho_nick') || genBotName(); loadAvatars(); const v = sessionStorage.getItem('lecho_avatar')||DEFAULT_AVATAR; if(v) { if(v.startsWith('data:')) { document.getElementById('profileAvatar').innerHTML = `<img src="${v}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/>`; } else { document.getElementById('profileAvatar').innerHTML = `<div class="avatar large">${v}</div>`; $('avatarSelect').value = v; } } const status = sessionStorage.getItem(STATUS_KEY) || 'none'; $('statusSelect').value = status; const won = status === 'conqueror'; $('goldRushBadge').style.display = won ? 'flex' : 'none'; updateInventoryUI(); renderPersonalization(); updateBalText(); };
+$('btnProfile').onclick = ()=>{ showScreen('screenProfile'); $('nickProfile').value = sessionStorage.getItem('lecho_nick') || genBotName(); loadAvatars(); const v = sessionStorage.getItem('lecho_avatar')||DEFAULT_AVATAR; if(v) { if(v.startsWith('data:')) { document.getElementById('profileAvatar').innerHTML = `<img src="${v}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/>`; } else { document.getElementById('profileAvatar').innerHTML = `<div class="avatar large">${v}</div>`; $('avatarSelect').value = v; } } const status = sessionStorage.getItem(STATUS_KEY) || 'none'; $('statusSelect').value = status; const won = status === 'conqueror'; $('goldRushBadge').style.display = won ? 'flex' : 'none'; const statusSel = $('statusSelect'); const conquerorOpt = Array.from(statusSel.options).find(o => o.value === 'conqueror'); if (conquerorOpt) conquerorOpt.disabled = !won; updateInventoryUI(); renderPersonalization(); updateBalText(); };
 $('btnShop').onclick = ()=>showScreen('screenShop');
 $('backFromShop').onclick = ()=>showScreen('screenIntro');
 $('backFromProfile').onclick = ()=>showScreen('screenIntro');
@@ -755,6 +791,14 @@ $('saveNick').onclick = ()=>{
 };
 $('saveStatus').onclick = () => {
   const status = $('statusSelect').value;
+  if (status === 'conqueror') {
+    const won = (sessionStorage.getItem(STATUS_KEY) === 'conqueror');
+    if (!won) {
+      $('statusSelect').value = 'none';
+      showModal('Этот статус открывается только после победы в «Золотой лихорадке».');
+      return;
+    }
+  }
   sessionStorage.setItem(STATUS_KEY, status);
   showModal('Статус сохранен!');
 };
@@ -862,8 +906,22 @@ document.querySelectorAll('.color-btn').forEach(btn => {
   };
 });
 $('btnCasino').onclick = () => { showScreen('screenCasino'); resetCasino(); };
+$('backFromHorseRace').style.display = 'block';
+// show horse race screen from casino (enable mini-game)
+const horseEntry = document.createElement('div');
+horseEntry.className = 'big-btn';
+horseEntry.textContent = '🐎 Забег лошадей';
+horseEntry.onclick = () => { showScreen('screenHorseRace'); resetHorseRace(); };
+// insert once if not present
+try{
+  const casinoCards = document.querySelector('#screenCasino .card-panel');
+  const backRow = casinoCards && casinoCards.querySelector('div[style*="margin-top:8px"]');
+  if (casinoCards && backRow && !casinoCards.querySelector('.big-btn[data-horse-entry]')){
+    horseEntry.setAttribute('data-horse-entry','1');
+    backRow.parentNode.insertBefore(horseEntry, backRow);
+  }
+}catch(e){}
 $('btnSlots').onclick = () => showScreen('screenSlots');
-$('btnHorseRace').onclick = () => showScreen('screenHorseRace');
 
 function resetCasino() {
   $('rouletteResult').innerHTML = '';
@@ -896,13 +954,13 @@ document.querySelectorAll('.horse-btn').forEach(btn => {
     document.querySelectorAll('.horse-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     selectedHorse = parseInt(btn.dataset.horse);
-    if ($('betAmount').value >= 2) {
+    if ($('betAmount').value >= 1) {
       $('startRaceBtn').style.display = 'block';
     }
   };
 });
 $('betAmount').addEventListener('input', () => {
-  if (selectedHorse && $('betAmount').value >= 2) {
+  if (selectedHorse && $('betAmount').value >= 1) {
     $('startRaceBtn').style.display = 'block';
   } else {
     $('startRaceBtn').style.display = 'none';
@@ -910,13 +968,14 @@ $('betAmount').addEventListener('input', () => {
 });
 $('startRaceBtn').onclick = () => {
   const bet = parseInt($('betAmount').value);
-  if (bet < 2 || !selectedHorse || balance < bet) {
+  if (bet < 1 || !selectedHorse || balance < bet) {
     showModal('Недостаточно 🪙 или неверная ставка');
     return;
   }
   balance -= bet;
   saveBalance();
-  $('#raceTrack').style.display = 'flex';
+  // Ensure track is visible
+  document.getElementById('raceTrack').style.display = 'flex';
   const raceTime = 25000 + Math.random() * 20000;
   currentTimeLeft = raceTime / 1000;
   $('#raceTimer').textContent = `Забег: ${Math.ceil(currentTimeLeft)}с`;
@@ -971,8 +1030,10 @@ function startRace(duration, bet, selected) {
       let speed = baseSpeeds[i];
       if (currentTimeLeft <= 3) speed *= 1.5; // last 3s accelerate
       positions[i] += speed * (trackWidth / duration) * 100;
+      // Run right-to-left: start from right edge and move left
       const pos = Math.min(positions[i], trackWidth);
-      horses[i].style.left = `${pos}px`;
+      const leftPx = Math.max(trackWidth - pos, 0);
+      horses[i].style.left = `${leftPx}px`;
       progressBars[i].style.width = `${(pos / trackWidth) * 100}%`;
       if (pos >= trackWidth && !winner) {
         winner = i + 1;
@@ -1020,14 +1081,16 @@ function applyCasinoModifiers(isWin, winAmount, betAmount) {
 }
 
 $('startRoulette').onclick = () => {
-  if (diamonds < 3) { showModal('Недостаточно 💎'); return; }
-  diamonds -= 3;
+  const bet = Number($('rouletteBet').value);
+  if (bet < 1 || bet > diamonds) { showModal('Ставка должна быть минимум 1 и не больше баланса 💎'); return; }
+  diamonds -= bet;
   saveBalance();
   const diff = $('rouletteDifficulty').value;
   const emptySlots = diff === 'easy' ? 5 : 1;
   const winSlots = emptySlots;
   const isWin = Math.random() < (winSlots / 6);
-  const winAmount = diff === 'easy' ? 5 : 15;
+  const multiplier = diff === 'easy' ? 5/3 : 15/3;
+  const winAmount = Math.round(bet * multiplier);
   let countdown = 3;
   const cdEl = $('countdown');
   cdEl.textContent = countdown;
@@ -1041,10 +1104,10 @@ $('startRoulette').onclick = () => {
         if (isWin) {
           diamonds += winAmount;
           $('rouletteResult').innerHTML = `<p>Выигрыш! +${winAmount}💎</p>`;
-          applyCasinoModifiers(true, winAmount, 3);
+          applyCasinoModifiers(true, winAmount, bet);
         } else {
           $('rouletteResult').innerHTML = '<p>Проигрыш!</p>';
-          applyCasinoModifiers(false, 0, 3);
+          applyCasinoModifiers(false, 0, bet);
         }
       }, 1000);
     }
@@ -1053,8 +1116,9 @@ $('startRoulette').onclick = () => {
 
 // Color Roulette
 $('confirmColorChoice').onclick = () => {
-  if (!selectedColor || diamonds < 2) { showModal('Выберите цвет или недостаточно 💎'); return; }
-  diamonds -= 2;
+  const bet = Number($('colorBet').value);
+  if (!selectedColor || bet < 1 || bet > diamonds) { showModal('Выберите цвет, ставка минимум 1 и не больше баланса 💎'); return; }
+  diamonds -= bet;
   saveBalance();
   const colors = ['🔴', '⚫️', '🟢'];
   const probs = [0.45, 0.45, 0.10];
@@ -1079,7 +1143,8 @@ $('confirmColorChoice').onclick = () => {
     let winAmount = 0;
     let isWin = false;
     if (chosenColor === selectedColor) {
-      winAmount = chosenColor === '🟢' ? 100 : 4;
+      const multiplier = chosenColor === '🟢' ? 50 : 2;
+      winAmount = Math.round(bet * multiplier);
       isWin = true;
       $('colorResult').innerHTML = `<p>Выигрыш! +${winAmount}💎</p>`;
     } else {
@@ -1087,27 +1152,29 @@ $('confirmColorChoice').onclick = () => {
       isWin = false;
     }
     diamonds += winAmount;
-    applyCasinoModifiers(isWin, winAmount, 2);
+    applyCasinoModifiers(isWin, winAmount, bet);
     resetCasino();
   }, spinTime);
 };
 
 // Gold Rush
 function goldRushBet() {
-  if (balance < 5) { showModal('Недостаточно 🪙'); return; }
-  balance -= 5;
+  const bet = Number($('goldBet').value);
+  if (bet < 1 || bet > balance) { showModal('Ставка должна быть минимум 1 и не больше баланса 🪙'); return; }
+  balance -= bet;
   saveBalance();
   $('luckyBtn').style.display = 'none';
   $('confirmGoldRush').style.display = 'block';
   const isJackpot = Math.random() < 0.07;
   $('confirmGoldRush').onclick = () => {
     if (isJackpot) {
+      const jackpot = Math.round(bet * 777 / 5);
       let step = 0;
-      const target = balance + 777;
+      const target = balance + jackpot;
       const interval = setInterval(() => {
-        step += 77;
-        if (step >= 777) {
-          step = 777;
+        step += jackpot / 10;
+        if (step >= jackpot) {
+          step = jackpot;
           clearInterval(interval);
           balance = target;
           saveBalance();
@@ -1121,16 +1188,16 @@ function goldRushBet() {
             document.body.appendChild(conf);
             setTimeout(() => conf.remove(), 2000);
           }
-          $('goldRushResult').innerHTML = '<div style="font-size:40px;color:gold;text-align:center;">🎉 ДЖЕКПОТ! +777🪙 🎊</div>';
+          $('goldRushResult').innerHTML = '<div style="font-size:40px;color:gold;text-align:center;">🎉 ДЖЕКПОТ! +'+jackpot+'🪙 🎊</div>';
           sessionStorage.setItem(STATUS_KEY, 'conqueror');
           $('luckyBtn').style.background = 'gray';
           $('luckyBtn').textContent = 'Победа достигнута';
           $('luckyBtn').onclick = () => { showModal('Вы уже покорили лихорадку! Эта удача не повторяется'); };
         }
-        const tempBal = balance - 777 + step;
-        ui.balanceDisplay.textContent = `🪙 ${tempBal} 💎 ${diamonds}`;
+        const tempBal = balance - jackpot + step;
+        ui.balanceDisplay.textContent = `🪙 ${Math.round(tempBal)} 💎 ${diamonds}`;
       }, 100);
-      let winAmount = 777;
+      let winAmount = jackpot;
       if (betDoublerActive) {
         balance += winAmount;
         betDoublerActive = false;
@@ -1141,9 +1208,10 @@ function goldRushBet() {
       $('goldRushResult').innerHTML = '<div style="font-size:30px;text-align:center;">😔 Не повезло!</div><div class="big-btn" id="tryAgainGold" style="margin-top:10px;">Попробовать снова</div>';
       $('tryAgainGold').onclick = () => { resetCasino(); };
       if (insuranceActive) {
-        balance += 2;
+        const refund = Math.floor(bet / 2);
+        balance += refund;
         insuranceActive = false;
-        showModal('Страховка вернула 2🪙');
+        showModal('Страховка вернула '+refund+'🪙');
         saveBalance();
       }
     }
@@ -1154,8 +1222,9 @@ function goldRushBet() {
 /* Slot Machine */
 const symbols = ['🍒', '🍋', '🍊', '🔔', '💀'];
 $('leverBtn').onclick = () => {
-  if (diamonds < 10) { showModal('Недостаточно 💎'); return; }
-  diamonds -= 10;
+  const bet = Number($('slotsBet').value);
+  if (bet < 1 || bet > diamonds) { showModal('Ставка должна быть минимум 1 и не больше баланса 💎'); return; }
+  diamonds -= bet;
   saveBalance();
   const reel1 = $('reel1');
   const reel2 = $('reel2');
@@ -1187,28 +1256,28 @@ $('leverBtn').onclick = () => {
       } else {
         const bellCount = results.filter(s => s === '🔔').length;
         if (bellCount === 3) {
-          winAmount = 100;
-          resultEl.innerHTML = '🔔🔔🔔 Джекпот! +100💎';
+          winAmount = Math.round(bet * 10);
+          resultEl.innerHTML = '🔔🔔🔔 Джекпот! +'+winAmount+'💎';
           isWin = true;
         } else if (bellCount === 2) {
-          winAmount = 15;
-          resultEl.innerHTML = 'Два 🔔 +15💎';
+          winAmount = Math.round(bet * 1.5);
+          resultEl.innerHTML = 'Два 🔔 +'+winAmount+'💎';
           isWin = true;
         } else {
           const fruits = results.filter(s => ['🍒', '🍋', '🍊'].includes(s));
           if (fruits.length === 3 && new Set(fruits).size === 1) {
-            winAmount = 30;
-            resultEl.innerHTML = `${fruits[0]}×3 +30💎`;
+            winAmount = Math.round(bet * 3);
+            resultEl.innerHTML = `${fruits[0]}×3 +`+winAmount+'💎';
             isWin = true;
           } else {
-            winAmount = 10;
+            winAmount = bet;
             resultEl.innerHTML = 'Возврат ставки';
             isWin = false; // return not win for doubler
           }
         }
       }
       diamonds += winAmount;
-      applyCasinoModifiers(isWin && winAmount > 10, winAmount, 10);
+      applyCasinoModifiers(isWin && winAmount > bet, winAmount, bet);
     }
   }
   spinReel(reel1, times[0], sym => { results.push(sym); checkResults(); });
@@ -1243,6 +1312,7 @@ function startNewGame(){
   tableAttack=null; tableDefend=null;
   $('deckCount').textContent = deck.length;
   $('trumpCard').textContent = trump;
+  ui.playersRow.style.gridTemplateColumns = `repeat(${lobbySize}, 1fr)`;
   clearLog(); log(`Новая игра. Козырь: ${trump}. Атакует: ${players[turnIndex].name}`);
   showScreen('screenGame'); renderAll(); updateGameInventory(); setTimeout(()=>maybeAutoPlay(),420);
 }
@@ -1250,12 +1320,12 @@ function startNewGame(){
 /* generate bot name */
 function genBotName(){ const pre = PREFIXES[Math.floor(Math.random()*PREFIXES.length)]; const fun=FUN[Math.floor(Math.random()*FUN.length)]; return pre + fun + '_' + Math.floor(Math.random()*100); }
 
-function clearLog(){ ui.log.innerHTML=''; }
+function clearLog(){ try{ if(ui.log){ ui.log.innerHTML=''; } }catch(e){} }
 
 function renderAll(){
-  // players row: responsive sizing depending on lobbySize
+  // players row: static grid
   ui.playersRow.innerHTML='';
-  const sizeClass = lobbySize<=3 ? 'large' : (lobbySize===4 ? 'medium' : 'small');
+  const sizeClass = lobbySize<=3 ? 'medium' : 'small';
   for(const p of players){
     const chip = document.createElement('div'); chip.className = 'player-chip';
     const avatarSizeClass = sizeClass;
@@ -1908,10 +1978,34 @@ updateInventoryUI();
 saveBalance();
 
 /* Telegram WebApp support */
-if (window.Telegram && Telegram.WebApp) {
-  Telegram.WebApp.expand();
-  Telegram.WebApp.ready();
+// Viewport fit for Telegram Mini Apps
+function applyAppHeight(h){
+  document.documentElement.style.setProperty('--app-height', h + 'px');
 }
+function computeAppHeight(){
+  if (window.Telegram && Telegram.WebApp && Telegram.WebApp.viewportHeight) {
+    return Math.round(Telegram.WebApp.viewportHeight * window.devicePixelRatio ? (Telegram.WebApp.viewportHeight) : Telegram.WebApp.viewportHeight);
+  }
+  return window.innerHeight;
+}
+function syncAppHeight(){ applyAppHeight(computeAppHeight()); }
+syncAppHeight();
+if (window.Telegram && Telegram.WebApp) {
+  Telegram.WebApp.ready();
+  Telegram.WebApp.expand();
+  if (Telegram.WebApp.onEvent) {
+    Telegram.WebApp.onEvent('viewportChanged', syncAppHeight);
+  }
+}
+window.addEventListener('resize', syncAppHeight);
+
+// Floating inventory toggle (always accessible)
+const invToggle = document.createElement('div');
+invToggle.id = 'invToggle';
+invToggle.style.cssText = 'position:fixed; right:8px; bottom:calc(var(--bottom-bar-height) + 64px); z-index:1000; background:var(--accent-2); color:#111; font-weight:800; padding:8px 10px; border-radius:12px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.35);';
+invToggle.textContent = '🎒 Инвентарь';
+document.body.appendChild(invToggle);
+invToggle.onclick = ()=>{ const p = document.getElementById('gameInvPanel'); if(!p) return; const vis = p.style.display !== 'none'; p.style.display = vis ? 'none' : 'block'; };
 
 /* keep global access for debugging */
 window._lecho = { startNewGame, renderShop, inventoryLoad, inventorySave };
