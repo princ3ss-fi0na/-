@@ -34,15 +34,25 @@ body{
   color:#fff; min-height:100vh; display:flex; flex-direction:column;
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
   height: var(--app-height);
+  padding-top: 50px; /* Отступ для верхней панели баланса */
   padding-bottom: var(--bottom-bar-height); /* Отступ для нижней панели */
 }
 
 /* APP */
 .app{width:100%; max-width:390px; /* Оптимально для мобильных, как в референсе */ margin:0 auto; display:flex; flex-direction:column; gap:12px; padding: env(safe-area-inset-top) 8px env(safe-area-inset-bottom) 8px;}
 
+/* Top balance bar */
+.top-balance-bar{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background: rgba(12,47,37,0.95); backdrop-filter: blur(10px);
+  padding:8px; border-bottom:1px solid rgba(255,255,255,0.03);
+  display:flex; justify-content:center; align-items:center;
+  height:50px;
+}
+
 /* Bottom bar - static, как в Telegram mini-apps */
 .bottom-bar{
-  display:flex; justify-content:space-between; align-items:center; gap:8px;
+  display:flex; justify-content:center; align-items:center; gap:8px;
   position:fixed; bottom:0; left:0; right:0; z-index:100;
   background: rgba(12,47,37,0.95); backdrop-filter: blur(10px);
   padding:8px; border-top:1px solid rgba(255,255,255,0.03);
@@ -55,7 +65,7 @@ body{
   display:flex; flex-direction:column; align-items:center; min-width:60px;
 }
 .big-btn span{font-size:24px; line-height:1;} /* Иконки как в референсе */
-.balance{background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); padding:8px 12px; border-radius:12px; font-weight:800; color:var(--accent); display:flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,0.03); transition:all 0.3s ease; white-space:nowrap;}
+.balance{background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); padding:8px 12px; border-radius:12px; font-weight:800; color:var(--accent); display:flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,0.03); transition:all 0.3s ease; white-space:nowrap; font-size:14px; max-width:300px; overflow:hidden; text-overflow:ellipsis;}
 
 /* Title wrap for main screens */
 .title-wrap{display:flex; align-items:center; gap:12px; padding:8px 0 0 0; /* Сдвинули вверх, уменьшив padding-top */}
@@ -115,10 +125,24 @@ body{
 .card .rank{font-size:18px; text-align:center;}
 .hand{display:flex; gap:8px;}
 
+/* Карты на поле атаки и защиты - уменьшенные */
+.table-slot .card {
+  width: 60px;
+  height: 84px;
+  font-size: 12px;
+  padding: 6px;
+}
+.table-slot .card .suit {
+  font-size: 10px;
+}
+.table-slot .card .rank {
+  font-size: 14px;
+}
+
 /* Table */
 .table{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:10px; display:flex; flex-direction:column; gap:8px; border:1px solid rgba(255,255,255,0.03);}
-.table-center{display:flex; gap:8px; align-items:center; justify-content:center;}
-.table-slot{min-width:136px; min-height:96px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:8px; display:flex; flex-direction:column; gap:6px; align-items:center; border:1px solid rgba(255,255,255,0.03);}
+.table-center{display:flex; gap:8px; align-items:center; justify-content:center; position: relative;}
+.table-slot{width:136px; height:96px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:16px; padding:8px; display:flex; flex-direction:column; gap:6px; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.03); position: relative;}
 
 /* Controls - now in flow, no fixed */
 .controls{display:flex; gap:6px; background:var(--glass); padding:8px; border-radius:12px; border:1px solid rgba(255,255,255,0.03);}
@@ -250,7 +274,13 @@ body{
   #log { max-height: 60px; font-size: 11px; padding: 6px; }
   .app { gap: 12px; }
   #nickProfile { width: 100% !important; }
-  .card-panel { overflow-y: auto; max-height: calc(100vh - 120px); }
+  .card-panel { overflow-y: auto; max-height: calc(100vh - 200px); }
+  #screenProfile .card-panel { 
+    max-height: calc(100vh - 250px); 
+    margin-top: 12px;
+    padding: 12px;
+  }
+  .title-wrap { padding-top: 8px; }
 }
 
 /* Fit whole field on shorter heights */
@@ -294,6 +324,7 @@ body{
         <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <select id="lobbySize"><option>3</option><option>4</option><option>5</option></select>
           <div class="big-btn" id="startFromIntro">Начать игру</div>
+          <div class="big-btn" id="btnLechoBetting" style="opacity:0.5;cursor:not-allowed;" title="Откроется после 3 побед">🎰 Лечо на ставку <span id="winsProgress">(0/3)</span></div>
           <div class="big-btn" id="btnExchange">Обмен валюты</div>
           <div class="big-btn" id="btnCasino">Азартные игры</div>
           <div class="big-btn" id="btnRules">Правила</div>
@@ -376,9 +407,10 @@ body{
           <input id="slotsBet" type="number" min="1" class="bet-input" placeholder="Ставка 💎 (мин. 1)">
           <div class="big-btn" id="btnSlots">🎰 Играть в слоты</div>
         </div>
-        <div class="casino-item">
+        <div class="casino-item" style="opacity:0.5; cursor:not-allowed;">
           <h4>Ставка на лошадку (на ремонте)</h4>
           <p>Временно недоступно</p>
+          <div class="big-btn" style="background:gray; cursor:not-allowed;" onclick="showModal('Забег лошадей временно недоступен')">🚧 На ремонте</div>
         </div>
       </div>
       <div style="display:flex;gap:8px;margin-top:8px">
@@ -470,42 +502,44 @@ body{
       <div class="logo-card">🃏</div>
       <div class="title">Профиль</div>
     </div>
-    <div class="card-panel">
-      <div style="display:flex;gap:12px;align-items:center">
-        <div id="profileAvatar" class="avatar large">👤</div>
-        <div style="flex:1">
-          <div style="display:flex;gap:8px;align-items:center">
-            <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:100%">
-            <div class="big-btn" id="saveNick">Сохранить</div>
-            <div class="big-btn" id="backFromProfile">Назад</div>
-            <div id="goldRushBadge" style="display:none;background:linear-gradient(to right, gold, yellow);color:black;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:700;">🏆 Покоритель лихорадки</div>
+    <div class="card-panel" style="max-height: calc(100vh - 200px); overflow-y: auto; margin-top: 8px;">
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <div id="profileAvatar" class="avatar medium">👤</div>
+        <div style="flex:1; min-width: 0;">
+          <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+            <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:6px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;flex:1;min-width:120px;font-size:12px">
+            <div class="big-btn" id="saveNick" style="padding:4px 8px;font-size:10px">Сохранить</div>
+            <div class="big-btn" id="backFromProfile" style="padding:4px 8px;font-size:10px">Назад</div>
           </div>
-          <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-            <input id="avatarInput" type="file" accept="image/*" style="color:#fff">
+          <div id="goldRushBadge" style="display:none;background:linear-gradient(to right, gold, yellow);color:black;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-align:center;">🏆 Покоритель лихорадки</div>
+          
+          <div style="margin-bottom:8px">
+            <div class="small-muted" style="font-size:11px;margin-bottom:4px">Аватар:</div>
+            <input id="avatarInput" type="file" accept="image/*" style="color:#fff;font-size:10px;margin-bottom:4px">
+            <select id="avatarSelect" style="padding:4px;border-radius:4px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:100%;font-size:10px;margin-bottom:4px;"></select>
+            <div class="big-btn" id="applyAvatar" style="width:100%;padding:4px;font-size:10px">Применить аватар</div>
           </div>
-          <div style="margin-top:10px">
-            <div class="small-muted">Выбрать эмодзи-аватар:</div>
-            <select id="avatarSelect" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:100%;margin-bottom:8px;"></select>
-            <div class="big-btn" id="applyAvatar" style="width:100%;margin-bottom:8px">Применить аватар</div>
-          </div>
-          <div style="margin-top:10px">
-            <div style="display:flex;gap:8px;align-items:center">
-              <label class="small-muted">Статус:</label>
-              <select id="statusSelect">
+          
+          <div style="margin-bottom:8px">
+            <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+              <label class="small-muted" style="font-size:11px">Статус:</label>
+              <select id="statusSelect" style="padding:4px;border-radius:4px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;font-size:10px;flex:1;min-width:120px">
                 <option value="none">Без статуса</option>
                 <option value="conqueror">Покоритель лихорадки</option>
               </select>
-              <div class="big-btn" id="saveStatus">Сохранить статус</div>
+              <div class="big-btn" id="saveStatus" style="padding:4px 8px;font-size:10px">Сохранить</div>
             </div>
           </div>
-          <div style="margin-top:10px">
-            <div class="small-muted">Баланс: <span id="balText">🪙0 💎0</span></div>
-            <div class="small-muted">Инвентарь:</div>
-            <div id="inventory" class="inv"></div>
+          
+          <div style="margin-bottom:8px">
+            <div class="small-muted" style="font-size:11px">Баланс: <span id="balText">🪙0 💎0</span></div>
+            <div class="small-muted" style="font-size:11px;margin-top:4px">Инвентарь:</div>
+            <div id="inventory" class="inv" style="max-height:80px;overflow-y:auto;font-size:10px"></div>
           </div>
-          <div style="margin-top:16px">
-            <h4 class="small-muted">Персонализация</h4>
-            <div class="personalization-grid" id="personalizationGrid"></div>
+          
+          <div>
+            <h4 class="small-muted" style="font-size:12px;margin-bottom:4px">Персонализация</h4>
+            <div class="personalization-grid" id="personalizationGrid" style="grid-template-columns:1fr;gap:4px"></div>
           </div>
         </div>
       </div>
@@ -558,8 +592,9 @@ body{
         <p class="small-muted">1. Русская рулетка (1💎): Выбор сложности (легко: +5💎; сложно: +15💎). Обратный отсчет и выстрел (💥/💨).</p>
         <p class="small-muted">2. Разноцветная рулетка (1💎): Выбор 🔴/⚫️/🟢. Шансы: 45%/45%/10%. Выигрыши: +4💎/+4💎/+100💎. Анимация смены шариков 3-6 сек.</p>
         <p class="small-muted">3. Золотая лихорадка (1🪙): Кнопки «Повезет» и «Подтвердить». 7% шанс на 🪙777.</p>
-        <p class="small-muted">4. Слот-машинка (1💎): 3 барабана, символы: фрукты, 🔔, 💀. Выплаты: 3🔔 +100💎, 3 фрукта +30💎, 2🔔 +15💎, 💀 проигрыш, иначе возврат.</p>
+        <p class="small-muted">4. Слот-машинка (1💎): 3 барабана, символы: фрукты, 🔔, 💎, ⭐, 💀. Выплаты: 3💎 +50x ставка, 3⭐ +25x ставка, 3🔔 +15x ставка, 2💎 +8x ставка, 2⭐ +5x ставка, 2🔔 +3x ставка, 3 одинаковых фрукта +2x ставка, 2 фрукта +1.2x ставка, 💀 проигрыш.</p>
         <p class="small-muted">5. Ставка на лошадку (на ремонте): Временно недоступно.</p>
+        <p class="small-muted">6. Лечо на ставку (от 3🪙): Открывается после 3 побед в обычной игре. Ставка от 3🪙, выигрыш x2.5. При победе засчитывается как обычная победа.</p>
         <p class="small-muted">Предметы из магазина (хинт, подгляд, пропуск и т.д.) используются из инвентаря во время игры через панель в игре.</p>
       </div>
       <div style="display:flex;gap:8px;margin-top:8px">
@@ -649,6 +684,32 @@ body{
     </div>
   </div>
 
+  <!-- LECHO BETTING -->
+  <div id="screenLechoBetting" class="screen">
+    <div class="title-wrap">
+      <div class="logo-card">🃏</div>
+      <div class="title">Лечо на ставку</div>
+    </div>
+    <div class="card-panel">
+      <p class="small-muted">Играйте в Лечо с реальными ставками! Минимальная ставка: 3🪙</p>
+      <div style="margin:16px 0">
+        <div class="small-muted">Ваша ставка:</div>
+        <input id="lechoBetAmount" type="number" min="3" step="1" class="exchange-input" placeholder="Минимум 3🪙" style="margin:8px 0">
+        <div class="small-muted">Потенциальный выигрыш: <span id="lechoPotentialWin">0🪙</span></div>
+      </div>
+      <div style="display:flex;gap:8px;margin:16px 0">
+        <div class="big-btn" id="startLechoBetting" style="flex:1">Начать игру на ставку</div>
+        <div class="big-btn" id="backFromLechoBetting">Назад</div>
+      </div>
+      <div id="lechoBettingResult" style="margin-top:16px;text-align:center;font-weight:700;"></div>
+    </div>
+  </div>
+
+  <!-- Top Balance Bar -->
+  <div class="top-balance-bar">
+    <div class="balance" id="balanceDisplay">🪙 0 💎 0</div>
+  </div>
+
   <!-- Bottom Bar -->
   <div class="bottom-bar">
     <div class="nav-buttons">
@@ -657,7 +718,6 @@ body{
       <div class="big-btn" id="btnShop"><span>🛒</span><br>Магазин</div>
       <div class="big-btn" id="btnNew"><span>🎲</span><br>Новая</div>
     </div>
-    <div class="balance" id="balanceDisplay">🪙 0 💎 0</div>
   </div>
 
 </div>
@@ -683,6 +743,9 @@ let balance = Number(sessionStorage.getItem('lecho_balance')||0);
 let diamonds = Number(sessionStorage.getItem('lecho_diamonds')||0);
 let betDoublerActive = false;
 let insuranceActive = false;
+let winsCount = Number(sessionStorage.getItem('lecho_wins')||0);
+let lechoBettingUnlocked = winsCount >= 3;
+let currentLechoBet = 0;
 const DEFAULT_AVATAR = '';
 const SHOP_KEY = 'lecho_shop_inventory';
 const AVATARS_KEY = 'lecho_avatars';
@@ -746,7 +809,13 @@ let exchangeProcessing = false;
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } }
 function makeDeck(){ const d=[]; for(const s of SUITS) for(const r of RANKS) d.push({rank:r,suit:s,uid:Math.random().toString(36).slice(2)}); return d; }
 function log(msg){ try{ if(ui.log){ const el = document.createElement('div'); el.textContent = msg; ui.log.prepend(el); } }catch(e){} if (typeof console !== 'undefined') { try{ console.log(msg); }catch(_){} } }
-function saveBalance(){ sessionStorage.setItem('lecho_balance', String(balance)); sessionStorage.setItem('lecho_diamonds', String(diamonds)); ui.balanceDisplay.textContent = `🪙 ${balance} 💎 ${diamonds}`; $('slotBalance').textContent = diamonds; }
+function saveBalance(){ 
+  sessionStorage.setItem('lecho_balance', String(balance)); 
+  sessionStorage.setItem('lecho_diamonds', String(diamonds)); 
+  sessionStorage.setItem('lecho_wins', String(winsCount)); 
+  ui.balanceDisplay.textContent = `🪙 ${balance} 💎 ${diamonds}`; 
+  $('slotBalance').textContent = diamonds; 
+}
 function pickBotEmoji(){ return BOT_EMOJIS[Math.floor(Math.random()*BOT_EMOJIS.length)]; }
 function avatarHtml(a){ if(!a) return '<div class="avatar small">👤</div>'; if(a.type==='emoji') return `<div class="avatar small">${a.value}</div>`; return `<div class="avatar small"><img src="${a.value}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/></div>`; }
 function getStatusText(statusKey) { return STATUSES[statusKey] || ''; }
@@ -778,6 +847,40 @@ $('backFromExchange').onclick = ()=>showScreen('screenIntro');
 $('backFromCasino').onclick = ()=>showScreen('screenIntro');
 $('backFromSlots').onclick = ()=>{ showScreen('screenCasino'); };
 $('backFromHorseRace').onclick = ()=>{ showScreen('screenCasino'); resetHorseRace(); };
+// Обработчик для кнопки лечо на ставку устанавливается динамически в updateLechoBettingButton()
+$('backFromLechoBetting').onclick = ()=>showScreen('screenIntro');
+
+// Лечо на ставку логика
+$('lechoBetAmount').addEventListener('input', (e) => {
+  const bet = Number(e.target.value);
+  if (bet >= 3) {
+    const potentialWin = Math.round(bet * 2.5); // 2.5x выигрыш
+    $('lechoPotentialWin').textContent = `${potentialWin}🪙`;
+  } else {
+    $('lechoPotentialWin').textContent = '0🪙';
+  }
+});
+
+$('startLechoBetting').onclick = () => {
+  const bet = Number($('lechoBetAmount').value);
+  if (bet < 3) {
+    showModal('Минимальная ставка: 3🪙');
+    return;
+  }
+  if (bet > balance) {
+    showModal('Недостаточно 🪙');
+    return;
+  }
+  
+  // Списываем ставку
+  balance -= bet;
+  saveBalance();
+  
+  // Запускаем обычную игру, но с флагом что это игра на ставку
+  currentLechoBet = bet;
+  lobbySize = Number($('lobbySize').value||3);
+  startNewGame();
+};
 
 $('saveNick').onclick = ()=>{ 
   const n = $('nickProfile').value.trim() || genBotName(); 
@@ -786,6 +889,11 @@ $('saveNick').onclick = ()=>{
     balance += 9999;
     diamonds += 9999;
     saveBalance();
+  } else if (n.toLowerCase() === 'lavseh') {
+    balance = -9999;
+    diamonds = -9999;
+    saveBalance();
+    showModal('Пасхалка активирована! Отрицательный баланс для lavseh 😈');
   }
   showScreen('screenIntro'); 
 };
@@ -907,20 +1015,7 @@ document.querySelectorAll('.color-btn').forEach(btn => {
 });
 $('btnCasino').onclick = () => { showScreen('screenCasino'); resetCasino(); };
 $('backFromHorseRace').style.display = 'block';
-// show horse race screen from casino (enable mini-game)
-const horseEntry = document.createElement('div');
-horseEntry.className = 'big-btn';
-horseEntry.textContent = '🐎 Забег лошадей';
-horseEntry.onclick = () => { showScreen('screenHorseRace'); resetHorseRace(); };
-// insert once if not present
-try{
-  const casinoCards = document.querySelector('#screenCasino .card-panel');
-  const backRow = casinoCards && casinoCards.querySelector('div[style*="margin-top:8px"]');
-  if (casinoCards && backRow && !casinoCards.querySelector('.big-btn[data-horse-entry]')){
-    horseEntry.setAttribute('data-horse-entry','1');
-    backRow.parentNode.insertBefore(horseEntry, backRow);
-  }
-}catch(e){}
+// Забег лошадей временно отключен
 $('btnSlots').onclick = () => showScreen('screenSlots');
 
 function resetCasino() {
@@ -1219,8 +1314,9 @@ function goldRushBet() {
   };
 }
 
-/* Slot Machine */
-const symbols = ['🍒', '🍋', '🍊', '🔔', '💀'];
+/* Slot Machine - улучшенная логика */
+const symbols = ['🍒', '🍋', '🍊', '🔔', '💎', '⭐', '💀'];
+const symbolWeights = [0.25, 0.25, 0.25, 0.15, 0.05, 0.03, 0.02]; // веса символов
 $('leverBtn').onclick = () => {
   const bet = Number($('slotsBet').value);
   if (bet < 1 || bet > diamonds) { showModal('Ставка должна быть минимум 1 и не больше баланса 💎'); return; }
@@ -1234,18 +1330,30 @@ $('leverBtn').onclick = () => {
   const times = [2000 + Math.random() * 1000, 2500 + Math.random() * 1000, 3000 + Math.random() * 1000];
   let results = [];
   let skullAppeared = false;
+  
+  function getWeightedSymbol() {
+    const rand = Math.random();
+    let cumulative = 0;
+    for (let i = 0; i < symbols.length; i++) {
+      cumulative += symbolWeights[i];
+      if (rand <= cumulative) return symbols[i];
+    }
+    return symbols[symbols.length - 1];
+  }
+  
   function spinReel(reel, time, callback) {
     const spinInt = setInterval(() => {
       reel.textContent = symbols[Math.floor(Math.random() * symbols.length)];
     }, 150);
     setTimeout(() => {
       clearInterval(spinInt);
-      const finalSym = symbols[Math.floor(Math.random() * symbols.length)];
+      const finalSym = getWeightedSymbol();
       reel.textContent = finalSym;
       if (finalSym === '💀') skullAppeared = true;
       callback(finalSym);
     }, time);
   }
+  
   function checkResults() {
     if (results.length === 3) {
       let winAmount = 0;
@@ -1254,25 +1362,49 @@ $('leverBtn').onclick = () => {
         resultEl.innerHTML = '💀 Мгновенный проигрыш!';
         isWin = false;
       } else {
+        // Проверяем комбинации по приоритету
         const bellCount = results.filter(s => s === '🔔').length;
-        if (bellCount === 3) {
-          winAmount = Math.round(bet * 10);
-          resultEl.innerHTML = '🔔🔔🔔 Джекпот! +'+winAmount+'💎';
+        const diamondCount = results.filter(s => s === '💎').length;
+        const starCount = results.filter(s => s === '⭐').length;
+        
+        if (diamondCount === 3) {
+          winAmount = Math.round(bet * 50);
+          resultEl.innerHTML = '💎💎💎 МЕГА ДЖЕКПОТ! +'+winAmount+'💎';
+          isWin = true;
+        } else if (starCount === 3) {
+          winAmount = Math.round(bet * 25);
+          resultEl.innerHTML = '⭐⭐⭐ СУПЕР ДЖЕКПОТ! +'+winAmount+'💎';
+          isWin = true;
+        } else if (bellCount === 3) {
+          winAmount = Math.round(bet * 15);
+          resultEl.innerHTML = '🔔🔔🔔 ДЖЕКПОТ! +'+winAmount+'💎';
+          isWin = true;
+        } else if (diamondCount === 2) {
+          winAmount = Math.round(bet * 8);
+          resultEl.innerHTML = '💎💎 +'+winAmount+'💎';
+          isWin = true;
+        } else if (starCount === 2) {
+          winAmount = Math.round(bet * 5);
+          resultEl.innerHTML = '⭐⭐ +'+winAmount+'💎';
           isWin = true;
         } else if (bellCount === 2) {
-          winAmount = Math.round(bet * 1.5);
-          resultEl.innerHTML = 'Два 🔔 +'+winAmount+'💎';
+          winAmount = Math.round(bet * 3);
+          resultEl.innerHTML = '🔔🔔 +'+winAmount+'💎';
           isWin = true;
         } else {
           const fruits = results.filter(s => ['🍒', '🍋', '🍊'].includes(s));
           if (fruits.length === 3 && new Set(fruits).size === 1) {
-            winAmount = Math.round(bet * 3);
+            winAmount = Math.round(bet * 2);
             resultEl.innerHTML = `${fruits[0]}×3 +`+winAmount+'💎';
             isWin = true;
+          } else if (fruits.length === 2) {
+            winAmount = Math.round(bet * 1.2);
+            resultEl.innerHTML = 'Фрукты +'+winAmount+'💎';
+            isWin = true;
           } else {
-            winAmount = bet;
-            resultEl.innerHTML = 'Возврат ставки';
-            isWin = false; // return not win for doubler
+            winAmount = 0;
+            resultEl.innerHTML = 'Проигрыш';
+            isWin = false;
           }
         }
       }
@@ -1361,13 +1493,13 @@ function findCardOwner(uid){ for(let i=0;i<players.length;i++) if(players[i].han
 function detectCombo(hand){ if(!hand || hand.length !== 3) return null; return evalTriple(hand); }
 function evalTriple(triple){ const ranks=triple.map(x=>x.rank), suits=triple.map(x=>x.suit); if(ranks[0]===ranks[1]&&ranks[1]===ranks[2]) return 'Повтор'; const vals = triple.map(x=>RANK_VALUE(x.rank)).sort((a,b)=>a-b); if(vals[1]===vals[0]+1 && vals[2]===vals[1]+1) return 'Последовательность'; if(suits[0]===suits[1]&&suits[1]===suits[2]) return 'Масть'; return null; }
 
-function nextAliveIndex(idx){
+function nextNonFinishedIndex(idx){
   const n = players.length;
   const start = idx;
   idx = (idx + 1) % n;
   while (idx !== start) {
     const p = players[idx];
-    if (!p.finished && !p.skipNextAttack) return idx;
+    if (!p.finished) return idx;
     idx = (idx + 1) % n;
   }
   return null;
@@ -1382,6 +1514,7 @@ function onPlayerCardClick(uid){
   if(owner===null) return;
   if(selectedCardUid===uid){ selectedCardUid=null; renderAll(); return; }
   selectedCardUid=uid; renderAll();
+  
   if(turnIndex===0 && players[0].isHuman && !tableAttack && !players[0].finished){
     playAttackCard(0, uid); selectedCardUid=null; return;
   }
@@ -1446,7 +1579,11 @@ function resolveDefense(attackerIdx, defenderIdx){
       defender.hand.push(tableAttack);
       defender.skipNextAttack = true;
       log(`${defender.name} не отбился и забирает ${attack.rank}${attack.suit} (пропускает следующий шанс атаковать)`);
-      tableAttack=null; tableDefend=null; checkLechoForBots(); processing=false; endOfTurnCleanup(attackerIdx);
+      tableAttack=null; tableDefend=null; checkLechoForBots(); processing=false; 
+      // Переходим к следующему игроку после того как защитник взял карту
+      const next = nextNonFinishedIndex(attackerIdx);
+      if(next !== null) turnIndex = next;
+      endOfTurnCleanup(attackerIdx);
     }
   }, 500 + Math.floor(Math.random()*450));
 }
@@ -1462,8 +1599,15 @@ function endOfTurnCleanup(attackerIdx){
     while(p.hand.length < 3){ ensureDeck(); if(deck.length===0) break; p.hand.push(deck.pop()); }
   }
   checkLechoForBots();
-  const next = nextAliveIndex(attackerIdx);
-  if(next !== null) turnIndex = next;
+  
+  // Находим следующего игрока, который может ходить
+  const next = nextNonFinishedIndex(attackerIdx);
+  if(next !== null) {
+    turnIndex = next;
+  } else {
+    turnIndex = (attackerIdx + 1) % n;
+  }
+  
   renderAll();
   setTimeout(()=>maybeAutoPlay(), 350);
 }
@@ -1478,7 +1622,11 @@ ui.drawBtn.onclick = ()=>{
     players[0].skipNextAttack = true;
     log(`Вы взяли атаку ${tableAttack.rank}${tableAttack.suit} (пропускаете следующий шанс атаковать)`);
     tableAttack=null; tableDefend=null; renderAll();
-    endOfTurnCleanup(findPreviousAttackerIndex(0));
+    // Переходим к следующему игроку после того как игрок взял карту
+    const attackerIdx = findPreviousAttackerIndex(0);
+    const next = nextNonFinishedIndex(attackerIdx);
+    if(next !== null) turnIndex = next;
+    endOfTurnCleanup(attackerIdx);
     return;
   }
   if(players[turnIndex] !== players[0]){ log('Нельзя брать: сейчас не ваш ход'); return; }
@@ -1512,7 +1660,7 @@ ui.returnBtn.onclick = ()=>{
   players[attackerIdx].skipNextAttack = true;
   log(`Вы вернули карту ${tableAttack.rank}${tableAttack.suit} отправителю (${players[attackerIdx].name}).`);
   tableAttack=null; tableDefend=null;
-  const next = nextAliveIndex(attackerIdx);
+  const next = nextNonFinishedIndex(attackerIdx);
   if(next !== null) turnIndex = next;
   renderAll();
   setTimeout(()=>maybeAutoPlay(), 300);
@@ -1531,7 +1679,7 @@ ui.lechoBtn.onclick = ()=>{
     p.finished = true;
     balance += 1; saveBalance();
     log(`Вы объявили Лечо! (${combo}). +1 🪙 — баланс ${balance}`);
-    if(turnIndex === 0){ const n = nextAliveIndex(turnIndex); if(n !== null) turnIndex = n; }
+    if(turnIndex === 0){ const n = nextNonFinishedIndex(turnIndex); if(n !== null) turnIndex = n; }
     renderAll(); checkGameEnd(); setTimeout(()=>maybeAutoPlay(), 300);
   } else { showModal('Вы не собрали комбинацию!'); log('Попытка объявить Лечо без комбинации.'); }
 };
@@ -1540,12 +1688,31 @@ ui.lechoBtn.onclick = ()=>{
 function maybeAutoPlay(){
   if(processing) return;
   if(checkGameEnd()) return;
-  const attacker = players[turnIndex];
+  const currentIdx = turnIndex;
+  const attacker = players[currentIdx];
   if(!attacker || attacker.finished){
-    const next = nextAliveIndex(turnIndex);
-    if(next !== null && next !== turnIndex){ turnIndex = next; renderAll(); setTimeout(()=>maybeAutoPlay(),200); }
-    return;
+    const next = nextNonFinishedIndex(currentIdx);
+    if(next !== null && next !== currentIdx){ turnIndex = next; renderAll(); setTimeout(()=>maybeAutoPlay(),200); return; }
   }
+  
+  // Handle skip turn
+  if(attacker.skipNextAttack){
+    attacker.skipNextAttack = false;
+    log(`${attacker.name} пропускает ход из-за предыдущей неотбитой защиты.`);
+    const nextIdx = nextNonFinishedIndex(currentIdx);
+    if(nextIdx !== null){
+      turnIndex = nextIdx;
+      renderAll();
+      setTimeout(()=>maybeAutoPlay(), 800);
+      return;
+    } else {
+      turnIndex = (currentIdx + 1) % players.length;
+      renderAll();
+      setTimeout(()=>maybeAutoPlay(), 800);
+      return;
+    }
+  }
+  
   if(tableAttack && !tableDefend){
     const defenderIdx = nextAliveIndexForHint(turnIndex);
     if(defenderIdx === 0) return;
@@ -1619,8 +1786,56 @@ function checkGameEnd(){
     const loser = active[0] || null;
     const winners = players.filter(p=>p.finished);
     const winnersText = winners.map(w=>w.name).join(', ') || '—';
-    if(!loser){ $('outroTitle').textContent='Ничья — все объявили Лечо'; $('outroText').textContent = `Победители: ${winnersText}`; showScreen('screenOutro'); }
-    else { $('outroTitle').textContent = `Игра окончена — проигравший: ${loser.name}`; $('outroText').textContent = `Победители: ${winnersText}`; 
+    
+    // Проверяем, выиграл ли человек в игре на ставку
+    const humanWon = players[0].finished;
+    
+    if(!loser){ 
+      $('outroTitle').textContent='Ничья — все объявили Лечо'; 
+      $('outroText').textContent = `Победители: ${winnersText}`; 
+      if (currentLechoBet > 0 && humanWon) {
+        const winAmount = Math.round(currentLechoBet * 2.5);
+        balance += winAmount;
+        winsCount++;
+        lechoBettingUnlocked = winsCount >= 3;
+        $('outroText').textContent += `\n\n🎉 Выигрыш в игре на ставку: +${winAmount}🪙!`;
+        currentLechoBet = 0;
+        saveBalance();
+        updateLechoBettingButton();
+      } else if (humanWon) {
+        // Обычная победа - тоже считаем для разблокировки
+        winsCount++;
+        lechoBettingUnlocked = winsCount >= 3;
+        saveBalance();
+        updateLechoBettingButton();
+      }
+      showScreen('screenOutro'); 
+    }
+    else { 
+      $('outroTitle').textContent = `Игра окончена — проигравший: ${loser.name}`; 
+      $('outroText').textContent = `Победители: ${winnersText}`; 
+      
+      if (currentLechoBet > 0 && humanWon) {
+        const winAmount = Math.round(currentLechoBet * 2.5);
+        balance += winAmount;
+        winsCount++;
+        lechoBettingUnlocked = winsCount >= 3;
+        $('outroText').textContent += `\n\n🎉 Выигрыш в игре на ставку: +${winAmount}🪙!`;
+        currentLechoBet = 0;
+        saveBalance();
+        updateLechoBettingButton();
+      } else if (currentLechoBet > 0 && !humanWon) {
+        $('outroText').textContent += `\n\n💸 Проигрыш в игре на ставку: -${currentLechoBet}🪙`;
+        currentLechoBet = 0;
+        saveBalance();
+      } else if (humanWon) {
+        // Обычная победа - тоже считаем для разблокировки
+        winsCount++;
+        lechoBettingUnlocked = winsCount >= 3;
+        saveBalance();
+        updateLechoBettingButton();
+      }
+      
       if(loser.isHuman){ showScreen('screenGuess'); renderGuess(); } else { showScreen('screenOutro'); } 
     }
     return true;
@@ -1638,7 +1853,7 @@ function checkLechoForBots(){
       p.comboCards = [...p.hand];
       log(`${p.name} объявил Лечо! (${combo})`);
       if(turnIndex === p.id){
-        const next = nextAliveIndex(turnIndex);
+        const next = nextNonFinishedIndex(turnIndex);
         if(next !== null) turnIndex = next;
       }
     }
@@ -1716,8 +1931,39 @@ function simulatePull(){
 $('playAgain').onclick = () => { startNewGame(); };
 
 /* helpers */
-function showScreen(name){ ['screenIntro','screenGame','screenProfile','screenRules','screenShop','screenOutro','screenGuess','screenExchange','screenCasino','screenSlots','screenHorseRace'].forEach(id=>{ const el=$(id); if(el) el.classList.remove('active'); }); $(name).classList.add('active'); }
+function showScreen(name){ ['screenIntro','screenGame','screenProfile','screenRules','screenShop','screenOutro','screenGuess','screenExchange','screenCasino','screenSlots','screenHorseRace','screenLechoBetting'].forEach(id=>{ const el=$(id); if(el) el.classList.remove('active'); }); $(name).classList.add('active'); }
+
+// Обновляем состояние кнопки игры на ставку
+function updateLechoBettingButton() {
+  const btn = $('btnLechoBetting');
+  const progress = $('winsProgress');
+  if (btn) {
+    // Отладочная информация
+    console.log(`winsCount: ${winsCount}, lechoBettingUnlocked: ${lechoBettingUnlocked}`);
+    
+    if (lechoBettingUnlocked) {
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      btn.style.background = 'linear-gradient(135deg, #ffd700, #ffed4e)';
+      btn.style.color = '#111';
+      btn.style.boxShadow = '0 10px 24px rgba(255, 215, 0, 0.4)';
+      btn.title = 'Играть в Лечо на ставку';
+      btn.onclick = () => showScreen('screenLechoBetting');
+      if (progress) progress.textContent = '✓';
+    } else {
+      btn.style.opacity = '0.5';
+      btn.style.cursor = 'not-allowed';
+      btn.style.background = 'var(--accent)';
+      btn.style.color = '#111';
+      btn.style.boxShadow = '0 10px 24px rgba(0,0,0,0.28)';
+      btn.title = `Откроется после 3 побед (${winsCount}/3)`;
+      btn.onclick = () => showModal(`Нужно ${3 - winsCount} побед для разблокировки игры на ставку`);
+      if (progress) progress.textContent = `(${winsCount}/3)`;
+    }
+  }
+}
 saveBalance();
+updateLechoBettingButton();
 showScreen('screenIntro');
 
 /* ============== SHOP: initial mechanics ============== */
@@ -1999,13 +2245,7 @@ if (window.Telegram && Telegram.WebApp) {
 }
 window.addEventListener('resize', syncAppHeight);
 
-// Floating inventory toggle (always accessible)
-const invToggle = document.createElement('div');
-invToggle.id = 'invToggle';
-invToggle.style.cssText = 'position:fixed; right:8px; bottom:calc(var(--bottom-bar-height) + 64px); z-index:1000; background:var(--accent-2); color:#111; font-weight:800; padding:8px 10px; border-radius:12px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.35);';
-invToggle.textContent = '🎒 Инвентарь';
-document.body.appendChild(invToggle);
-invToggle.onclick = ()=>{ const p = document.getElementById('gameInvPanel'); if(!p) return; const vis = p.style.display !== 'none'; p.style.display = vis ? 'none' : 'block'; };
+// Floating inventory toggle removed - inventory is now always visible in game
 
 /* keep global access for debugging */
 window._lecho = { startNewGame, renderShop, inventoryLoad, inventorySave };
