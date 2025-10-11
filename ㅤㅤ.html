@@ -754,11 +754,27 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxs2WbkFVvUMNRY1Pbuoz67
 // Сохранение игрока
 async function savePlayerData(id, nickname, balance, diamonds, wins) {
   try {
-    await fetch(API_URL, {
+    const response = await fetch(API_URL, {
       method: 'POST',
-      body: JSON.stringify({ id, nickname, balance, diamonds, wins })
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        action: 'save',
+        id, 
+        nickname, 
+        balance, 
+        diamonds, 
+        wins 
+      })
     });
-    console.log('Данные сохранены для ID:', id);
+    
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Данные сохранены для ID:', id, result);
+    } else {
+      console.error('Ошибка HTTP:', response.status, response.statusText);
+    }
   } catch (e) {
     console.error('Ошибка сохранения:', e);
   }
@@ -767,13 +783,46 @@ async function savePlayerData(id, nickname, balance, diamonds, wins) {
 // Загрузка игрока
 async function loadPlayerData(id) {
   try {
-    const res = await fetch(`${API_URL}?id=${id}`);
-    return await res.json();
+    const res = await fetch(`${API_URL}?action=load&id=${id}`);
+    if (res.ok) {
+      const data = await res.json();
+      console.log('Данные загружены для ID:', id, data);
+      return data;
+    } else {
+      console.error('Ошибка HTTP при загрузке:', res.status, res.statusText);
+      return null;
+    }
   } catch (e) {
     console.error('Ошибка загрузки:', e);
     return null;
   }
+}
 
+// Генерация уникального ID игрока
+function generatePlayerId() {
+  const id = 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  sessionStorage.setItem('lecho_player_id', id);
+  return id;
+}
+
+// Загрузка данных игрока при инициализации
+async function loadPlayerDataOnInit() {
+  const playerId = sessionStorage.getItem('lecho_player_id');
+  if (playerId) {
+    const data = await loadPlayerData(playerId);
+    if (data && data.success) {
+      balance = data.balance || 0;
+      diamonds = data.diamonds || 0;
+      winsCount = data.wins || 0;
+      sessionStorage.setItem('lecho_balance', String(balance));
+      sessionStorage.setItem('lecho_diamonds', String(diamonds));
+      sessionStorage.setItem('lecho_wins', String(winsCount));
+      console.log('Данные игрока загружены с сервера:', data);
+    }
+  } else {
+    // Создаем новый ID для нового игрока
+    generatePlayerId();
+  }
 }
 
 // === СИСТЕМА ПЕРЕВОДОВ ===
@@ -1412,6 +1461,11 @@ function saveBalance(){
   sessionStorage.setItem('lecho_wins', String(winsCount)); 
   ui.balanceDisplay.textContent = `🪙 ${balance} 💎 ${diamonds}`; 
   $('slotBalance').textContent = diamonds; 
+  
+  // Сохраняем данные на сервер
+  const playerId = sessionStorage.getItem('lecho_player_id') || generatePlayerId();
+  const nickname = sessionStorage.getItem('lecho_nick') || 'Player';
+  savePlayerData(playerId, nickname, balance, diamonds, winsCount);
 }
 function pickBotEmoji(){ return BOT_EMOJIS[Math.floor(Math.random()*BOT_EMOJIS.length)]; }
 function avatarHtml(a){ if(!a) return '<div class="avatar small">👤</div>'; if(a.type==='emoji') return `<div class="avatar small">${a.value}</div>`; return `<div class="avatar small"><img src="${a.value}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/></div>`; }
@@ -2875,6 +2929,12 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     console.log('languageSelect не найден!');
   }
+  
+  // Загружаем данные игрока с сервера
+  loadPlayerDataOnInit().then(() => {
+    console.log('Инициализация данных игрока завершена');
+    saveBalance(); // Обновляем UI после загрузки
+  });
 });
 
 // Если DOM уже загружен, инициализируем сразу
@@ -2895,6 +2955,12 @@ if (document.readyState === 'loading') {
   } else {
     console.log('languageSelect не найден!');
   }
+  
+  // Загружаем данные игрока с сервера
+  loadPlayerDataOnInit().then(() => {
+    console.log('Инициализация данных игрока завершена');
+    saveBalance(); // Обновляем UI после загрузки
+  });
 }
 </script>
 </body>
