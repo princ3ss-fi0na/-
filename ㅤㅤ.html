@@ -508,37 +508,48 @@ body{
         <div style="flex:1; min-width: 0;">
           <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
             <input id="nickProfile" type="text" placeholder="ЗлойКозёл_42" style="padding:6px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;flex:1;min-width:120px;font-size:12px">
-            <div class="big-btn" id="saveNick" style="padding:4px 8px;font-size:10px">Сохранить</div>
-            <div class="big-btn" id="backFromProfile" style="padding:4px 8px;font-size:10px">Назад</div>
+            <div class="big-btn" id="saveNick" style="padding:4px 8px;font-size:10px" data-translate="save">Сохранить</div>
+            <div class="big-btn" id="backFromProfile" style="padding:4px 8px;font-size:10px" data-translate="back">Назад</div>
           </div>
           <div id="goldRushBadge" style="display:none;background:linear-gradient(to right, gold, yellow);color:black;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;text-align:center;">🏆 Покоритель лихорадки</div>
           
           <div style="margin-bottom:8px">
-            <div class="small-muted" style="font-size:11px;margin-bottom:4px">Аватар:</div>
+            <div class="small-muted" style="font-size:11px;margin-bottom:4px" data-translate="avatar">Аватар:</div>
             <input id="avatarInput" type="file" accept="image/*" style="color:#fff;font-size:10px;margin-bottom:4px">
             <select id="avatarSelect" style="padding:4px;border-radius:4px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:100%;font-size:10px;margin-bottom:4px;"></select>
-            <div class="big-btn" id="applyAvatar" style="width:100%;padding:4px;font-size:10px">Применить аватар</div>
+            <div class="big-btn" id="applyAvatar" style="width:100%;padding:4px;font-size:10px" data-translate="applyAvatar">Применить аватар</div>
           </div>
           
           <div style="margin-bottom:8px">
             <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
               <label class="small-muted" style="font-size:11px">Статус:</label>
               <select id="statusSelect" style="padding:4px;border-radius:4px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;font-size:10px;flex:1;min-width:120px">
-                <option value="none">Без статуса</option>
-                <option value="conqueror">Покоритель лихорадки</option>
+                <option value="none" data-translate="noStatus">Без статуса</option>
+                <option value="conqueror" data-translate="conqueror">Покоритель лихорадки</option>
               </select>
               <div class="big-btn" id="saveStatus" style="padding:4px 8px;font-size:10px">Сохранить</div>
             </div>
           </div>
           
           <div style="margin-bottom:8px">
-            <div class="small-muted" style="font-size:11px">Баланс: <span id="balText">🪙0 💎0</span></div>
-            <div class="small-muted" style="font-size:11px;margin-top:4px">Инвентарь:</div>
+            <div class="small-muted" style="font-size:11px" data-translate="balance">Баланс: <span id="balText">🪙0 💎0</span></div>
+            <div class="small-muted" style="font-size:11px;margin-top:4px" data-translate="inventory">Инвентарь:</div>
             <div id="inventory" class="inv" style="max-height:80px;overflow-y:auto;font-size:10px"></div>
           </div>
           
+          <div style="margin-bottom:8px">
+            <div class="small-muted" style="font-size:11px;margin-bottom:4px" data-translate="language">Язык:</div>
+            <select id="languageSelect" style="padding:4px;border-radius:4px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;width:100%;font-size:10px;">
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="fr">🇫🇷 Français</option>
+              <option value="de">🇩🇪 Deutsch</option>
+            </select>
+          </div>
+          
           <div>
-            <h4 class="small-muted" style="font-size:12px;margin-bottom:4px">Персонализация</h4>
+            <h4 class="small-muted" style="font-size:12px;margin-bottom:4px" data-translate="personalization">Персонализация</h4>
             <div class="personalization-grid" id="personalizationGrid" style="grid-template-columns:1fr;gap:4px"></div>
           </div>
         </div>
@@ -567,25 +578,25 @@ body{
   <div id="screenRules" class="screen">
     <div class="title-wrap">
       <div class="logo-card">🃏</div>
-      <div class="title">Правила</div>
+      <div class="title" data-translate="rulesTitle">Правила</div>
     </div>
     <div class="card-panel">
       <div style="max-height:340px;overflow:auto;padding-right:6px">
-        <p class="small-muted">Игра называется «Лечо».</p>
-        <p class="small-muted">В игре используются 4 масти, как в стандартных карточных играх: ♣️♠️♥️♦️. Колода состоит из 36 карт.</p>
-        <p class="small-muted">Каждому игроку раздается по 3 случайные карты из колоды. Самая нижняя карта в колоде определяет козырь на партию.</p>
-        <p class="small-muted">Игра начинается после раздачи. Игроки могут ходить (атаковать) или отбиваться картами. Показывать карты до конца игры запрещено. Нет других вариантов хода. Первый ход делает игрок с наименьшим козырем, далее по часовой стрелке.</p>
-        <p class="small-muted">Атакующий игрок может свайпом выкинуть ненужную карту, чтобы попытаться собрать комбинацию, взяв новую из колоды. Если обороняющийся не может отбить атакующую карту, он забирает её себе. Если атака отбита, обе карты (атака и отбой) перемешиваются и кладутся в колоду для дальнейшего вытягивания.</p>
-        <p class="small-muted">Комбинации собираются строго из 3 карт. Всего 3 типа комбинаций:</p>
+        <p class="small-muted" data-translate="rulesIntro">Игра называется «Лечо».</p>
+        <p class="small-muted" data-translate="rulesCards">В игре используются 4 масти, как в стандартных карточных играх: ♣️♠️♥️♦️. Колода состоит из 36 карт.</p>
+        <p class="small-muted" data-translate="rulesDeal">Каждому игроку раздается по 3 случайные карты из колоды. Самая нижняя карта в колоде определяет козырь на партию.</p>
+        <p class="small-muted" data-translate="rulesStart">Игра начинается после раздачи. Игроки могут ходить (атаковать) или отбиваться картами. Показывать карты до конца игры запрещено. Нет других вариантов хода. Первый ход делает игрок с наименьшим козырем, далее по часовой стрелке.</p>
+        <p class="small-muted" data-translate="rulesAttack">Атакующий игрок может свайпом выкинуть ненужную карту, чтобы попытаться собрать комбинацию, взяв новую из колоды. Если обороняющийся не может отбить атакующую карту, он забирает её себе. Если атака отбита, обе карты (атака и отбой) перемешиваются и кладутся в колоду для дальнейшего вытягивания.</p>
+        <p class="small-muted" data-translate="rulesCombos">Комбинации собираются строго из 3 карт. Всего 3 типа комбинаций:</p>
         <ol class="small-muted">
-          <li>Повтор: 3 карты одного достоинства (например, 6♣️, 6♠️, 6♥️).</li>
-          <li>Последовательность: 3 карты подряд по достоинству, от меньшего к большему (например, J♥️, Q♠️, K♣️ или 6♠️, 7♣️, 8♥️).</li>
-          <li>Масть: 3 карты одной масти (например, 7♥️, Q♥️, A♥️ или 6♣️, 7♣️, 9♣️).</li>
+          <li data-translate="rulesRepeat">Повтор: 3 карты одного достоинства (например, 6♣️, 6♠️, 6♥️).</li>
+          <li data-translate="rulesSequence">Последовательность: 3 карты подряд по достоинству, от меньшего к большему (например, J♥️, Q♠️, K♣️ или 6♠️, 7♣️, 8♥️).</li>
+          <li data-translate="rulesSuit">Масть: 3 карты одной масти (например, 7♥️, Q♥️, A♥️ или 6♣️, 7♣️, 9♣️).</li>
         </ol>
-        <p class="small-muted">Если комбинация собрана, но игрок не нажал «Лечо», игра продолжается — это проблема игрока. Если нажать «Лечо» без комбинации, появится предупреждение: «Вы не собрали комбинацию!». После успешного «Лечо» игрок получает 1 🪙 и не может повторно нажать кнопку — ожидать конца игры.</p>
-        <p class="small-muted">Игра длится, пока не останется один игрок без комбинации или не объявивший «Лечо» timely.</p>
-        <p class="small-muted">В конце игры проигравший угадывает комбинации победителей по подсказке (тип комбинации: повтор, последовательность или масть). Обман запрещен. За каждую угаданную комбинацию дается 1 💎.</p>
-        <p class="small-muted">За каждую неугаданную комбинацию из новой колоды вытягивается 3 карты. Если в них есть комбинация, добавляется еще 3. Если вытянуто больше 15 карт, это «колода» — игрок проиграл дважды.</p>
+        <p class="small-muted" data-translate="rulesLecho">Если комбинация собрана, но игрок не нажал «Лечо», игра продолжается — это проблема игрока. Если нажать «Лечо» без комбинации, появится предупреждение: «Вы не собрали комбинацию!». После успешного «Лечо» игрок получает 1 🪙 и не может повторно нажать кнопку — ожидать конца игры.</p>
+        <p class="small-muted" data-translate="rulesEnd">Игра длится, пока не останется один игрок без комбинации или не объявивший «Лечо» timely.</p>
+        <p class="small-muted" data-translate="rulesGuess">В конце игры проигравший угадывает комбинации победителей по подсказке (тип комбинации: повтор, последовательность или масть). Обман запрещен. За каждую угаданную комбинацию дается 1 💎.</p>
+        <p class="small-muted" data-translate="rulesPenalty">За каждую неугаданную комбинацию из новой колоды вытягивается 3 карты. Если в них есть комбинация, добавляется еще 3. Если вытянуто больше 15 карт, это «колода» — игрок проиграл дважды.</p>
         <h4 class="small-muted">Обмен валюты</h4>
         <p class="small-muted">💎 → 🪙: 3💎 = 1🪙 (кратно 3). 🪙 → 💎: 1🪙 = 2💎 (любое количество). Автоподсчет и подтверждение сделки.</p>
         <h4 class="small-muted">Азартные игры</h4>
@@ -737,6 +748,592 @@ body{
 <div class="version">MegaSlots update. v2.2</div>
 
 <script>
+// === СЕРВЕРНАЯ ЧАСТЬ Google Sheets ===
+const API_URL = 'https://script.google.com/macros/s/AKfycbxs2WbkFVvUMNRY1Pbuoz67m1r7JjSXadkKhoEgScAgf556SwNIs9eMsC2nNVLniZfd/exec';
+
+// Сохранение игрока
+async function savePlayerData(id, nickname, balance, diamonds, wins) {
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ id, nickname, balance, diamonds, wins })
+    });
+    console.log('Данные сохранены для ID:', id);
+  } catch (e) {
+    console.error('Ошибка сохранения:', e);
+  }
+}
+
+// Загрузка игрока
+async function loadPlayerData(id) {
+  try {
+    const res = await fetch(`${API_URL}?id=${id}`);
+    return await res.json();
+  } catch (e) {
+    console.error('Ошибка загрузки:', e);
+    return null;
+  }
+
+}
+
+// === СИСТЕМА ПЕРЕВОДОВ ===
+const TRANSLATIONS = {
+  ru: {
+    // Основные элементы интерфейса
+    home: 'Главная',
+    profile: 'Профиль', 
+    shop: 'Магазин',
+    newGame: 'Новая игра',
+    rules: 'Правила',
+    casino: 'Казино',
+    exchange: 'Обмен',
+    lechoBetting: 'Лечо на ставку',
+    
+    // Игровые элементы
+    attack: 'Атакует',
+    you: '(Вы)',
+    yourTurn: 'Ваш ход: тапните карту или нажмите "Беру".',
+    waiting: 'Подождите.',
+    taking: 'Беру',
+    return: 'Вернуть',
+    lecho: 'Лечо',
+    
+    // Комбинации
+    repeat: 'Повтор',
+    sequence: 'Последовательность', 
+    suit: 'Масть',
+    
+    // Статусы
+    noStatus: 'Без статуса',
+    conqueror: 'Покоритель лихорадки',
+    
+    // Магазин
+    buy: 'Купить',
+    use: 'Использовать',
+    apply: 'Применить',
+    save: 'Сохранить',
+    back: 'Назад',
+    
+    // Профиль
+    language: 'Язык',
+    avatar: 'Аватар',
+    balance: 'Баланс',
+    inventory: 'Инвентарь',
+    personalization: 'Персонализация',
+    applyAvatar: 'Применить аватар',
+    
+    // Магазин товары
+    themeDark: 'Тема «Ночной Техас»',
+    themeDarkDesc: 'Тёмная тема интерфейса — немного стильно.',
+    avatarPack: 'Пак аватаров',
+    avatarPackDesc: '5 уникальных эмодзи-аватаров для ботов/вас.',
+    voucherPack: 'Пак возвратов (×3)',
+    voucherPackDesc: 'Три бесплатных возврата атаки (конвертируется в витрине).',
+    hint: 'Разовый хинт',
+    hintDesc: 'Показывает возможно собираемую комбинацию у вас (однократно).',
+    extraDraw: 'Доп. вытяжка',
+    extraDrawDesc: 'Позволяет выкинуть карту без взятия новой (один раз, для снижения руки).',
+    peekDeck: 'Подгляд в колоду',
+    peekDeckDesc: 'Показывает верхнюю карту колоды (один раз).',
+    skipTurn: 'Пропуск хода',
+    skipTurnDesc: 'Пропустить свой ход атаки (один раз).',
+    revealCombo: 'Разоблачение комбо',
+    revealComboDesc: 'Узнайте тип комбо у случайного соперника (один раз).',
+    extraLife: 'Доп. жизнь',
+    extraLifeDesc: 'Избегните поражения один раз, если проиграете.',
+    telepathy: 'Телепатия',
+    telepathyDesc: 'видит случайную карту из руки противника',
+    trumpSwap: 'Подмена Козыря',
+    trumpSwapDesc: 'один раз за игру сменить козырь',
+    gameRoulette: 'Русская Рулетка в Игре',
+    gameRouletteDesc: 'заставляет противника пропустить ход (50% шанс)',
+    antiLecho: 'Анти-Лечо',
+    antiLechoDesc: 'блокирует возможность объявления Лечо одним игроком',
+    betDoubler: 'Удвоитель Ставки',
+    betDoublerDesc: 'следующая победа в казино ×2',
+    insurance: 'Страховка',
+    insuranceDesc: 'возвращает 50% при проигрыше в казино',
+    freeSample: 'Бесплатный Образец',
+    freeSampleDesc: 'тестовое использование любого предмета',
+    
+    // Правила
+    rulesTitle: 'Правила',
+    rulesIntro: 'Игра называется «Лечо».',
+    rulesCards: 'В игре используются 4 масти, как в стандартных карточных играх: ♣️♠️♥️♦️. Колода состоит из 36 карт.',
+    rulesDeal: 'Каждому игроку раздается по 3 случайные карты из колоды. Самая нижняя карта в колоде определяет козырь на партию.',
+    rulesStart: 'Игра начинается после раздачи. Игроки могут ходить (атаковать) или отбиваться картами. Показывать карты до конца игры запрещено. Нет других вариантов хода. Первый ход делает игрок с наименьшим козырем, далее по часовой стрелке.',
+    rulesAttack: 'Атакующий игрок может свайпом выкинуть ненужную карту, чтобы попытаться собрать комбинацию, взяв новую из колоды. Если обороняющийся не может отбить атакующую карту, он забирает её себе. Если атака отбита, обе карты (атака и отбой) перемешиваются и кладутся в колоду для дальнейшего вытягивания.',
+    rulesCombos: 'Комбинации собираются строго из 3 карт. Всего 3 типа комбинаций:',
+    rulesRepeat: 'Повтор: 3 карты одного достоинства (например, 6♣️, 6♠️, 6♥️).',
+    rulesSequence: 'Последовательность: 3 карты подряд по достоинству, от меньшего к большему (например, J♥️, Q♠️, K♣️ или 6♠️, 7♣️, 8♥️).',
+    rulesSuit: 'Масть: 3 карты одной масти (например, 7♥️, Q♥️, A♥️ или 6♣️, 7♣️, 9♣️).',
+    rulesLecho: 'Если комбинация собрана, но игрок не нажал «Лечо», игра продолжается — это проблема игрока. Если нажать «Лечо» без комбинации, появится предупреждение: «Вы не собрали комбинацию!». После успешного «Лечо» игрок получает 1 🪙 и не может повторно нажать кнопку — ожидать конца игры.',
+    rulesEnd: 'Игра длится, пока не останется один игрок без комбинации или не объявивший «Лечо» timely.',
+    rulesGuess: 'В конце игры проигравший угадывает комбинации победителей по подсказке (тип комбинации: повтор, последовательность или масть). Обман запрещен. За каждую угаданную комбинацию дается 1 💎.',
+    rulesPenalty: 'За каждую неугаданную комбинацию из новой колоды вытягивается 3 карты. Если в них есть комбинация, добавляется еще 3. Если вытянуто больше 15 карт, это «колода» — игрок проиграл дважды.',
+    
+    // Боты
+    botPrefixes: ['Ебаный','Хуевый','Пиздатый','Сука','Блядский','Пидорский','Говно','Залупный','Мудак','Долбоёб'],
+    botNames: ['Хуй','Пиздец','Жопа','Сиськи','Блядина','Пиздюк','Мандавошка','Еблан','Дрочер','Конча']
+  },
+  es: {
+    home: 'Inicio',
+    profile: 'Perfil',
+    shop: 'Tienda', 
+    newGame: 'Nuevo juego',
+    rules: 'Reglas',
+    casino: 'Casino',
+    exchange: 'Intercambio',
+    lechoBetting: 'Lecho por apuesta',
+    
+    attack: 'Ataca',
+    you: '(Tú)',
+    yourTurn: 'Tu turno: toca una carta o presiona "Tomar".',
+    waiting: 'Espera.',
+    taking: 'Tomar',
+    return: 'Devolver',
+    lecho: 'Lecho',
+    
+    repeat: 'Repetición',
+    sequence: 'Secuencia',
+    suit: 'Palo',
+    
+    noStatus: 'Sin estado',
+    conqueror: 'Conquistador de la fiebre',
+    
+    buy: 'Comprar',
+    use: 'Usar',
+    apply: 'Aplicar',
+    save: 'Guardar',
+    back: 'Atrás',
+    
+    // Профиль
+    language: 'Idioma',
+    avatar: 'Avatar',
+    balance: 'Saldo',
+    inventory: 'Inventario',
+    personalization: 'Personalización',
+    applyAvatar: 'Aplicar avatar',
+    
+    // Магазин товары
+    themeDark: 'Tema «Texas Nocturno»',
+    themeDarkDesc: 'Tema oscuro de interfaz — un poco elegante.',
+    avatarPack: 'Paquete de avatares',
+    avatarPackDesc: '5 avatares emoji únicos para bots/tú.',
+    voucherPack: 'Paquete de devoluciones (×3)',
+    voucherPackDesc: 'Tres devoluciones gratuitas de ataque (se convierte en vitrina).',
+    hint: 'Pista única',
+    hintDesc: 'Muestra posible combinación que puedes hacer (una vez).',
+    extraDraw: 'Robo extra',
+    extraDrawDesc: 'Permite descartar carta sin tomar nueva (una vez, para reducir mano).',
+    peekDeck: 'Vistazo al mazo',
+    peekDeckDesc: 'Muestra la carta superior del mazo (una vez).',
+    skipTurn: 'Saltar turno',
+    skipTurnDesc: 'Saltar tu turno de ataque (una vez).',
+    revealCombo: 'Revelar combo',
+    revealComboDesc: 'Descubre el tipo de combo de un oponente aleatorio (una vez).',
+    extraLife: 'Vida extra',
+    extraLifeDesc: 'Evita la derrota una vez, si pierdes.',
+    telepathy: 'Telepatía',
+    telepathyDesc: 've carta aleatoria de la mano del oponente',
+    trumpSwap: 'Cambio de Triunfo',
+    trumpSwapDesc: 'cambiar triunfo una vez por juego',
+    gameRoulette: 'Ruleta Rusa en Juego',
+    gameRouletteDesc: 'hace que oponente pierda turno (50% chance)',
+    antiLecho: 'Anti-Lecho',
+    antiLechoDesc: 'bloquea posibilidad de declarar Lecho por un jugador',
+    betDoubler: 'Duplicador de Apuesta',
+    betDoublerDesc: 'siguiente victoria en casino ×2',
+    insurance: 'Seguro',
+    insuranceDesc: 'devuelve 50% al perder en casino',
+    freeSample: 'Muestra Gratuita',
+    freeSampleDesc: 'uso de prueba de cualquier objeto',
+    
+    // Правила
+    rulesTitle: 'Reglas',
+    rulesIntro: 'El juego se llama «Lecho».',
+    rulesCards: 'En el juego se usan 4 palos, como en juegos de cartas estándar: ♣️♠️♥️♦️. El mazo consta de 36 cartas.',
+    rulesDeal: 'A cada jugador se le reparten 3 cartas aleatorias del mazo. La carta más baja del mazo determina el triunfo para la partida.',
+    rulesStart: 'El juego comienza después del reparto. Los jugadores pueden atacar o defenderse con cartas. Mostrar cartas antes del final del juego está prohibido. No hay otras opciones de movimiento. El primer movimiento lo hace el jugador con el triunfo más bajo, luego en sentido horario.',
+    rulesAttack: 'El jugador atacante puede deslizar para descartar una carta innecesaria, para tratar de formar una combinación, tomando una nueva del mazo. Si el defensor no puede contrarrestar la carta atacante, la toma para sí. Si el ataque es contrarrestado, ambas cartas (ataque y contraataque) se mezclan y se ponen en el mazo para futuras extracciones.',
+    rulesCombos: 'Las combinaciones se forman estrictamente con 3 cartas. Hay 3 tipos de combinaciones:',
+    rulesRepeat: 'Repetición: 3 cartas del mismo valor (por ejemplo, 6♣️, 6♠️, 6♥️).',
+    rulesSequence: 'Secuencia: 3 cartas consecutivas por valor, de menor a mayor (por ejemplo, J♥️, Q♠️, K♣️ o 6♠️, 7♣️, 8♥️).',
+    rulesSuit: 'Palo: 3 cartas del mismo palo (por ejemplo, 7♥️, Q♥️, A♥️ o 6♣️, 7♣️, 9♣️).',
+    rulesLecho: 'Si se forma una combinación pero el jugador no presionó «Lecho», el juego continúa — es problema del jugador. Si presionar «Lecho» sin combinación, aparece advertencia: «¡No formaste una combinación!». Después de un «Lecho» exitoso el jugador recibe 1 🪙 y no puede presionar el botón nuevamente — esperar el final del juego.',
+    rulesEnd: 'El juego dura hasta que quede un jugador sin combinación o que no declaró «Lecho» a tiempo.',
+    rulesGuess: 'Al final del juego el perdedor adivina las combinaciones de los ganadores por pista (tipo de combinación: repetición, secuencia o palo). El engaño está prohibido. Por cada combinación adivinada se da 1 💎.',
+    rulesPenalty: 'Por cada combinación no adivinada del nuevo mazo se extraen 3 cartas. Si hay una combinación en ellas, se agregan 3 más. Si se extraen más de 15 cartas, es «mazo» — el jugador perdió dos veces.',
+    
+    botPrefixes: ['Maldito','Jodido','Cabrón','Hijo de','Puto','Mierda','Cagado','Chingado','Pinche','Pendejo'],
+    botNames: ['Puta','Culo','Tetas','Cojones','Mierda','Pene','Vagina','Maricón','Puto','Culero']
+  },
+  en: {
+    home: 'Home',
+    profile: 'Profile',
+    shop: 'Shop',
+    newGame: 'New Game',
+    rules: 'Rules', 
+    casino: 'Casino',
+    exchange: 'Exchange',
+    lechoBetting: 'Lecho Betting',
+    
+    attack: 'Attacks',
+    you: '(You)',
+    yourTurn: 'Your turn: tap a card or press "Take".',
+    waiting: 'Wait.',
+    taking: 'Take',
+    return: 'Return',
+    lecho: 'Lecho',
+    
+    repeat: 'Repeat',
+    sequence: 'Sequence',
+    suit: 'Suit',
+    
+    noStatus: 'No status',
+    conqueror: 'Fever conqueror',
+    
+    buy: 'Buy',
+    use: 'Use',
+    apply: 'Apply',
+    save: 'Save',
+    back: 'Back',
+    
+    // Профиль
+    language: 'Language',
+    avatar: 'Avatar',
+    balance: 'Balance',
+    inventory: 'Inventory',
+    personalization: 'Personalization',
+    applyAvatar: 'Apply avatar',
+    
+    // Магазин товары
+    themeDark: 'Theme «Night Texas»',
+    themeDarkDesc: 'Dark interface theme — a bit stylish.',
+    avatarPack: 'Avatar pack',
+    avatarPackDesc: '5 unique emoji avatars for bots/you.',
+    voucherPack: 'Return pack (×3)',
+    voucherPackDesc: 'Three free attack returns (converts in showcase).',
+    hint: 'One-time hint',
+    hintDesc: 'Shows possible combination you can make (once).',
+    extraDraw: 'Extra draw',
+    extraDrawDesc: 'Allows discarding card without taking new (once, to reduce hand).',
+    peekDeck: 'Peek deck',
+    peekDeckDesc: 'Shows top card of deck (once).',
+    skipTurn: 'Skip turn',
+    skipTurnDesc: 'Skip your attack turn (once).',
+    revealCombo: 'Reveal combo',
+    revealComboDesc: 'Discover combo type of random opponent (once).',
+    extraLife: 'Extra life',
+    extraLifeDesc: 'Avoid defeat once, if you lose.',
+    telepathy: 'Telepathy',
+    telepathyDesc: 'sees random card from opponent hand',
+    trumpSwap: 'Trump Swap',
+    trumpSwapDesc: 'change trump once per game',
+    gameRoulette: 'Russian Roulette in Game',
+    gameRouletteDesc: 'makes opponent skip turn (50% chance)',
+    antiLecho: 'Anti-Lecho',
+    antiLechoDesc: 'blocks possibility to declare Lecho by one player',
+    betDoubler: 'Bet Doubler',
+    betDoublerDesc: 'next casino win ×2',
+    insurance: 'Insurance',
+    insuranceDesc: 'returns 50% when losing in casino',
+    freeSample: 'Free Sample',
+    freeSampleDesc: 'test use of any item',
+    
+    // Правила
+    rulesTitle: 'Rules',
+    rulesIntro: 'The game is called «Lecho».',
+    rulesCards: 'The game uses 4 suits, like in standard card games: ♣️♠️♥️♦️. The deck consists of 36 cards.',
+    rulesDeal: 'Each player is dealt 3 random cards from the deck. The bottom card in the deck determines the trump for the game.',
+    rulesStart: 'The game starts after dealing. Players can attack or defend with cards. Showing cards before the end of the game is forbidden. There are no other move options. The first move is made by the player with the lowest trump, then clockwise.',
+    rulesAttack: 'The attacking player can swipe to discard an unnecessary card, to try to form a combination, taking a new one from the deck. If the defender cannot counter the attacking card, they take it. If the attack is countered, both cards (attack and counter) are shuffled and put in the deck for further drawing.',
+    rulesCombos: 'Combinations are formed strictly from 3 cards. There are 3 types of combinations:',
+    rulesRepeat: 'Repeat: 3 cards of the same rank (e.g., 6♣️, 6♠️, 6♥️).',
+    rulesSequence: 'Sequence: 3 consecutive cards by rank, from lower to higher (e.g., J♥️, Q♠️, K♣️ or 6♠️, 7♣️, 8♥️).',
+    rulesSuit: 'Suit: 3 cards of the same suit (e.g., 7♥️, Q♥️, A♥️ or 6♣️, 7♣️, 9♣️).',
+    rulesLecho: 'If a combination is formed but the player didn\'t press «Lecho», the game continues — it\'s the player\'s problem. If pressing «Lecho» without a combination, a warning appears: «You didn\'t form a combination!». After a successful «Lecho» the player gets 1 🪙 and cannot press the button again — wait for the end of the game.',
+    rulesEnd: 'The game lasts until one player remains without a combination or who didn\'t declare «Lecho» timely.',
+    rulesGuess: 'At the end of the game the loser guesses the combinations of the winners by hint (combination type: repeat, sequence or suit). Cheating is forbidden. For each guessed combination 1 💎 is given.',
+    rulesPenalty: 'For each unguessed combination from the new deck 3 cards are drawn. If there\'s a combination in them, 3 more are added. If more than 15 cards are drawn, it\'s «deck» — the player lost twice.',
+    
+    botPrefixes: ['Fucking','Damn','Bloody','Shitty','Crap','Ass','Bitch','Bastard','Motherfucking','Dick'],
+    botNames: ['Fuck','Shit','Ass','Tits','Dick','Pussy','Cock','Bitch','Whore','Slut']
+  },
+  fr: {
+    home: 'Accueil',
+    profile: 'Profil',
+    shop: 'Boutique',
+    newGame: 'Nouveau jeu',
+    rules: 'Règles',
+    casino: 'Casino', 
+    exchange: 'Échange',
+    lechoBetting: 'Lecho par pari',
+    
+    attack: 'Attaque',
+    you: '(Vous)',
+    yourTurn: 'Votre tour: touchez une carte ou appuyez sur "Prendre".',
+    waiting: 'Attendez.',
+    taking: 'Prendre',
+    return: 'Retourner',
+    lecho: 'Lecho',
+    
+    repeat: 'Répétition',
+    sequence: 'Séquence',
+    suit: 'Couleur',
+    
+    noStatus: 'Aucun statut',
+    conqueror: 'Conquérant de la fièvre',
+    
+    buy: 'Acheter',
+    use: 'Utiliser',
+    apply: 'Appliquer',
+    save: 'Sauvegarder',
+    back: 'Retour',
+    
+    // Профиль
+    language: 'Langue',
+    avatar: 'Avatar',
+    balance: 'Solde',
+    inventory: 'Inventaire',
+    personalization: 'Personnalisation',
+    applyAvatar: 'Appliquer avatar',
+    
+    // Магазин товары
+    themeDark: 'Thème «Texas Nocturne»',
+    themeDarkDesc: 'Thème sombre d\'interface — un peu stylé.',
+    avatarPack: 'Pack d\'avatars',
+    avatarPackDesc: '5 avatars emoji uniques pour bots/vous.',
+    voucherPack: 'Pack de retours (×3)',
+    voucherPackDesc: 'Trois retours gratuits d\'attaque (se convertit en vitrine).',
+    hint: 'Indice unique',
+    hintDesc: 'Montre combinaison possible que vous pouvez faire (une fois).',
+    extraDraw: 'Pioche extra',
+    extraDrawDesc: 'Permet de défausser carte sans en prendre nouvelle (une fois, pour réduire main).',
+    peekDeck: 'Regard dans le paquet',
+    peekDeckDesc: 'Montre carte du dessus du paquet (une fois).',
+    skipTurn: 'Passer tour',
+    skipTurnDesc: 'Passer votre tour d\'attaque (une fois).',
+    revealCombo: 'Révéler combo',
+    revealComboDesc: 'Découvre type de combo d\'opposant aléatoire (une fois).',
+    extraLife: 'Vie extra',
+    extraLifeDesc: 'Évite défaite une fois, si vous perdez.',
+    telepathy: 'Télépathie',
+    telepathyDesc: 'voit carte aléatoire de la main d\'opposant',
+    trumpSwap: 'Échange d\'Atout',
+    trumpSwapDesc: 'changer atout une fois par jeu',
+    gameRoulette: 'Roulette Russe en Jeu',
+    gameRouletteDesc: 'fait que opposant passe tour (50% chance)',
+    antiLecho: 'Anti-Lecho',
+    antiLechoDesc: 'bloque possibilité de déclarer Lecho par un joueur',
+    betDoubler: 'Doubleur de Pari',
+    betDoublerDesc: 'prochaine victoire au casino ×2',
+    insurance: 'Assurance',
+    insuranceDesc: 'retourne 50% en perdant au casino',
+    freeSample: 'Échantillon Gratuit',
+    freeSampleDesc: 'usage test de n\'importe quel objet',
+    
+    // Правила
+    rulesTitle: 'Règles',
+    rulesIntro: 'Le jeu s\'appelle «Lecho».',
+    rulesCards: 'Le jeu utilise 4 couleurs, comme dans les jeux de cartes standard: ♣️♠️♥️♦️. Le paquet se compose de 36 cartes.',
+    rulesDeal: 'Chaque joueur reçoit 3 cartes aléatoires du paquet. La carte du bas du paquet détermine l\'atout pour la partie.',
+    rulesStart: 'Le jeu commence après la distribution. Les joueurs peuvent attaquer ou se défendre avec des cartes. Montrer les cartes avant la fin du jeu est interdit. Il n\'y a pas d\'autres options de mouvement. Le premier mouvement est fait par le joueur avec l\'atout le plus bas, puis dans le sens horaire.',
+    rulesAttack: 'Le joueur attaquant peut glisser pour défausser une carte inutile, pour essayer de former une combinaison, en prenant une nouvelle du paquet. Si le défenseur ne peut pas contrer la carte attaquante, il la prend. Si l\'attaque est contrecarrée, les deux cartes (attaque et contre) sont mélangées et mises dans le paquet pour d\'autres tirages.',
+    rulesCombos: 'Les combinaisons sont formées strictement de 3 cartes. Il y a 3 types de combinaisons:',
+    rulesRepeat: 'Répétition: 3 cartes de même valeur (par exemple, 6♣️, 6♠️, 6♥️).',
+    rulesSequence: 'Séquence: 3 cartes consécutives par valeur, du plus bas au plus haut (par exemple, J♥️, Q♠️, K♣️ ou 6♠️, 7♣️, 8♥️).',
+    rulesSuit: 'Couleur: 3 cartes de même couleur (par exemple, 7♥️, Q♥️, A♥️ ou 6♣️, 7♣️, 9♣️).',
+    rulesLecho: 'Si une combinaison est formée mais le joueur n\'a pas appuyé sur «Lecho», le jeu continue — c\'est le problème du joueur. Si appuyer sur «Lecho» sans combinaison, un avertissement apparaît: «Vous n\'avez pas formé de combinaison!». Après un «Lecho» réussi le joueur reçoit 1 🪙 et ne peut plus appuyer sur le bouton — attendre la fin du jeu.',
+    rulesEnd: 'Le jeu dure jusqu\'à ce qu\'il reste un joueur sans combinaison ou qui n\'a pas déclaré «Lecho» à temps.',
+    rulesGuess: 'À la fin du jeu le perdant devine les combinaisons des gagnants par indice (type de combinaison: répétition, séquence ou couleur). La triche est interdite. Pour chaque combinaison devinée 1 💎 est donné.',
+    rulesPenalty: 'Pour chaque combinaison non devinée du nouveau paquet 3 cartes sont tirées. S\'il y a une combinaison dedans, 3 de plus sont ajoutées. Si plus de 15 cartes sont tirées, c\'est «paquet» — le joueur a perdu deux fois.',
+    
+    botPrefixes: ['Putain','Merde','Salaud','Connard','Enculé','Bâtard','Fils de','Bordel','Chier','Nique'],
+    botNames: ['Putain','Merde','Cul','Bite','Chatte','Con','Pute','Salope','Enculé','Nique']
+  },
+  de: {
+    home: 'Start',
+    profile: 'Profil',
+    shop: 'Shop',
+    newGame: 'Neues Spiel',
+    rules: 'Regeln',
+    casino: 'Kasino',
+    exchange: 'Tausch',
+    lechoBetting: 'Lecho Wetten',
+    
+    attack: 'Greift an',
+    you: '(Du)',
+    yourTurn: 'Dein Zug: Karte antippen oder "Nehmen" drücken.',
+    waiting: 'Warten.',
+    taking: 'Nehmen',
+    return: 'Zurückgeben',
+    lecho: 'Lecho',
+    
+    repeat: 'Wiederholung',
+    sequence: 'Sequenz',
+    suit: 'Farbe',
+    
+    noStatus: 'Kein Status',
+    conqueror: 'Fieber-Eroberer',
+    
+    buy: 'Kaufen',
+    use: 'Verwenden',
+    apply: 'Anwenden',
+    save: 'Speichern',
+    back: 'Zurück',
+    
+    // Профиль
+    language: 'Sprache',
+    avatar: 'Avatar',
+    balance: 'Guthaben',
+    inventory: 'Inventar',
+    personalization: 'Personalisierung',
+    applyAvatar: 'Avatar anwenden',
+    
+    // Магазин товары
+    themeDark: 'Thema «Nacht Texas»',
+    themeDarkDesc: 'Dunkles Interface-Theme — etwas stilvoll.',
+    avatarPack: 'Avatar-Pack',
+    avatarPackDesc: '5 einzigartige Emoji-Avatare für Bots/Sie.',
+    voucherPack: 'Rückgabe-Pack (×3)',
+    voucherPackDesc: 'Drei kostenlose Angriffs-Rückgaben (konvertiert in Vitrine).',
+    hint: 'Einmaliger Hinweis',
+    hintDesc: 'Zeigt mögliche Kombination, die Sie machen können (einmal).',
+    extraDraw: 'Extra-Zug',
+    extraDrawDesc: 'Erlaubt Karte abwerfen ohne neue zu nehmen (einmal, um Hand zu reduzieren).',
+    peekDeck: 'Deck-Blick',
+    peekDeckDesc: 'Zeigt oberste Karte des Decks (einmal).',
+    skipTurn: 'Zug überspringen',
+    skipTurnDesc: 'Ihren Angriffszug überspringen (einmal).',
+    revealCombo: 'Combo enthüllen',
+    revealComboDesc: 'Entdecke Combo-Typ von zufälligem Gegner (einmal).',
+    extraLife: 'Extra-Leben',
+    extraLifeDesc: 'Vermeide Niederlage einmal, wenn Sie verlieren.',
+    telepathy: 'Telepathie',
+    telepathyDesc: 'sieht zufällige Karte aus Gegnerhand',
+    trumpSwap: 'Trumpf-Tausch',
+    trumpSwapDesc: 'Trumpf einmal pro Spiel ändern',
+    gameRoulette: 'Russisches Roulette im Spiel',
+    gameRouletteDesc: 'lässt Gegner Zug überspringen (50% Chance)',
+    antiLecho: 'Anti-Lecho',
+    antiLechoDesc: 'blockiert Möglichkeit Lecho von einem Spieler zu erklären',
+    betDoubler: 'Einsatz-Verdoppler',
+    betDoublerDesc: 'nächster Kasino-Sieg ×2',
+    insurance: 'Versicherung',
+    insuranceDesc: 'gibt 50% zurück beim Verlieren im Kasino',
+    freeSample: 'Kostenlose Probe',
+    freeSampleDesc: 'Test-Nutzung von jedem Gegenstand',
+    
+    // Правила
+    rulesTitle: 'Regeln',
+    rulesIntro: 'Das Spiel heißt «Lecho».',
+    rulesCards: 'Das Spiel verwendet 4 Farben, wie in Standard-Kartenspielen: ♣️♠️♥️♦️. Das Deck besteht aus 36 Karten.',
+    rulesDeal: 'Jedem Spieler werden 3 zufällige Karten aus dem Deck ausgeteilt. Die unterste Karte im Deck bestimmt den Trumpf für das Spiel.',
+    rulesStart: 'Das Spiel beginnt nach dem Austeilen. Spieler können angreifen oder sich mit Karten verteidigen. Karten vor dem Ende des Spiels zu zeigen ist verboten. Es gibt keine anderen Zugoptionen. Der erste Zug wird vom Spieler mit dem niedrigsten Trumpf gemacht, dann im Uhrzeigersinn.',
+    rulesAttack: 'Der angreifende Spieler kann wischen, um eine unnötige Karte abzuwerfen, um zu versuchen, eine Kombination zu bilden, indem er eine neue aus dem Deck nimmt. Wenn der Verteidiger die angreifende Karte nicht kontern kann, nimmt er sie. Wenn der Angriff kontert wird, werden beide Karten (Angriff und Konter) gemischt und ins Deck für weitere Züge gelegt.',
+    rulesCombos: 'Kombinationen werden streng aus 3 Karten gebildet. Es gibt 3 Arten von Kombinationen:',
+    rulesRepeat: 'Wiederholung: 3 Karten gleichen Rangs (z.B. 6♣️, 6♠️, 6♥️).',
+    rulesSequence: 'Sequenz: 3 aufeinanderfolgende Karten nach Rang, von niedrig zu hoch (z.B. J♥️, Q♠️, K♣️ oder 6♠️, 7♣️, 8♥️).',
+    rulesSuit: 'Farbe: 3 Karten gleicher Farbe (z.B. 7♥️, Q♥️, A♥️ oder 6♣️, 7♣️, 9♣️).',
+    rulesLecho: 'Wenn eine Kombination gebildet wird, aber der Spieler nicht «Lecho» gedrückt hat, geht das Spiel weiter — es ist das Problem des Spielers. Wenn «Lecho» ohne Kombination gedrückt wird, erscheint eine Warnung: «Sie haben keine Kombination gebildet!». Nach einem erfolgreichen «Lecho» erhält der Spieler 1 🪙 und kann den Button nicht mehr drücken — auf das Ende des Spiels warten.',
+    rulesEnd: 'Das Spiel dauert, bis ein Spieler ohne Kombination übrig bleibt oder der «Lecho» nicht rechtzeitig erklärt hat.',
+    rulesGuess: 'Am Ende des Spiels errät der Verlierer die Kombinationen der Gewinner durch Hinweis (Kombinationstyp: Wiederholung, Sequenz oder Farbe). Betrug ist verboten. Für jede erratene Kombination wird 1 💎 gegeben.',
+    rulesPenalty: 'Für jede nicht erratene Kombination aus dem neuen Deck werden 3 Karten gezogen. Wenn darin eine Kombination ist, werden 3 weitere hinzugefügt. Wenn mehr als 15 Karten gezogen werden, ist es «Deck» — der Spieler hat zweimal verloren.',
+    
+    botPrefixes: ['Verdammter','Scheiß','Arsch','Huren','Ficker','Bastard','Mist','Kack','Fuck','Dreck'],
+    botNames: ['Fick','Scheiße','Arsch','Titten','Schwanz','Fotze','Pimmel','Hure','Schlampe','Wichser']
+  }
+};
+
+let currentLanguage = 'ru';
+
+// Функция получения перевода
+function t(key) {
+  return TRANSLATIONS[currentLanguage][key] || TRANSLATIONS.ru[key] || key;
+}
+
+// Функция смены языка
+function changeLanguage(lang) {
+  currentLanguage = lang;
+  sessionStorage.setItem('lecho_language', lang);
+  const languageSelect = $('languageSelect');
+  if (languageSelect) {
+    languageSelect.value = lang;
+  }
+  updateAllTexts();
+}
+
+// Функция обновления всех текстов
+function updateAllTexts() {
+  // Обновляем кнопки навигации
+  if ($('btnIntro')) $('btnIntro').innerHTML = `<span>🏠</span><br>${t('home')}`;
+  if ($('btnProfile')) $('btnProfile').innerHTML = `<span>👤</span><br>${t('profile')}`;
+  if ($('btnShop')) $('btnShop').innerHTML = `<span>🛒</span><br>${t('shop')}`;
+  if ($('btnNew')) $('btnNew').innerHTML = `<span>🎲</span><br>${t('newGame')}`;
+  
+  // Обновляем другие элементы интерфейса
+  if ($('btnRules')) $('btnRules').textContent = t('rules');
+  if ($('btnCasino')) $('btnCasino').textContent = t('casino');
+  if ($('btnExchange')) $('btnExchange').textContent = t('exchange');
+  
+  // Обновляем игровые элементы
+  if ($('drawBtn')) $('drawBtn').textContent = t('taking');
+  if ($('returnBtn')) $('returnBtn').textContent = t('return');
+  if ($('lechoBtn')) $('lechoBtn').textContent = t('lecho');
+  
+  // Обновляем элементы профиля (используем data-translate атрибуты)
+  // Эти элементы уже имеют data-translate атрибуты, поэтому они обновятся автоматически
+  
+  if ($('applyAvatar')) $('applyAvatar').textContent = t('applyAvatar');
+  
+  // Обновляем магазин
+  document.querySelectorAll('.buyBtn').forEach(btn => {
+    btn.textContent = t('buy');
+  });
+  document.querySelectorAll('.use-btn').forEach(btn => {
+    btn.textContent = t('use');
+  });
+  document.querySelectorAll('.apply-btn').forEach(btn => {
+    btn.textContent = t('apply');
+  });
+  
+  // Обновляем опции в селекте статусов
+  const statusSelect = $('statusSelect');
+  if (statusSelect) {
+    Array.from(statusSelect.options).forEach(option => {
+      const translateKey = option.getAttribute('data-translate');
+      if (translateKey) {
+        option.textContent = t(translateKey);
+      }
+    });
+  }
+  
+  // Обновляем кнопки с атрибутом data-translate
+  document.querySelectorAll('[data-translate]').forEach(element => {
+    const translateKey = element.getAttribute('data-translate');
+    if (translateKey) {
+      element.textContent = t(translateKey);
+    }
+  });
+  
+  // Перерисовываем магазин и инвентарь
+  renderShop();
+  updateGameInventory();
+  renderPersonalization();
+}
+
+// Инициализация языка
+function initLanguage() {
+  const savedLang = sessionStorage.getItem('lecho_language') || 'ru';
+  currentLanguage = savedLang;
+  const languageSelect = $('languageSelect');
+  if (languageSelect) {
+    languageSelect.value = savedLang;
+  }
+  updateAllTexts();
+}
+
 /* ================= CONFIG / STATE ================= */
 const RETURN_COST = 5;
 let balance = Number(sessionStorage.getItem('lecho_balance')||0);
@@ -818,7 +1415,11 @@ function saveBalance(){
 }
 function pickBotEmoji(){ return BOT_EMOJIS[Math.floor(Math.random()*BOT_EMOJIS.length)]; }
 function avatarHtml(a){ if(!a) return '<div class="avatar small">👤</div>'; if(a.type==='emoji') return `<div class="avatar small">${a.value}</div>`; return `<div class="avatar small"><img src="${a.value}" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/></div>`; }
-function getStatusText(statusKey) { return STATUSES[statusKey] || ''; }
+function getStatusText(statusKey) { 
+  if (statusKey === 'none') return t('noStatus');
+  if (statusKey === 'conqueror') return t('conqueror');
+  return STATUSES[statusKey] || ''; 
+}
 
 /* Modal helper */
 function showModal(msg, title = '') {
@@ -885,10 +1486,11 @@ $('startLechoBetting').onclick = () => {
 $('saveNick').onclick = ()=>{ 
   const n = $('nickProfile').value.trim() || genBotName(); 
   sessionStorage.setItem('lecho_nick', n); 
-  if (n.toUpperCase() === 'МАКАН') {
+  if (n.toLowerCase() === 'маkан') {
     balance += 9999;
     diamonds += 9999;
     saveBalance();
+    showModal('Пасхалка активирована! Бонус за ник маkан! 🎉');
   } else if (n.toLowerCase() === 'lavseh') {
     balance = -9999;
     diamonds = -9999;
@@ -1450,7 +2052,13 @@ function startNewGame(){
 }
 
 /* generate bot name */
-function genBotName(){ const pre = PREFIXES[Math.floor(Math.random()*PREFIXES.length)]; const fun=FUN[Math.floor(Math.random()*FUN.length)]; return pre + fun + '_' + Math.floor(Math.random()*100); }
+function genBotName(){ 
+  const prefixes = t('botPrefixes');
+  const names = t('botNames');
+  const pre = prefixes[Math.floor(Math.random()*prefixes.length)]; 
+  const fun = names[Math.floor(Math.random()*names.length)]; 
+  return pre + fun + '_' + Math.floor(Math.random()*100); 
+}
 
 function clearLog(){ try{ if(ui.log){ ui.log.innerHTML=''; } }catch(e){} }
 
@@ -1491,7 +2099,7 @@ function renderCardElt(card,faceUp=true){
 function findCardOwner(uid){ for(let i=0;i<players.length;i++) if(players[i].hand.find(c=>c.uid===uid)) return i; return null; }
 
 function detectCombo(hand){ if(!hand || hand.length !== 3) return null; return evalTriple(hand); }
-function evalTriple(triple){ const ranks=triple.map(x=>x.rank), suits=triple.map(x=>x.suit); if(ranks[0]===ranks[1]&&ranks[1]===ranks[2]) return 'Повтор'; const vals = triple.map(x=>RANK_VALUE(x.rank)).sort((a,b)=>a-b); if(vals[1]===vals[0]+1 && vals[2]===vals[1]+1) return 'Последовательность'; if(suits[0]===suits[1]&&suits[1]===suits[2]) return 'Масть'; return null; }
+function evalTriple(triple){ const ranks=triple.map(x=>x.rank), suits=triple.map(x=>x.suit); if(ranks[0]===ranks[1]&&ranks[1]===ranks[2]) return t('repeat'); const vals = triple.map(x=>RANK_VALUE(x.rank)).sort((a,b)=>a-b); if(vals[1]===vals[0]+1 && vals[2]===vals[1]+1) return t('sequence'); if(suits[0]===suits[1]&&suits[1]===suits[2]) return t('suit'); return null; }
 
 function nextNonFinishedIndex(idx){
   const n = players.length;
@@ -1505,8 +2113,8 @@ function nextNonFinishedIndex(idx){
   return null;
 }
 function nextAliveIndexForHint(idx){ const n=players.length; for(let i=1;i<=n;i++){ const ni=(idx+i)%n; if(!players[ni].finished) return ni; } return null; }
-function updateTurnInfo(){ const atk = players[turnIndex]; ui.turnInfo.textContent = `Атакует: ${atk.name} ${atk.isHuman? '(Вы)':''}`; }
-function updateActionHint(){ if(processing){ ui.actionHint.textContent='Происходит ход...'; return; } if(tableAttack && !tableDefend){ const def = nextAliveIndexForHint(turnIndex); if(def===0) ui.actionHint.textContent = `Вас атакуют ${tableAttack.rank}${tableAttack.suit}. Нажмите карту для защиты или "Беру" чтобы взять атаку.`; else ui.actionHint.textContent = `${players[def].name} защищается...`; return; } const atk = players[turnIndex]; if(atk.isHuman && !atk.finished) ui.actionHint.textContent = 'Ваш ход: тапните карту или нажмите "Беру".'; else ui.actionHint.textContent = `Ход: ${atk.name}. Подождите.`; }
+function updateTurnInfo(){ const atk = players[turnIndex]; ui.turnInfo.textContent = `${t('attack')}: ${atk.name} ${atk.isHuman? t('you'):''}`; }
+function updateActionHint(){ if(processing){ ui.actionHint.textContent='Происходит ход...'; return; } if(tableAttack && !tableDefend){ const def = nextAliveIndexForHint(turnIndex); if(def===0) ui.actionHint.textContent = `Вас атакуют ${tableAttack.rank}${tableAttack.suit}. Нажмите карту для защиты или "${t('taking')}" чтобы взять атаку.`; else ui.actionHint.textContent = `${players[def].name} защищается...`; return; } const atk = players[turnIndex]; if(atk.isHuman && !atk.finished) ui.actionHint.textContent = t('yourTurn'); else ui.actionHint.textContent = `Ход: ${atk.name}. ${t('waiting')}`; }
 
 function onPlayerCardClick(uid){
   if(processing) return;
@@ -1971,7 +2579,10 @@ function renderShop(){
   const grid = $('shopGrid'); grid.innerHTML='';
   SHOP_ITEMS.forEach(it=>{
     const div = document.createElement('div'); div.className='shop-item';
-    div.innerHTML = `<div class="item-title">${it.title}</div><div class="item-desc">${it.desc}</div><div style="display:flex;justify-content:space-between;align-items:center"><div class="price">🪙 ${it.price}</div><div><button class="big-btn buyBtn" data-id="${it.id}">Купить</button></div></div>`;
+    // Получаем переведенные название и описание
+    const translatedTitle = t(it.id.replace('_', '')) || it.title;
+    const translatedDesc = t(it.id.replace('_', '') + 'Desc') || it.desc;
+    div.innerHTML = `<div class="item-title">${translatedTitle}</div><div class="item-desc">${translatedDesc}</div><div style="display:flex;justify-content:space-between;align-items:center"><div class="price">🪙 ${it.price}</div><div><button class="big-btn buyBtn" data-id="${it.id}">${t('buy')}</button></div></div>`;
     grid.appendChild(div);
   });
   document.querySelectorAll('.buyBtn').forEach(b=>b.addEventListener('click', ()=>{ const id=b.dataset.id; buyItem(id); }));
@@ -2037,7 +2648,7 @@ function updateGameInventory() {
     if (!item) return;
     const div = document.createElement('div');
     div.className = 'game-inv-item';
-    div.innerHTML = `<span>${item.title} ×${inv[k]}</span><button class="use-btn" data-id="${k}">Использовать</button>`;
+    div.innerHTML = `<span>${item.title} ×${inv[k]}</span><button class="use-btn" data-id="${k}">${t('use')}</button>`;
     ui.gameInventory.appendChild(div);
   });
   ui.gameInventory.querySelectorAll('.use-btn').forEach(btn => {
@@ -2180,7 +2791,7 @@ function renderPersonalization() {
     if (!item || inv[k] <= 0) return;
     const div = document.createElement('div');
     div.className = 'personalization-item';
-    div.innerHTML = `<div class="item-title">${item.title} ×${inv[k]}</div><button class="apply-btn" data-id="${k}">Применить</button>`;
+    div.innerHTML = `<div class="item-title">${item.title} ×${inv[k]}</div><button class="apply-btn" data-id="${k}">${t('apply')}</button>`;
     grid.appendChild(div);
   });
   document.querySelectorAll('.apply-btn').forEach(btn => {
@@ -2249,6 +2860,42 @@ window.addEventListener('resize', syncAppHeight);
 
 /* keep global access for debugging */
 window._lecho = { startNewGame, renderShop, inventoryLoad, inventorySave };
+
+// Инициализация языка и обработчик смены (в самом конце, после загрузки всех элементов)
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM загружен, инициализируем язык...');
+  initLanguage();
+  const languageSelect = $('languageSelect');
+  if (languageSelect) {
+    console.log('Найден languageSelect, добавляем обработчик...');
+    languageSelect.addEventListener('change', (e) => {
+      console.log('Смена языка на:', e.target.value);
+      changeLanguage(e.target.value);
+    });
+  } else {
+    console.log('languageSelect не найден!');
+  }
+});
+
+// Если DOM уже загружен, инициализируем сразу
+if (document.readyState === 'loading') {
+  // DOM еще загружается, ждем события DOMContentLoaded
+  console.log('DOM загружается, ждем DOMContentLoaded...');
+} else {
+  // DOM уже загружен, инициализируем сразу
+  console.log('DOM уже загружен, инициализируем язык сразу...');
+  initLanguage();
+  const languageSelect = $('languageSelect');
+  if (languageSelect) {
+    console.log('Найден languageSelect, добавляем обработчик...');
+    languageSelect.addEventListener('change', (e) => {
+      console.log('Смена языка на:', e.target.value);
+      changeLanguage(e.target.value);
+    });
+  } else {
+    console.log('languageSelect не найден!');
+  }
+}
 </script>
 </body>
 </html>
