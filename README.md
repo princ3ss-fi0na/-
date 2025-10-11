@@ -1297,6 +1297,15 @@ const TRANSLATIONS = {
 
 let currentLanguage = 'ru';
 
+// Функция snake_case to camelCase
+function snakeToCamel(str) {
+  return str.replace(/([-_][a-z])/g, group =>
+    group.toUpperCase()
+      .replace('-', '')
+      .replace('_', '')
+  );
+}
+
 // Функция получения перевода
 function t(key) {
   return TRANSLATIONS[currentLanguage][key] || TRANSLATIONS.ru[key] || key;
@@ -2634,8 +2643,9 @@ function renderShop(){
   SHOP_ITEMS.forEach(it=>{
     const div = document.createElement('div'); div.className='shop-item';
     // Получаем переведенные название и описание
-    const translatedTitle = t(it.id.replace('_', '')) || it.title;
-    const translatedDesc = t(it.id.replace('_', '') + 'Desc') || it.desc;
+    const camelId = snakeToCamel(it.id);
+    const translatedTitle = t(camelId) || it.title;
+    const translatedDesc = t(camelId + 'Desc') || it.desc;
     div.innerHTML = `<div class="item-title">${translatedTitle}</div><div class="item-desc">${translatedDesc}</div><div style="display:flex;justify-content:space-between;align-items:center"><div class="price">🪙 ${it.price}</div><div><button class="big-btn buyBtn" data-id="${it.id}">${t('buy')}</button></div></div>`;
     grid.appendChild(div);
   });
