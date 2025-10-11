@@ -603,7 +603,7 @@ body{
         <p class="small-muted">1. Русская рулетка (1💎): Выбор сложности (легко: +5💎; сложно: +15💎). Обратный отсчет и выстрел (💥/💨).</p>
         <p class="small-muted">2. Разноцветная рулетка (1💎): Выбор 🔴/⚫️/🟢. Шансы: 45%/45%/10%. Выигрыши: +4💎/+4💎/+100💎. Анимация смены шариков 3-6 сек.</p>
         <p class="small-muted">3. Золотая лихорадка (1🪙): Кнопки «Повезет» и «Подтвердить». 7% шанс на 🪙777.</p>
-        <p class="small-muted">4. Слот-машинка (1💎): 3 барабана, символы: фрукты, 🔔, 💎, ⭐, 💀. Выплаты: 3💎 +50x ставка, 3⭐ +25x ставка, 3🔔 +15x ставка, 2💎 +8x ставка, 2⭐ +5x ставка, 2🔔 +3x ставка, 3 одинаковых фрукта +2x ставка, 2 фрукта +1.2x ставка, 💀 проигрыш.</p>
+        <p class="small-muted">4. Слот-машинка (1💎): 3 барабана, символы: фрукты, 🔔, 💎, ⭐️, 💀. Выплаты: 3💎 +50x ставка, 3⭐️ +25x ставка, 3🔔 +15x ставка, 2💎 +8x ставка, 2⭐️ +5x ставка, 2🔔 +3x ставка, 3 одинаковых фрукта +2x ставка, 2 фрукта +1.2x ставка, 💀 проигрыш.</p>
         <p class="small-muted">5. Ставка на лошадку (на ремонте): Временно недоступно.</p>
         <p class="small-muted">6. Лечо на ставку (от 3🪙): Открывается после 3 побед в обычной игре. Ставка от 3🪙, выигрыш x2.5. При победе засчитывается как обычная победа.</p>
         <p class="small-muted">Предметы из магазина (хинт, подгляд, пропуск и т.д.) используются из инвентаря во время игры через панель в игре.</p>
@@ -749,7 +749,7 @@ body{
 
 <script>
 // === СЕРВЕРНАЯ ЧАСТЬ Google Sheets ===
-const API_URL = 'https://script.google.com/macros/s/AKfycbxs2WbkFVvUMNRY1Pbuoz67m1r7JjSXadkKhoEgScAgf556SwNIs9eMsC2nNVLniZfd/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbypEOFQmpQGlyYYpK-or_Okgj6ejB5zj_63tFgH0n-4BWDa4gJcD7x_G-WNZ6LIRlI/exec';
 
 // Сохранение игрока
 async function savePlayerData(id, nickname, balance, diamonds, wins) {
@@ -1421,7 +1421,7 @@ const ui = {
 const RANKS=['6','7','8','9','10','J','Q','K','A'];
 const SUITS=['♣️','♠️','♥️','♦️'];
 const RANK_VALUE = r => RANKS.indexOf(r);
-const BOT_EMOJIS = ['😼','🦾','🍔','🔥','🧊','🥟','🧆','🎯','🛠️','🍕'];
+const BOT_EMOJIS = ['😼','🦾','🍔','🔥','🧊','🥟','🧆','🎯','🛠','🍕'];
 const PREFIXES = ['Ебаный','Хуевый','Пиздатый','Сука','Блядский','Пидорский','Говно','Залупный','Мудак','Долбоёб'];
 const FUN = ['Хуй','Пиздец','Жопа','Сиськи','Блядина','Пиздюк','Мандавошка','Еблан','Дрочер','Конча'];
 
@@ -1980,7 +1980,7 @@ function goldRushBet() {
 }
 
 /* Slot Machine - улучшенная логика */
-const symbols = ['🍒', '🍋', '🍊', '🔔', '💎', '⭐', '💀'];
+const symbols = ['🍒', '🍋', '🍊', '🔔', '💎', '⭐️', '💀'];
 const symbolWeights = [0.25, 0.25, 0.25, 0.15, 0.05, 0.03, 0.02]; // веса символов
 $('leverBtn').onclick = () => {
   const bet = Number($('slotsBet').value);
@@ -2030,7 +2030,7 @@ $('leverBtn').onclick = () => {
         // Проверяем комбинации по приоритету
         const bellCount = results.filter(s => s === '🔔').length;
         const diamondCount = results.filter(s => s === '💎').length;
-        const starCount = results.filter(s => s === '⭐').length;
+        const starCount = results.filter(s => s === '⭐️').length;
         
         if (diamondCount === 3) {
           winAmount = Math.round(bet * 50);
@@ -2038,7 +2038,7 @@ $('leverBtn').onclick = () => {
           isWin = true;
         } else if (starCount === 3) {
           winAmount = Math.round(bet * 25);
-          resultEl.innerHTML = '⭐⭐⭐ СУПЕР ДЖЕКПОТ! +'+winAmount+'💎';
+          resultEl.innerHTML = '⭐️⭐️⭐️ СУПЕР ДЖЕКПОТ! +'+winAmount+'💎';
           isWin = true;
         } else if (bellCount === 3) {
           winAmount = Math.round(bet * 15);
@@ -2050,7 +2050,7 @@ $('leverBtn').onclick = () => {
           isWin = true;
         } else if (starCount === 2) {
           winAmount = Math.round(bet * 5);
-          resultEl.innerHTML = '⭐⭐ +'+winAmount+'💎';
+          resultEl.innerHTML = '⭐️⭐️ +'+winAmount+'💎';
           isWin = true;
         } else if (bellCount === 2) {
           winAmount = Math.round(bet * 3);
@@ -2244,7 +2244,7 @@ function resolveDefense(attackerIdx, defenderIdx){
       const choose = options[0];
       const defendCard = defender.hand.splice(choose.idx,1)[0];
       tableDefend = defendCard;
-      renderAll(); log(`${defender.name} отбил ${attack.rank}${attack.suit} картой ${defendCard.rank}${defendCard.suit}`);
+      renderAll(); log(`${defender.name} отбил ${attack.rank}${attack.suit} карт��й ${defendCard.rank}${defendCard.suit}`);
       setTimeout(()=>{ pushToDiscardRandom(tableAttack, tableDefend); tableAttack=null; tableDefend=null; checkLechoForBots(); processing=false; endOfTurnCleanup(attackerIdx); }, 350);
     } else {
       defender.hand.push(tableAttack);
