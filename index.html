@@ -10,10 +10,6 @@
 <!-- Fonts: строгие и минимальные, с вайбом Wild West минимализма -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
-<script type="module">
-  import { savePlayerData, loadPlayerData, updatePlayerData } from './firebase-storage.js';
-</script>
-
 <style>
 :root{
   --bg-top: #0c3f25; --bg-bottom: #041811; /* Зеленые тона как покерный стол */
@@ -752,55 +748,55 @@ body{
 <div class="version">MegaSlots update. v2.2</div>
 
 <script>
-// === СЕРВЕРНАЯ ЧАСТЬ Google Sheets === (закомментировано)
-// const API_URL = 'https://script.google.com/macros/s/AKfycbypEOFQmpQGlyYYpK-or_Okgj6ejB5zj_63tFgH0n-4BWDa4gJcD7x_G-WNZ6LIRlI/exec';
+// === СЕРВЕРНАЯ ЧАСТЬ Google Sheets ===
+const API_URL = 'https://script.google.com/macros/s/AKfycbypEOFQmpQGlyYYpK-or_Okgj6ejB5zj_63tFgH0n-4BWDa4gJcD7x_G-WNZ6LIRlI/exec';
 
-// Сохранение игрока (закомментировано)
-// async function savePlayerData(id, nickname, balance, diamonds, wins) {
-//   try {
-//     const response = await fetch(API_URL, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ 
-//         action: 'save',
-//         id, 
-//         nickname, 
-//         balance, 
-//         diamonds, 
-//         wins 
-//       })
-//     });
-//     
-//     if (response.ok) {
-//       const result = await response.json();
-//       console.log('Данные сохранены для ID:', id, result);
-//     } else {
-//       console.error('Ошибка HTTP:', response.status, response.statusText);
-//     }
-//   } catch (e) {
-//     console.error('Ошибка сохранения:', e);
-//   }
-// }
+// Сохранение игрока
+async function savePlayerData(id, nickname, balance, diamonds, wins) {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        action: 'save',
+        id, 
+        nickname, 
+        balance, 
+        diamonds, 
+        wins 
+      })
+    });
+    
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Данные сохранены для ID:', id, result);
+    } else {
+      console.error('Ошибка HTTP:', response.status, response.statusText);
+    }
+  } catch (e) {
+    console.error('Ошибка сохранения:', e);
+  }
+}
 
-// Загрузка игрока (закомментировано)
-// async function loadPlayerData(id) {
-//   try {
-//     const res = await fetch(`${API_URL}?action=load&id=${id}`);
-//     if (res.ok) {
-//       const data = await res.json();
-//       console.log('Данные загружены для ID:', id, data);
-//       return data;
-//     } else {
-//       console.error('Ошибка HTTP при загрузке:', res.status, res.statusText);
-//       return null;
-//     }
-//   } catch (e) {
-//     console.error('Ошибка загрузки:', e);
-//     return null;
-//   }
-// }
+// Загрузка игрока
+async function loadPlayerData(id) {
+  try {
+    const res = await fetch(`${API_URL}?action=load&id=${id}`);
+    if (res.ok) {
+      const data = await res.json();
+      console.log('Данные загружены для ID:', id, data);
+      return data;
+    } else {
+      console.error('Ошибка HTTP при загрузке:', res.status, res.statusText);
+      return null;
+    }
+  } catch (e) {
+    console.error('Ошибка загрузки:', e);
+    return null;
+  }
+}
 
 // Генерация уникального ID игрока
 function generatePlayerId() {
@@ -1199,7 +1195,7 @@ const TRANSLATIONS = {
     rulesSuit: 'Couleur: 3 cartes de même couleur (par exemple, 7♥️, Q♥️, A♥️ ou 6♣️, 7♣️, 9♣️).',
     rulesLecho: 'Si une combinaison est formée mais le joueur n\'a pas appuyé sur «Lecho», le jeu continue — c\'est le problème du joueur. Si appuyer sur «Lecho» sans combinaison, un avertissement apparaît: «Vous n\'avez pas formé de combinaison!». Après un «Lecho» réussi le joueur reçoit 1 🪙 et ne peut plus appuyer sur le bouton — attendre la fin du jeu.',
     rulesEnd: 'Le jeu dure jusqu\'à ce qu\'il reste un joueur sans combinaison ou qui n\'a pas déclaré «Lecho» à temps.',
-    rulesGuess: 'À la fin du jeu le perdant devine les combinaciones des gagnants par indice (type de combinaison: répétition, séquence ou couleur). La triche est interdite. Pour chaque combinaison devinée 1 💎 est donné.',
+    rulesGuess: 'À la fin du jeu le perdant devine les combinaisons des gagnants par indice (type de combinaison: répétition, séquence ou couleur). La triche est interdite. Pour chaque combinaison devinée 1 💎 est donné.',
     rulesPenalty: 'Pour chaque combinaison non devinée du nouveau paquet 3 cartes sont tirées. S\'il y a une combinaison dedans, 3 de plus sont ajoutées. Si plus de 15 cartes sont tirées, c\'est «paquet» — le joueur a perdu deux fois.',
     
     botPrefixes: ['Putain','Merde','Salaud','Connard','Enculé','Bâtard','Fils de','Bordel','Chier','Nique'],
@@ -2248,7 +2244,7 @@ function resolveDefense(attackerIdx, defenderIdx){
       const choose = options[0];
       const defendCard = defender.hand.splice(choose.idx,1)[0];
       tableDefend = defendCard;
-      renderAll(); log(`${defender.name} отбил ${attack.rank}${attack.suit} картй ${defendCard.rank}${defendCard.suit}`);
+      renderAll(); log(`${defender.name} отбил ${attack.rank}${attack.suit} карт��й ${defendCard.rank}${defendCard.suit}`);
       setTimeout(()=>{ pushToDiscardRandom(tableAttack, tableDefend); tableAttack=null; tableDefend=null; checkLechoForBots(); processing=false; endOfTurnCleanup(attackerIdx); }, 350);
     } else {
       defender.hand.push(tableAttack);
